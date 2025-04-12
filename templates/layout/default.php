@@ -18,16 +18,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?= $this->element('header.php') ?>
+    <?= $this->element('header') ?>
 </head>
 <body>
-    <?= $this->element('navbar.php') ?>
-    <main class="main">
-        <div class="container">
-            <?= $this->Flash->render() ?>
-            <?= $this->fetch('content') ?>
-        </div>
-    </main>
-    <?= $this->element('footer.php') ?>
+<?= $this->element('navbar') ?>
+<main class="container">
+    <?= $this->Flash->render() ?>
+    <?= $this->fetch('content') ?>
+</main>
+<?= $this->element('footer') ?>
 </body>
 </html>
