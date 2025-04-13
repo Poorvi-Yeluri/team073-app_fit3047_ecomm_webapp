@@ -22,7 +22,7 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 <?= $this->element('navbar') ?>
-<main class="container py-4 flex-grow-1">
+<main class="container-fluid py-4 px-md-0 flex-grow-1">
     <?= $this->Flash->render() ?>
     <?= $this->fetch('content') ?>
 </main>
