@@ -1,3 +1,3 @@
 <!-- src/Template/Element/navbar.php -->
-<nav class="">
+<nav class="container">
 </nav>

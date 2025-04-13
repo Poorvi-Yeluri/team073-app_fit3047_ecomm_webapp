@@ -1,4 +1,5 @@
 :root {
+    /* === Colors === */
     --gg-black: #000000;
     --gg-white: #ffffff;
     --gg-light-gray: #f5f5f5;
@@ -6,53 +7,50 @@
     --gg-text: #111111;
     --gg-accent: #a68a64; /* Optional gold accent for elegance */
 
+    /* === Typography === */
+    --gg-serif-font: 'Libre Baskerville', serif;
+    --gg-sans-serif-font: 'DM Sans', sans-serif;
     --gg-font-h1: 3rem;
     --gg-font-h2: 2rem;
     --gg-font-h3: 1.5rem;
     --gg-font-body: 1rem;
     --gg-font-small: 0.875rem;
 
-    --gg-space-1: 0.5rem;
-    --gg-space-2: 1rem;
-    --gg-space-3: 1.5rem;
-    --gg-space-4: 2rem;
-    --gg-space-5: 3rem;
+    /* === Line Heights === */
+    --gg-line-height-h1: 1.2;
+    --gg-line-height-h2: 1.3;
+    --gg-line-height-h3: 1.4;
+    --gg-line-height-body: 1.5;
+
+    /* === Font Weights === */
+    --gg-font-weight-bold: 600;          /* Titles, Heading, etc */
+    --gg-font-weight-medium: 500;        /* Buttons, etc */
+    --gg-font-weight-regular: 400;       /* Body text */
+
+    /* === Spacing (based on $spacer: 1rem) === */
+    --gg-spacer: 1rem;
+    --gg-space-0: 0;
+    --gg-space-1: calc(var(--gg-spacer) * 0.25); /* 0.25rem */
+    --gg-space-2: calc(var(--gg-spacer) * 0.5);  /* 0.5rem */
+    --gg-space-3: var(--gg-spacer);             /* 1rem */
+    --gg-space-4: calc(var(--gg-spacer) * 1.5);  /* 1.5rem */
+    --gg-space-5: calc(var(--gg-spacer) * 3);    /* 3rem */
+
+    /* === Border Radius === */
+    --gg-radius-small: 0.25rem;
+    --gg-radius-medium: 0.5rem;
+    --gg-radius-large: 1rem;
+    --gg-radius: 0; /* Component override default */
+
+    /* === Transitions === */
+    --gg-transition-fast: 0.2s ease-in-out;
+    --gg-transition-slow: 0.5s ease-in-out;
+
+    /* === Misc === */
+    --gg-base-font-size: 16px;
 }
 
-.gg-btn {
-    font-family: 'DM Sans', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-size: var(--gg-font-small);
-    font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    border: 1px solid;
-    border-radius: 0;
-    background: transparent;
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
-}
 
-.gg-btn-black {
-    background-color: var(--gg-black);
-    color: var(--gg-white);
-    border-color: var(--gg-black);
-}
-.gg-btn-black:hover {
-    background-color: transparent;
-    color: var(--gg-black);
-}
-
-.gg-btn-white {
-    background-color: var(--gg-white);
-    color: var(--gg-black);
-    border-color: var(--gg-white);
-}
-.gg-btn-white:hover {
-    background-color: transparent;
-    color: var(--gg-white);
-    border-color: var(--gg-white);
-}
 
 .gg-product-card {
     background: var(--gg-white);
