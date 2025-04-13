@@ -20,9 +20,9 @@
 <head>
     <?= $this->element('header') ?>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 <?= $this->element('navbar') ?>
-<main class="container">
+<main class="container py-4 flex-grow-1">
     <?= $this->Flash->render() ?>
     <?= $this->fetch('content') ?>
 </main>

@@ -44,8 +44,8 @@
 
     <!-- Right Icons (desktop only) -->
     <div class="d-md-flex d-none align-items-center gap-3">
-        <span class="material-symbols-outlined" style="cursor: pointer;">location_on</span>
         <span class="material-symbols-outlined" style="cursor: pointer;">shopping_cart</span>
+        <span class="material-symbols-outlined" style="cursor: pointer;">contact_support</span>
         <span class="material-symbols-outlined" id="popoverButton"
               data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Loading..."
               style="cursor: pointer;">
@@ -72,15 +72,10 @@
     </div>
     <div class="offcanvas-body">
         <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="#">NEW</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">SALE</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">BEDROOM</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">BATHROOM</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">LIVING</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">DINING</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">FURNITURE</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">JEWELERY</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">CLEARANCE</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="#">Home Decor</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="#">Jewelry</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="#">Gifts</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="#">Clearance</a></li>
         </ul>
     </div>
 </div>
