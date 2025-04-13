@@ -1,8 +1,4 @@
-:host {
-    display: inline-block;
-}
-
-:host button {
+button {
     font-family: var(--gg-sans-serif-font);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -16,46 +12,43 @@
     cursor: pointer;
     max-width: 100%;
 }
-
-/* === VARIANTS === */
-:host([variant="black"]) button {
-    background-color: var(--gg-black);
-    color: var(--gg-white);
-    border-color: var(--gg-black);
-}
-
-:host([variant="black"]) button:hover {
-    background-color: transparent;
-    color: var(--gg-black);
-}
-
-:host([variant="white"]) button {
-    background-color: var(--gg-white);
-    color: var(--gg-black);
-    border-color: var(--gg-black);
-}
-
-:host([variant="white"]) button:hover {
-    background-color: var(--gg-black);
-    color: var(--gg-white);
-}
-
-/* === SIZES === */
-:host([size="small"]) button {
+button.small {
     font-size: var(--gg-font-small);
     padding: var(--gg-space-1) var(--gg-space-2);
     width: auto;
 }
 
-:host([size="medium"]) button {
+button.medium {
     font-size: var(--gg-font-body);
     padding: var(--gg-space-2) var(--gg-space-3);
     width: auto;
 }
 
-:host([size="large"]) button {
+button.large {
     font-size: var(--gg-font-h3);
     padding: var(--gg-space-3) var(--gg-space-4);
     width: auto;
+}
+
+button.black {
+    background-color: var(--gg-black);
+    color: var(--gg-white);
+    border-color: var(--gg-black);
+}
+
+button.black:hover {
+    background-color: transparent;
+    color: var(--gg-black);
+}
+
+button.white {
+    background-color: var(--gg-white);
+    color: var(--gg-black);
+    border-color: var(--gg-white);
+}
+
+button.white:hover {
+    background-color: var(--gg-black);
+    color: var(--gg-white);
 }
 

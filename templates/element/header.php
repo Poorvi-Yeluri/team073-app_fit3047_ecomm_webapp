@@ -7,7 +7,9 @@
 </title>
 
 <?= $this->Html->meta('icon') ?>
-<?= $this->Html->css(['styles']) ?>
+<?= $this->Html->css(['styles', 'button']) ?>
+<?= $this->Html->script('gg-searchbar') ?>
+
 
 <?= $this->Html->script('gg-button.js') ?>
 
