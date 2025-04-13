@@ -1,79 +1,280 @@
 :root {
     /* === Colors === */
-    --gg-black: #000000;
-    --gg-white: #ffffff;
-    --gg-light-gray: #f5f5f5;
-    --gg-gray: #e0e0e0;
-    --gg-text: #111111;
-    --gg-accent: #a68a64; /* Optional gold accent for elegance */
+    --black: #000000;
+    --white: #ffffff;
+    --light-gray: #f5f5f5;
+    --gray: #e0e0e0;
+    --text-color: #111111;
+    --accent-color: #a68a64; /* Optional gold accent */
 
     /* === Typography === */
-    --gg-serif-font: 'Libre Baskerville', serif;
-    --gg-sans-serif-font: 'DM Sans', sans-serif;
-    --gg-font-h1: 3rem;
-    --gg-font-h2: 2rem;
-    --gg-font-h3: 1.5rem;
-    --gg-font-body: 1rem;
-    --gg-font-small: 0.875rem;
+    --font-serif: 'Libre Baskerville', serif;
+    --font-sans: 'DM Sans', sans-serif;
+    --font-h1: 3rem;
+    --font-h2: 2rem;
+    --font-h3: 1.5rem;
+    --font-body: 1rem;
+    --font-small: 0.875rem;
 
     /* === Line Heights === */
-    --gg-line-height-h1: 1.2;
-    --gg-line-height-h2: 1.3;
-    --gg-line-height-h3: 1.4;
-    --gg-line-height-body: 1.5;
+    --line-height-h1: 1.2;
+    --line-height-h2: 1.3;
+    --line-height-h3: 1.4;
+    --line-height-body: 1.5;
 
     /* === Font Weights === */
-    --gg-font-weight-bold: 600;          /* Titles, Heading, etc */
-    --gg-font-weight-medium: 500;        /* Buttons, etc */
-    --gg-font-weight-regular: 400;       /* Body text */
+    --font-weight-bold: 600;
+    --font-weight-medium: 500;
+    --font-weight-regular: 400;
 
-    /* === Spacing (based on $spacer: 1rem) === */
-    --gg-spacer: 1rem;
-    --gg-space-0: 0;
-    --gg-space-1: calc(var(--gg-spacer) * 0.25); /* 0.25rem */
-    --gg-space-2: calc(var(--gg-spacer) * 0.5);  /* 0.5rem */
-    --gg-space-3: var(--gg-spacer);             /* 1rem */
-    --gg-space-4: calc(var(--gg-spacer) * 1.5);  /* 1.5rem */
-    --gg-space-5: calc(var(--gg-spacer) * 3);    /* 3rem */
+    /* === Spacing === */
+    --spacer: 1rem;
+    --space-0: 0;
+    --space-1: calc(var(--spacer) * 0.25); /* 0.25rem */
+    --space-2: calc(var(--spacer) * 0.5);  /* 0.5rem */
+    --space-3: var(--spacer);             /* 1rem */
+    --space-4: calc(var(--spacer) * 1.5);  /* 1.5rem */
+    --space-5: calc(var(--spacer) * 3);    /* 3rem */
 
     /* === Border Radius === */
-    --gg-radius-small: 0.25rem;
-    --gg-radius-medium: 0.5rem;
-    --gg-radius-large: 1rem;
-    --gg-radius: 0; /* Component override default */
+    --radius-small: 0.25rem;
+    --radius-medium: 0.5rem;
+    --radius-large: 1rem;
+    --radius: 0; /* sharp edges */
 
     /* === Transitions === */
-    --gg-transition-fast: 0.2s ease-in-out;
-    --gg-transition-slow: 0.5s ease-in-out;
+    --transition-fast: 0.2s ease-in-out;
+    --transition-slow: 0.5s ease-in-out;
 
     /* === Misc === */
-    --gg-base-font-size: 16px;
+    --base-font-size: 16px;
+}
+
+/* === Font Families === */
+.font-serif {
+    font-family: var(--font-serif);
+}
+
+.font-sans {
+    font-family: var(--font-sans);
+}
+
+/* === Font Sizes === */
+.text-h1 {
+    font-size: var(--font-h1);
+    line-height: var(--line-height-h1);
+}
+
+.text-h2 {
+    font-size: var(--font-h2);
+    line-height: var(--line-height-h2);
+}
+
+.text-h3 {
+    font-size: var(--font-h3);
+    line-height: var(--line-height-h3);
+}
+
+.text-body {
+    font-size: var(--font-body);
+    line-height: var(--line-height-body);
+}
+
+.text-small {
+    font-size: var(--font-small);
+}
+
+/* === Font Weights === */
+.weight-bold {
+    font-weight: var(--font-weight-bold);
+}
+
+.weight-medium {
+    font-weight: var(--font-weight-medium);
+}
+
+.weight-regular {
+    font-weight: var(--font-weight-regular);
+}
+
+/* === Text Colors === */
+.text-black {
+    color: var(--black);
+}
+
+.text-white {
+    color: var(--white);
+}
+
+.text-gray {
+    color: var(--gray);
+}
+
+.text-light-gray {
+    color: var(--light-gray);
+}
+
+.text-accent {
+    color: var(--accent-color);
+}
+
+.text-dark {
+    color: var(--text-color);
+}
+
+/* === Headings === */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    color: var(--text-color);
+    margin-top: var(--space-3);
+    margin-bottom: var(--space-2);
+}
+
+h1 {
+    font-size: var(--font-h1);
+    line-height: var(--line-height-h1);
+    font-weight: var(--font-weight-bold);
+}
+
+h2 {
+    font-size: var(--font-h2);
+    line-height: var(--line-height-h2);
+    font-weight: var(--font-weight-bold);
+}
+
+h3 {
+    font-size: var(--font-h3);
+    line-height: var(--line-height-h3);
+    font-weight: var(--font-weight-medium);
+}
+
+h4, h5, h6 {
+    font-size: var(--font-body);
+    line-height: var(--line-height-body);
+    font-weight: var(--font-weight-medium);
+}
+
+/* === Paragraphs === */
+p {
+    font-family: var(--font-sans);
+    font-size: var(--font-body);
+    line-height: var(--line-height-body);
+    font-weight: var(--font-weight-regular);
+    color: var(--text-color);
+    margin-bottom: var(--space-2);
+}
+
+/* === Anchors === */
+a,
+a:visited,
+a:active,
+a:focus {
+    font-family: var(--font-sans);
+    font-size: var(--font-body);
+    font-weight: var(--font-weight-medium);
+    color: var(--black);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--black); /* or any hover color you prefer */
+    text-decoration: underline;
 }
 
 
-
-.gg-product-card {
-    background: var(--gg-white);
-    border: 1px solid var(--gg-gray);
-    padding: var(--gg-space-2);
-    text-align: left;
-    border-radius: 0; /* sharp edges */
+/* === Lists === */
+ul, ol {
+    margin-bottom: var(--space-2);
+    padding-left: var(--space-4);
+    font-family: var(--font-sans);
+    font-size: var(--font-body);
+    line-height: var(--line-height-body);
+    color: var(--text-color);
 }
 
-.gg-product-card img {
-    width: 100%;
-    height: auto;
-    margin-bottom: var(--gg-space-2);
+li {
+    margin-bottom: var(--space-1);
 }
 
-.product-name {
-    font-family: 'Libre Baskerville', serif;
-    font-size: var(--gg-font-h3);
-    margin-bottom: var(--gg-space-1);
+/* === Strong and Emphasis === */
+strong {
+    font-weight: var(--font-weight-bold);
 }
 
-.product-price {
-    font-family: 'DM Sans', sans-serif;
-    font-size: var(--gg-font-body);
-    color: var(--gg-text);
+em {
+    font-style: italic;
+}
+
+/* === Blockquote === */
+blockquote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--font-h3);
+    padding-left: var(--space-3);
+    border-left: 4px solid var(--gray);
+    margin: var(--space-3) 0;
+    color: var(--text-color);
+}
+
+.body {
+    font-family: var(--font-sans);
+}
+
+a.logo-brand {
+    font-family: var(--font-serif);
+    font-size: var(--font-h3);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--black);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+input.form-control {
+    font-family: var(--font-sans);
+    font-size: var(--font-body);
+    font-weight: var(--font-weight-regular);
+    border: 1px solid var(--black);
+    border-radius: var(--radius);
+}
+
+input.form-control:focus {
+    outline: none;
+    box-shadow: 0 0 0 0 var(--black); /* or another color */
+    border-color: var(--black); /* optional */
+}
+
+#search-wrapper {
+    width: auto;
+}
+
+.animated-search-input {
+    top: 0;
+    left: 0;
+    width: 0;
+    opacity: 0;
+    padding: 0;
+    border: none;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    background-color: white;
+    z-index: 2;
+    height: 38px; /* match Bootstrap input height */
+    font-size: 0.9rem;
+    box-shadow: none;
+}
+
+.animated-search-input:focus {
+    outline: none;
+    box-shadow: none; /* Removes blue outline */
+}
+
+.animated-search-input.active {
+    width: 230px;
+    opacity: 1;
+    padding: 0 10px;
+    border: 1px solid #000;
+    pointer-events: auto;
 }
