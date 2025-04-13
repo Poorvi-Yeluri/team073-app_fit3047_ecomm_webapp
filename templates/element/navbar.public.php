@@ -1,7 +1,7 @@
 <!-- Top banner -->
-<div class="container-fluid bg-black py-2">
-    <div class="d-flex w-100 justify-content-center align-items-center">
-        <a class="text-white text-decoration-none" href="#" id="textContent">
+<div class="container-fluid py-2" style="background-color: var(--accent-color)">
+    <div class="d-flex w-100 justify-content-center align-items-center ps-3 ps-md-5">
+        <a class="text-white text-decoration-none ps-md-5" href="#" id="textContent">
             Our Biggest Sale!
         </a>
     </div>
@@ -9,7 +9,7 @@
 
 <!-- Top Navbar -->
 <div class="container-fluid border-bottom py-2 px-3 px-md-5">
-    <div class="d-flex w-100 justify-content-between align-items-center">
+    <div class="d-flex w-100 justify-content-evenly justify-content-md-between align-items-center">
 
         <!-- Left: Toggler (mobile only) + Search -->
         <div class="d-flex align-items-center gap-3">
@@ -58,7 +58,7 @@
 
 <!-- Bottom Nav (Desktop only) -->
 <div class="container-fluid d-none d-md-flex border-bottom py-3 px-3 px-md-5">
-    <div class="d-flex flex-wrap gap-4 justify-content-center w-100">
+    <div class="d-flex flex-wrap gap-5 justify-content-center w-100">
         <a class="nav-link px-2 text-uppercase" href="#">Home Decor</a>
         <a class="nav-link px-2 text-uppercase" href="#">Jewelry</a>
         <a class="nav-link px-2 text-uppercase" href="#">Gifts</a>
