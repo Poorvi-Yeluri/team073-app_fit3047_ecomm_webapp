@@ -7,7 +7,7 @@
 </title>
 
 <?= $this->Html->meta('icon') ?>
-<?= $this->Html->css(['normalize.min', 'milligram.min', 'fonts', 'cake']) ?>
+<?= $this->Html->css(['styles']) ?>
 
 <!-- Bootstrap 5.3.3 CSS -->
 <?= $this->Html->css('https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css') ?>
