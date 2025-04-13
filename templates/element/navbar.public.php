@@ -1,62 +1,64 @@
 <!-- Top banner -->
-<div class="container-fluid py-2 justify-content-center bg-black" id="changeTextDiv">
-    <div class="d-flex justify-content-center w-100 ms-md-5 ps-md-5">
-        <a class="text-white text-decoration-none ps-2" href="#" id="textContent">
+<div class="container-fluid bg-black py-2">
+    <div class="d-flex w-100 justify-content-center align-items-center">
+        <a class="text-white text-decoration-none" href="#" id="textContent">
             Our Biggest Sale!
         </a>
     </div>
 </div>
 
 <!-- Top Navbar -->
-<div class="container-fluid d-flex gap-0 justify-content-between align-items-center py-2 border-bottom">
-    <!-- Left: Toggler (mobile only) + Search -->
-    <div class="d-flex align-items-center">
-        <!-- Toggler -->
-        <button class="navbar-toggler d-md-none border-0"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-                style="outline: none; box-shadow: none;">
-            <span class="material-symbols-outlined">menu</span>
-        </button>
+<div class="container-fluid border-bottom py-2 px-3 px-md-5">
+    <div class="d-flex w-100 justify-content-between align-items-center">
 
-        <!-- Search Icon + Input -->
-        <div class="position-relative d-md-flex d-none align-items-center" id="search-wrapper">
-            <span class="material-symbols-outlined me-2"
-                  id="search-bar-icon"
-                  style="cursor: pointer;">search</span>
-            <input type="search"
-                   class="form-control animated-search-input"
-                   id="search-bar"
-                   placeholder="What are you looking for?"
-                   aria-label="Search">
+        <!-- Left: Toggler (mobile only) + Search -->
+        <div class="d-flex align-items-center gap-3">
+            <!-- Toggler -->
+            <button class="navbar-toggler d-md-none border-0"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar"
+                    aria-controls="offcanvasNavbar"
+                    aria-label="Toggle navigation"
+                    style="outline: none; box-shadow: none;">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+
+            <!-- Desktop Search -->
+            <div class="d-none d-md-flex align-items-center position-relative" id="search-wrapper">
+                <span class="material-symbols-outlined me-2" id="search-bar-icon" style="cursor: pointer;">search</span>
+                <input type="search"
+                       class="form-control animated-search-input"
+                       id="search-bar"
+                       placeholder="What are you looking for?"
+                       aria-label="Search">
+            </div>
         </div>
-    </div>
 
-    <!-- Center: Logo -->
-    <a class="logo-brand fs-sm-1" href="/">
-        GLEAM <i class="text-small">AND</i> GRACE
-    </a>
+        <!-- Center: Logo -->
+        <a class="logo-brand fs-sm-1 text-center" href="/">
+            GLEAM <i class="text-small">AND</i> GRACE
+        </a>
 
-
-    <!-- Right Icons (desktop only) -->
-    <div class="d-md-flex d-none align-items-center gap-3">
-        <span class="material-symbols-outlined" style="cursor: pointer;">shopping_cart</span>
-        <span class="material-symbols-outlined" style="cursor: pointer;">contact_support</span>
-        <span class="material-symbols-outlined" id="popoverButton"
-              data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Loading..."
-              style="cursor: pointer;">
-            person
-        </span>
+        <!-- Right Icons (desktop only) -->
+        <div class="d-none d-md-flex align-items-center gap-3">
+            <span class="material-symbols-outlined" style="cursor: pointer;">shopping_cart</span>
+            <span class="material-symbols-outlined" style="cursor: pointer;">contact_support</span>
+            <span class="material-symbols-outlined"
+                  id="popoverButton"
+                  data-bs-toggle="popover"
+                  data-bs-placement="bottom"
+                  data-bs-content="Loading..."
+                  style="cursor: pointer;">
+        person
+      </span>
+        </div>
     </div>
 </div>
 
-<!-- Bottom Nav - Desktop only -->
-<div class="container-fluid justify-content-center py-3 border-bottom d-none d-md-flex">
-    <div class="d-flex flex-wrap gap-4 ms-md-5 ps-md-5">
+<!-- Bottom Nav (Desktop only) -->
+<div class="container-fluid d-none d-md-flex border-bottom py-3 px-3 px-md-5">
+    <div class="d-flex flex-wrap gap-4 justify-content-center w-100">
         <a class="nav-link px-2 text-uppercase" href="#">Home Decor</a>
         <a class="nav-link px-2 text-uppercase" href="#">Jewelry</a>
         <a class="nav-link px-2 text-uppercase" href="#">Gifts</a>
@@ -65,7 +67,7 @@
 </div>
 
 <!-- Offcanvas Navigation (Mobile only) -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="width: 75%">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="width: 75%;">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -80,12 +82,11 @@
     </div>
 </div>
 
-
-
 <!-- Optional Mobile Search Section -->
-<div class="container-fluid d-md-none input-group border-top border-bottom py-2">
+<div class="container-fluid d-md-none border-top border-bottom py-2 px-4">
     <input class="form-control" type="search" placeholder="What are you looking for?" aria-label="Search">
 </div>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

@@ -1,104 +1,107 @@
 <!-- Desktop Footer (md and up) -->
-<div class="d-none d-md-flex row justify-content-between">
+<div class="d-none d-md-flex row justify-content-between py-4">
     <!-- Brand & Tagline -->
     <div class="col-md-3">
-        <a class="logo-brand fs-4" href="/">
+        <a class="logo-brand" href="/">
             GLEAM <i class="text-small">AND</i> GRACE
         </a>
-        <p class="text-muted mt-2">Your one-stop shop for elegance.</p>
+        <p>Your one-stop shop for elegance.</p>
     </div>
 
     <!-- Quick Links -->
     <div class="col-md-2">
-        <h6 class="fw-bold text-dark">Quick Links</h6>
+        <h5>Quick Links</h5>
         <ul class="list-unstyled">
-            <li><a href="#" class="text-muted text-decoration-none">Home</a></li>
-            <li><a href="#" class="text-muted text-decoration-none">Shop</a></li>
-            <li><a href="#" class="text-muted text-decoration-none">About</a></li>
-            <li><a href="/contact-messages/add" class="text-muted text-decoration-none">Contact</a></li>
+            <li><a href="#" class="text-dark">Home</a></li>
+            <li><a href="#" class="text-dark">Shop</a></li>
+            <li><a href="#" class="text-dark">About</a></li>
+            <li><a href="/contact-messages/add" class="text-dark">Contact</a></li>
         </ul>
     </div>
 
     <!-- Support -->
     <div class="col-md-2">
-        <h6 class="fw-bold text-dark">Support</h6>
+        <h5>Support</h5>
         <ul class="list-unstyled">
-            <li><a href="#" class="text-muted text-decoration-none">FAQ</a></li>
-            <li><a href="#" class="text-muted text-decoration-none">Returns</a></li>
-            <li><a href="#" class="text-muted text-decoration-none">Shipping</a></li>
+            <li><a href="#" class="text-dark">FAQ</a></li>
+            <li><a href="#" class="text-dark">Returns</a></li>
+            <li><a href="#" class="text-dark">Shipping</a></li>
         </ul>
     </div>
 
     <!-- Contact Info -->
     <div class="col-md-3">
-        <h6 class="fw-bold text-dark">Contact Us</h6>
-        <p class="text-muted mb-1 small">support@gleamandgrace.com</p>
-        <p class="text-muted mb-0 small">+61 812 123 4567</p>
+        <h5>Contact Us</h5>
+        <h6 class="font-sans weight-regular">support@gleamandgrace.com</h6>
+        <h6 class="font-sans weight-regular">+61 812 123 4567</h6>
     </div>
 </div>
 
-<!-- Mobile Dropdowns -->
-<div class="d-lg-none py-2">
-    <div class="col-12 text-center">
-        <!-- Site Title -->
-        <a class="fs-5 text-dark"
-           href="#"
-           style="font-family: Baskerville; letter-spacing: 2.5px; text-decoration: none;">
-            GLEAM AND GRACE</a>
-        <p class="fs-6">Your one-stop shop for elegance.</p>
+<!-- Mobile Footer (sm and down) -->
+<div class="d-md-none py-space-3">
+    <div class="text-center mb-space-3">
+        <a class="logo-brand" href="#">GLEAM AND GRACE</a>
+        <p class="text-body">Your one-stop shop for elegance.</p>
     </div>
-    <div class="accordion mb-4" id="footerAccordion">
+
+    <div class="accordion" id="mobileFooterAccordion">
         <!-- Quick Links -->
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed " type="button"
-                        data-bs-toggle="collapse" data-bs-target="#quickLinks">
-                    <strong>Quick Links</strong>
+        <div class="accordion-item mb-space-2">
+            <h2 class="accordion-header" id="headingQuickLinks">
+                <button class="accordion-button collapsed text-h5 text-dark" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseQuickLinks" aria-expanded="false"
+                        aria-controls="collapseQuickLinks">
+                    Quick Links
                 </button>
             </h2>
-            <div id="quickLinks" class="accordion-collapse collapse" data-bs-parent="#footerAccordion">
-                <div class="accordion-body py-1">
-                    <ul class="list-unstyled gap-2">
-                        <li><a href="#" class="text-black text-decoration-none">Home</a></li>
-                        <li><a href="#" class="text-black text-decoration-none">Shop</a></li>
-                        <li><a href="#" class="text-black text-decoration-none">About</a></li>
-                        <li><a href="/contact-messages/add" class="text-black text-decoration-none">Contact</a></li>
+            <div id="collapseQuickLinks" class="accordion-collapse collapse" aria-labelledby="headingQuickLinks"
+                 data-bs-parent="#mobileFooterAccordion">
+                <div class="accordion-body mt-space-1">
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-dark">Home</a></li>
+                        <li><a href="#" class="text-dark">Shop</a></li>
+                        <li><a href="#" class="text-dark">About</a></li>
+                        <li><a href="/contact-messages/add" class="text-dark">Contact</a></li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <!-- Support -->
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed " type="button"
-                        data-bs-toggle="collapse" data-bs-target="#support">
-                    <strong>Support</strong>
+        <div class="accordion-item mb-space-2">
+            <h2 class="accordion-header" id="headingSupport">
+                <button class="accordion-button collapsed text-h5 text-dark" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseSupport" aria-expanded="false"
+                        aria-controls="collapseSupport">
+                    Support
                 </button>
             </h2>
-            <div id="support" class="accordion-collapse collapse" data-bs-parent="#footerAccordion">
-                <div class="accordion-body py-1">
+            <div id="collapseSupport" class="accordion-collapse collapse" aria-labelledby="headingSupport"
+                 data-bs-parent="#mobileFooterAccordion">
+                <div class="accordion-body mt-space-1">
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-black text-decoration-none">FAQ</a></li>
-                        <li><a href="#" class="text-black text-decoration-none">Returns</a></li>
-                        <li><a href="#" class="text-black text-decoration-none">Shipping</a></li>
+                        <li><a href="#" class="text-dark">FAQ</a></li>
+                        <li><a href="#" class="text-dark">Returns</a></li>
+                        <li><a href="#" class="text-dark">Shipping</a></li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Contact Us -->
+        <!-- Contact Info -->
         <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed " type="button"
-                        data-bs-toggle="collapse" data-bs-target="#contactUs">
-                    <strong>Contact Us</strong>
+            <h2 class="accordion-header" id="headingContact">
+                <button class="accordion-button collapsed text-h5 text-dark" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseContact" aria-expanded="false"
+                        aria-controls="collapseContact">
+                    Contact Us
                 </button>
             </h2>
-            <div id="contactUs" class="accordion-collapse collapse" data-bs-parent="#footerAccordion">
-                <div class="accordion-body py-1">
-                    <p class="small m-0"><strong>Email:</strong> support@gleamandgrace.com</p>
-                    <p class="small m-0"><strong>Phone:</strong> +61 812 123 4567</p>
+            <div id="collapseContact" class="accordion-collapse collapse" aria-labelledby="headingContact"
+                 data-bs-parent="#mobileFooterAccordion">
+                <div class="accordion-body mt-space-1">
+                    <p class="text-small m-0"><strong>Email:</strong> support@gleamandgrace.com</p>
+                    <p class="text-small m-0"><strong>Phone:</strong> +61 812 123 4567</p>
                 </div>
             </div>
         </div>
