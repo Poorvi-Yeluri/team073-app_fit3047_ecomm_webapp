@@ -1,0 +1,61 @@
+:host {
+    display: inline-block;
+}
+
+:host button {
+    font-family: var(--gg-sans-serif-font);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: var(--gg-font-small);
+    font-weight: var(--gg-font-weight-regular);
+    padding: var(--gg-space-3) var(--gg-space-4) 0;
+    border: 1px solid;
+    border-radius: var(--gg-radius);
+    background: transparent;
+    transition: var(--gg-transition-fast);
+    cursor: pointer;
+    max-width: 100%;
+}
+
+/* === VARIANTS === */
+:host([variant="black"]) button {
+    background-color: var(--gg-black);
+    color: var(--gg-white);
+    border-color: var(--gg-black);
+}
+
+:host([variant="black"]) button:hover {
+    background-color: transparent;
+    color: var(--gg-black);
+}
+
+:host([variant="white"]) button {
+    background-color: var(--gg-white);
+    color: var(--gg-black);
+    border-color: var(--gg-black);
+}
+
+:host([variant="white"]) button:hover {
+    background-color: var(--gg-black);
+    color: var(--gg-white);
+}
+
+/* === SIZES === */
+:host([size="small"]) button {
+    font-size: var(--gg-font-small);
+    padding: var(--gg-space-1) var(--gg-space-2);
+    width: auto;
+}
+
+:host([size="medium"]) button {
+    font-size: var(--gg-font-body);
+    padding: var(--gg-space-2) var(--gg-space-3);
+    width: auto;
+}
+
+:host([size="large"]) button {
+    font-size: var(--gg-font-h3);
+    padding: var(--gg-space-3) var(--gg-space-4);
+    width: auto;
+}
+
