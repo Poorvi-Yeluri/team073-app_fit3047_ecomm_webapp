@@ -61,10 +61,10 @@
 <!-- Bottom Nav (Desktop only) -->
 <div class="container-fluid d-none d-md-flex border-bottom py-3 px-3 px-md-5">
     <div class="d-flex flex-wrap gap-5 justify-content-center w-100">
-        <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'Home Decor']]) ?>">Home Decor</a>
-        <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'Jewelry']]) ?>">Jewelry</a>
-        <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'Gifts']]) ?>">Gifts</a>
-        <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'Clearance']]) ?>">Clearance</a>
+        <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'home-decor']]) ?>">Home Decor</a>
+        <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'jewellery']]) ?>">Jewelry</a>
+        <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'gifts']]) ?>">Gifts</a>
+        <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'clearance']]) ?>">Clearance</a>
     </div>
 </div>
 
