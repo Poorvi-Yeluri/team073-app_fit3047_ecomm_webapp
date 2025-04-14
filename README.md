@@ -4,12 +4,12 @@
 
 1. Run `composer install` (you may also want to run `composer self-update` first).
 2. Import the database schema:
-    - Open **phpMyAdmin** and execute `schema.sql`, **or**
+    - Open **phpMyAdmin** and execute `schema.sql` , **or**
     - Connect your database using an IDE like **PhpStorm** and run the file.
+    - Populate the database by running `seed.sql`
 3. Start the CakePHP development server (or use your local web server):
 
-   ```bash
-   bin/cake server -p 8765
+   ```bash bin/cake server -p 8765```
 
 
 Then visit `http://localhost:8765` to see the home page.
@@ -26,10 +26,10 @@ Edit the environment-specific settings in:
 ## 🛠 Useful Commands
 **Export the Current Database Schema**
 
-To dump the current database structure (without data) into schema.sql:
+To dump the current database structure (without data) into migration.sql:
 
 ```mysql
-mysqldump -u your_mysql_username -p --no-data fit3047_app > schema.sql
+mysqldump -u your_mysql_username -p --no-data fit3047_app > migration.sql
 ```
 Replace your_mysql_username with your actual MySQL username (e.g., poorvikaarthikeyayeluri).
 You’ll be prompted to enter your MySQL password.

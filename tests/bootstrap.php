@@ -61,6 +61,6 @@ session_id('cli');
 // hook into your migration tool of choice here or
 // load schema from a SQL dump file with
 // use Cake\TestSuite\Fixture\SchemaLoader;
-// (new SchemaLoader())->loadSqlFiles('./tests/schema.sql', 'test');
+// (new SchemaLoader())->loadSqlFiles('./tests/migration.sql', 'test');
 
 (new Migrator())->run();
