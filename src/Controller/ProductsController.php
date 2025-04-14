@@ -97,4 +97,29 @@ class ProductsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    /**
+     * Search method
+     *
+     * Handles product and variant search based on a query term.
+     * It first tries a full-text search, and if no results are found,
+     * it falls back to a LIKE search.
+     *
+     * @param string|null $queryTerm The search term provided in the query string parameter 'q'. Defaults to null.
+     * @return \Cake\Http\Response|null Renders the search results view.
+     */
+    public function search(?string $queryTerm = null)
+    {
+        $queryTerm = trim($this->request->getQuery('q') ?? '');
+        $results = [];
+        $usedFallback = false;
+
+        if (!empty($queryTerm)) {
+            $searchResult = $this->Products->search($queryTerm);
+            $results = $searchResult['results'];
+            $usedFallback = $searchResult['usedFallback'];
+        }
+
+        $this->set(compact('results', 'queryTerm', 'usedFallback'));
+    }
 }

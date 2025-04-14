@@ -25,14 +25,16 @@
             </button>
 
             <!-- Desktop Search -->
-            <div class="d-none d-md-flex align-items-center position-relative" id="search-wrapper">
+            <form method="get" action="/products/search" class="d-none d-md-flex align-items-center position-relative" id="search-wrapper">
                 <span class="material-symbols-outlined me-2" id="search-bar-icon" style="cursor: pointer;">search</span>
                 <input type="search"
+                       name="q"
                        class="form-control animated-search-input"
                        id="search-bar"
                        placeholder="What are you looking for?"
                        aria-label="Search">
-            </div>
+            </form>
+
         </div>
 
         <!-- Center: Logo -->
