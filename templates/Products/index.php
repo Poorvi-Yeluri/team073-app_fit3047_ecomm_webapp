@@ -16,6 +16,7 @@
                     <th><?= $this->Paginator->sort('category') ?></th>
                     <th><?= $this->Paginator->sort('base_price') ?></th>
                     <th><?= $this->Paginator->sort('stock_quantity') ?></th>
+                    <th><?= $this->Paginator->sort('image_url') ?></th>
                     <th><?= $this->Paginator->sort('created_at') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -28,7 +29,7 @@
                     <td><?= h($product->category) ?></td>
                     <td><?= $this->Number->format($product->base_price) ?></td>
                     <td><?= $this->Number->format($product->stock_quantity) ?></td>
-                    <td><?= $this->Number->format($product->image_url) ?></td>
+                    <td><img src="<?= h($product->image_url) ?>" alt="Product Image" /></td>
                     <td><?= h($product->created_at) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $product->id]) ?>
