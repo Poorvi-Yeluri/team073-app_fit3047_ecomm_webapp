@@ -17,11 +17,18 @@ class ProductsController extends AppController
      */
     public function index()
     {
-        $query = $this->Products->find();
-        $products = $this->paginate($query);
+        $category = $this->request->getQuery('category');
 
-        $this->set(compact('products'));
+        $query = $this->Products->find();
+
+        if (!empty($category)) {
+            $query->where(['category' => $category]);
+        }
+
+        $products = $this->paginate($query);
+        $this->set(compact('products', 'category'));
     }
+
 
     /**
      * View method
