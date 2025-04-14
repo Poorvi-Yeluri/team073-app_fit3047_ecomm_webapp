@@ -42,6 +42,10 @@
                     <th><?= __('Created At') ?></th>
                     <td><?= h($product->created_at) ?></td>
                 </tr>
+                <tr>
+                    <th><?= __('Image Url') ?></th>
+                    <td><?= h($product->image_url) ?></td>
+                </tr>
             </table>
             <div class="text">
                 <strong><?= __('Description') ?></strong>
@@ -49,6 +53,7 @@
                     <?= $this->Text->autoParagraph(h($product->description)); ?>
                 </blockquote>
             </div>
+
             <div class="related">
                 <h4><?= __('Related Product Variants') ?></h4>
                 <?php if (!empty($product->product_variants)) : ?>

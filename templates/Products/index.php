@@ -28,6 +28,7 @@
                     <td><?= h($product->category) ?></td>
                     <td><?= $this->Number->format($product->base_price) ?></td>
                     <td><?= $this->Number->format($product->stock_quantity) ?></td>
+                    <td><?= $this->Number->format($product->image_url) ?></td>
                     <td><?= h($product->created_at) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $product->id]) ?>
