@@ -1,3 +1,5 @@
+
+
 <!-- Top banner -->
 <div class="container-fluid py-2" style="background-color: var(--accent-color)">
     <div class="d-flex w-100 justify-content-center align-items-center ps-3 ps-md-5">
@@ -86,7 +88,15 @@
 
 <!-- Optional Mobile Search Section -->
 <div class="container-fluid d-md-none border-top border-bottom py-2 px-4">
-    <input class="form-control" type="search" placeholder="What are you looking for?" aria-label="Search">
+    <form method="get" action="/products/search" class="d-flex align-items-center w-100" id="mobile-search-wrapper">
+        <input
+            type="search"
+            name="q"
+            class="form-control"
+            placeholder="What are you looking for?"
+            aria-label="Search"
+        >
+    </form>
 </div>
 
 

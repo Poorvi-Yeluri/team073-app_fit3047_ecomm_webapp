@@ -11,6 +11,14 @@ namespace App\Controller;
 class ProductVariantsController extends AppController
 {
     /**
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->Authentication->allowUnauthenticated(['index', 'view', 'search']);
+    }
+    /**
      * Index method
      *
      * @return \Cake\Http\Response|null|void Renders view

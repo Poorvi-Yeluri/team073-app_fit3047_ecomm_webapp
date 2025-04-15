@@ -1,54 +1,54 @@
 button {
-    font-family: var(--gg-sans-serif-font);
+    font-family: var(--font-serif);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    font-size: var(--gg-font-small);
-    font-weight: var(--gg-font-weight-regular);
-    padding: var(--gg-space-3) var(--gg-space-4) 0;
+    font-size: var(--font-small);
+    font-weight: var(--font-weight-regular);
+    padding: var(--space-3) var(--space-4) 0;
     border: 1px solid;
-    border-radius: var(--gg-radius);
+    border-radius: var(--radius);
     background: transparent;
-    transition: var(--gg-transition-fast);
+    transition: var(--transition-fast);
     cursor: pointer;
     max-width: 100%;
 }
 button.small {
-    font-size: var(--gg-font-small);
-    padding: var(--gg-space-1) var(--gg-space-2);
+    font-size: var(--font-small);
+    padding: var(--space-1) var(--space-2);
     width: auto;
 }
 
 button.medium {
-    font-size: var(--gg-font-body);
-    padding: var(--gg-space-2) var(--gg-space-3);
+    font-size: var(--font-body);
+    padding: var(--space-2) var(--space-3);
     width: auto;
 }
 
 button.large {
-    font-size: var(--gg-font-h3);
-    padding: var(--gg-space-3) var(--gg-space-4);
+    font-size: var(--font-h3);
+    padding: var(--space-3) var(--space-4);
     width: auto;
 }
 
 button.black {
-    background-color: var(--gg-black);
-    color: var(--gg-white);
-    border-color: var(--gg-black);
+    background-color: var(--black);
+    color: var(--white);
+    border-color: var(--black);
 }
 
 button.black:hover {
     background-color: transparent;
-    color: var(--gg-black);
+    color: var(--black);
 }
 
 button.white {
-    background-color: var(--gg-white);
-    color: var(--gg-black);
-    border-color: var(--gg-white);
+    background-color: var(--white);
+    color: var(--black);
+    border-color: var(--white);
 }
 
 button.white:hover {
-    background-color: var(--gg-black);
-    color: var(--gg-white);
+    background-color: var(--black);
+    color: var(--white);
 }
 

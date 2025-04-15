@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
@@ -60,6 +61,8 @@ class PagesController extends AppController
             $subpage = $path[1];
         }
         $this->set(compact('page', 'subpage'));
+        $contactMessagesTable = $this->fetchTable('ContactMessages');
+        $this->set('contactMessage', $contactMessagesTable->newEmptyEntity());
 
         try {
             return $this->render(implode('/', $path));
@@ -69,5 +72,15 @@ class PagesController extends AppController
             }
             throw new NotFoundException();
         }
+    }
+
+    /**
+     * @param \Cake\Event\EventInterface $event
+     * @return void
+     */
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        $this->Authentication->allowUnauthenticated(['display']);
     }
 }
