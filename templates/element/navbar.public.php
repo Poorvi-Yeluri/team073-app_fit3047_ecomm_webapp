@@ -1,5 +1,3 @@
-
-
 <!-- Top banner -->
 <div class="container-fluid py-2" style="background-color: var(--accent-color)">
     <div class="d-flex w-100 justify-content-center align-items-center ps-3 ps-md-5">
@@ -13,7 +11,7 @@
 <div class="container-fluid border-bottom py-2 px-3 px-md-5">
     <div class="d-flex w-100 justify-content-evenly justify-content-md-between align-items-center">
 
-        <!-- Left: Toggler (mobile only) + Search -->
+        <!-- Left: Toggler + Search -->
         <div class="d-flex align-items-center gap-3">
             <!-- Toggler -->
             <button class="navbar-toggler d-md-none border-0"
@@ -36,7 +34,6 @@
                        placeholder="What are you looking for?"
                        aria-label="Search">
             </form>
-
         </div>
 
         <!-- Center: Logo -->
@@ -44,7 +41,7 @@
             GLEAM <i class="text-small">AND</i> GRACE
         </a>
 
-        <!-- Right Icons (desktop only) -->
+        <!-- Right Icons -->
         <div class="d-none d-md-flex align-items-center gap-3">
             <span class="material-symbols-outlined" style="cursor: pointer;">shopping_cart</span>
             <span class="material-symbols-outlined" style="cursor: pointer;">contact_support</span>
@@ -52,10 +49,9 @@
                   id="popoverButton"
                   data-bs-toggle="popover"
                   data-bs-placement="bottom"
-                  data-bs-content="Loading..."
                   style="cursor: pointer;">
-        person
-      </span>
+                person
+            </span>
         </div>
     </div>
 </div>
@@ -99,7 +95,6 @@
     </form>
 </div>
 
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const searchIcon = document.getElementById("search-bar-icon");
@@ -127,11 +122,15 @@
             sanitize: false,
             content: function () {
                 return `
-                    <a href="/auth/login" class="btn btn-dark w-100 mb-2">Login</a>
-                    <a href="/auth/register" class="btn btn-secondary w-100">Sign up</a>
+                    <a href="/auth/login" class="btn btn-dark text-white w-100 mb-2">Login</a>
+                    <a href="/auth/register" class="btn btn-light text-dark w-100">Sign up</a>
                 `;
-            }
+            },
+            placement: 'bottom',  // Make sure it's under the icon
+            offset: '0, 8px',  // Added a small gap to ensure it's not too close
+            trigger: 'click',  // Optionally, set trigger to 'click' to toggle
         }));
+
         document.body.addEventListener('click', function (e) {
             if (!popoverTriggerList[0].contains(e.target)) {
                 // Close the popover if the click is outside the button

@@ -403,3 +403,87 @@ input.form-control:focus {
     color: var(--white); /* ensure icon stays visible */
     transform: scale(1.05); /* optional: slight grow on hover */
 }
+.carousel-img {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .carousel-img {
+        max-height: 250px;
+    }
+
+    .carousel-caption {
+        font-size: 14px;
+        padding: 0.5rem 1rem;
+    }
+
+    .carousel-caption h5 {
+        font-size: 1.25rem;
+    }
+
+    .carousel-caption p {
+        font-size: 0.9rem;
+    }
+}
+/* Add spacing between subheadings */
+.subheading {
+    margin-top: 50px; /* Adds space above each subheading */
+    margin-bottom: 15px; /* Adds space below each subheading */
+}
+
+/* Ensure that the accordion items have a white background and remove the blue highlight */
+.accordion-button {
+    background-color: white !important; /* Force the background color to stay white */
+    color: #333 !important; /* Make sure the text stays dark */
+    border: 1px solid #ccc !important; /* Add a border to differentiate the sections */
+    transition: background-color 0.3s, border 0.3s; /* Smooth transition */
+}
+
+.accordion-button:hover,
+.accordion-button:focus {
+    background-color: white !important; /* Keep the background white on hover/focus */
+    color: #333 !important; /* Keep the text color dark */
+    border-color: #bbb !important; /* Lighten the border color when hovered */
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: white !important; /* Keep background white when open */
+    color: #333 !important; /* Keep the text color dark when open */
+    border-color: #bbb !important; /* Adjust border color when open */
+}
+
+.accordion-item {
+    border: 1px solid #ddd; /* Light border for the accordion item */
+    margin-bottom: 10px; /* Space between accordion items */
+}
+
+.accordion-body {
+    background-color: #fff; /* White background for the accordion body */
+    padding: 15px; /* Add padding inside the body */
+    border-top: 1px solid #ddd; /* Light border on the top of the body */
+}
+
+/* Optional: Customize active state text */
+.accordion-button:not(.collapsed) {
+    font-weight: bold; /* Make the active accordion button bold */
+}
+
+/* Ensures images are cropped uniformly */
+.img-crop-container {
+    width: 100%;
+    height: 350px; /* Adjust this height as needed */
+    overflow: hidden;
+    position: relative;
+}
+
+.img-crop-container img {
+    object-fit: cover; /* This will crop the image to fit the container */
+    width: 100%;
+    height: 100%;
+    object-position: center; /* Adjust this if you want the image to focus on a different part */
+}
