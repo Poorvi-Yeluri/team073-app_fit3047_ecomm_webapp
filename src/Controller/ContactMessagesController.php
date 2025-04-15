@@ -11,6 +11,15 @@ namespace App\Controller;
 class ContactMessagesController extends AppController
 {
     /**
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->Authentication->allowUnauthenticated(['add']);
+    }
+
+    /**
      * Index method
      *
      * @return \Cake\Http\Response|null|void Renders view
@@ -48,8 +57,6 @@ class ContactMessagesController extends AppController
             $contactMessage = $this->ContactMessages->patchEntity($contactMessage, $this->request->getData());
             if ($this->ContactMessages->save($contactMessage)) {
                 $this->Flash->success(__('The contact message has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The contact message could not be saved. Please, try again.'));
         }

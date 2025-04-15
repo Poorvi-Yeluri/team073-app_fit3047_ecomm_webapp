@@ -246,6 +246,61 @@ blockquote {
     font-family: var(--font-sans);
 }
 
+button {
+    font-family: var(--font-serif);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: var(--font-small);
+    font-weight: var(--font-weight-regular);
+    padding: var(--space-3) var(--space-4) 0;
+    border: 1px solid;
+    border-radius: var(--radius);
+    background: transparent;
+    transition: var(--transition-fast);
+    cursor: pointer;
+    max-width: 100%;
+}
+button.small {
+    font-size: var(--font-small);
+    padding: var(--space-1) var(--space-2);
+    width: auto;
+}
+
+button.medium {
+    font-size: var(--font-body);
+    padding: var(--space-2) var(--space-3);
+    width: auto;
+}
+
+button.large {
+    font-size: var(--font-h3);
+    padding: var(--space-3) var(--space-4);
+    width: auto;
+}
+
+button.black {
+    background-color: var(--black);
+    color: var(--white);
+    border-color: var(--black);
+}
+
+button.black:hover {
+    background-color: transparent;
+    color: var(--black);
+}
+
+button.white {
+    background-color: var(--white);
+    color: var(--black);
+    border-color: var(--white);
+}
+
+button.white:hover {
+    background-color: var(--black);
+    color: var(--white);
+}
+
+
 a.logo-brand {
     font-family: var(--font-serif);
     font-size: var(--font-h3);
@@ -308,4 +363,73 @@ input.form-control:focus {
     box-shadow: none;
     outline: none;
     background-color: transparent;
+}
+
+.fab-button {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent-color);
+    color: var(--white);
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+    cursor: pointer;
+    padding: 0; /* ensures padding doesn’t shift icon */
+}
+
+.fab-button .material-symbols-outlined {
+    font-size: var(--font-h3);
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fab-button:hover {
+    border-color: var(--accent-color);
+    background-color: var(--black);
+    color: var(--white); /* ensure icon stays visible */
+    transform: scale(1.05); /* optional: slight grow on hover */
+}
+
+/* Modal Styles */
+.contact-modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.contact-modal-content {
+    background-color: var(--white);
+    margin: 10% auto;
+    padding: var(--space-4);
+    border: 1px solid var(--gray);
+    width: 90%;
+    max-width: 500px;
+    border-radius: var(--radius-medium);
+    font-family: var(--font-sans);
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    font-size: 1.5rem;
+    color: var(--black);
+    cursor: pointer;
 }

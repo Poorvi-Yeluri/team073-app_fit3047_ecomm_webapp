@@ -42,12 +42,24 @@ class AppController extends Controller
     {
         parent::initialize();
 
+        $this->loadComponent('Authentication.Authentication');
         $this->loadComponent('Flash');
+        $this->loadComponent('Recaptcha.Recaptcha', [
+            'enable' => true,     // true/false
+            'sitekey' => '6LfBH_0qAAAAADnTvjG-2PhxzPyJKpBd0S8RJ1wI',
+            'secret' => '6LfBH_0qAAAAAKQzA7ZGxuhEdfjLEihMbOxSOaSW',
+            'type' => 'image',  // image/audio
+            'theme' => 'light', // light/dark
+            'lang' => 'en', // default 'en'
+            'size' => 'normal',  // normal/compact
+            'callback' => null, // `callback` data attribute for the recaptcha div, default `null`
+            'scriptBlock' => true // Value for `block` option for HtmlHelper::script() call
+        ]);
 
         /*
          * Enable the following component for recommended CakePHP form protection settings.
          * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
          */
-        //$this->loadComponent('FormProtection');
+        $this->loadComponent('FormProtection');
     }
 }
