@@ -12,9 +12,9 @@
     <div class="col-md-2">
         <h5>Quick Links</h5>
         <ul class="list-unstyled">
-            <li><a href="#" class="text-dark">Home</a></li>
+            <li><a href="/pages/home" class="text-dark">Home</a></li>
             <li><a href="#" class="text-dark">Shop</a></li>
-            <li><a href="#" class="text-dark">About</a></li>
+            <li><a href="/pages/about" class="text-dark">About</a></li>
             <li><a href="/contact-messages/add" class="text-dark">Contact</a></li>
         </ul>
     </div>
@@ -23,9 +23,9 @@
     <div class="col-md-2">
         <h5>Support</h5>
         <ul class="list-unstyled">
-            <li><a href="#" class="text-dark">FAQ</a></li>
-            <li><a href="#" class="text-dark">Returns</a></li>
-            <li><a href="#" class="text-dark">Shipping</a></li>
+            <li><a href="/pages/faq" class="text-dark">FAQ</a></li>
+            <li><a href="/pages/returns" class="text-dark">Returns</a></li>
+            <li><a href="/pages/shipping" class="text-dark">Shipping</a></li>
         </ul>
     </div>
 
@@ -60,7 +60,7 @@
                     <ul class="list-unstyled">
                         <li><a href="#" class="text-dark">Home</a></li>
                         <li><a href="#" class="text-dark">Shop</a></li>
-                        <li><a href="#" class="text-dark">About</a></li>
+                        <li><a href="/pages/about" class="text-dark">About</a></li>
                         <li><a href="/contact-messages/add" class="text-dark">Contact</a></li>
                     </ul>
                 </div>
@@ -80,9 +80,9 @@
                  data-bs-parent="#mobileFooterAccordion">
                 <div class="accordion-body mt-space-1">
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-dark">FAQ</a></li>
-                        <li><a href="#" class="text-dark">Returns</a></li>
-                        <li><a href="#" class="text-dark">Shipping</a></li>
+                        <li><a href="/pages/faq" class="text-dark">FAQ</a></li>
+                        <li><a href="/pages/returns" class="text-dark">Returns</a></li>
+                        <li><a href="/pages/shipping" class="text-dark">Shipping</a></li>
                     </ul>
                 </div>
             </div>

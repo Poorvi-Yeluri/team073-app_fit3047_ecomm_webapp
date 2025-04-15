@@ -52,3 +52,39 @@ button.white:hover {
     color: var(--white);
 }
 
+/* Button Wrapper - Ensure it’s centered */
+.button-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem; /* Optional: Adds spacing above */
+}
+
+/* Button Styling */
+a.button {
+    font-family: "Baskerville", serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 16px; /* Adjust font size */
+    font-weight: var(--font-weight-regular);
+    padding: 12px 24px; /* Adjust padding for button size */
+    border: 1px solid;
+    border-radius: var(--radius);
+    background: var(--black);
+    color: var(--white);
+    transition: var(--transition-fast);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block; /* Important to treat <a> like a button */
+    text-align: center; /* Ensure text is centered horizontally */
+    line-height: 1.5; /* Ensure text is centered vertically */
+}
+
+/* Hover Effect for the Button */
+a.button:hover {
+    background: transparent;
+    color: var(--black);
+    border-color: var(--black);
+}
+
+
