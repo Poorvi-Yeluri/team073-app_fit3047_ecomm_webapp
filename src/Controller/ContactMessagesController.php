@@ -39,7 +39,7 @@ class ContactMessagesController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null)
     {
         $contactMessage = $this->ContactMessages->get($id, contain: []);
         $this->set(compact('contactMessage'));
@@ -57,6 +57,8 @@ class ContactMessagesController extends AppController
             $contactMessage = $this->ContactMessages->patchEntity($contactMessage, $this->request->getData());
             if ($this->ContactMessages->save($contactMessage)) {
                 $this->Flash->success(__('The contact message has been saved.'));
+
+                return $this->redirect($this->referer());
             }
             $this->Flash->error(__('The contact message could not be saved. Please, try again.'));
         }
@@ -70,7 +72,7 @@ class ContactMessagesController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null)
     {
         $contactMessage = $this->ContactMessages->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -92,7 +94,7 @@ class ContactMessagesController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $contactMessage = $this->ContactMessages->get($id);

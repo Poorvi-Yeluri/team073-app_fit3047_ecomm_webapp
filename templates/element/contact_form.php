@@ -2,19 +2,24 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContactMessage $contactMessage
+ * @var bool $isModal // to check if form is being rendered inside a modal
  */
 ?>
 
-<div class="container">
+<div class="container-fluid">
     <div class="row w-100">
         <div class="col-12 col-lg-12">
             <?= $this->Form->create($contactMessage, [
+                'url' => ['controller' => 'ContactMessages', 'action' => 'add'],
                 'class' => 'needs-validation',
-                'novalidate' => true
+                'novalidate' => true,
             ]) ?>
             <fieldset>
-                <legend class="fs-2 mb-3" style="font-family: Baskerville"><?= __('Email Us') ?></legend>
-
+                <div class="d-flex justify-content-between align-items-center font-serif mb-3">
+                    <legend><?= __('Email Us') ?></legend>
+                    <?php if (isset($isModal) && $isModal) : ?>
+                        <span class="material-symbols-outlined mb-3 close-modal" role="button" data-bs-dismiss="modal">close</span>                    <?php endif; ?>
+                </div>
                 <!-- Name Field -->
                 <div class="mb-3">
                     <?= $this->Form->control('customer_name', [
@@ -23,7 +28,7 @@
                         'placeholder' => 'E.g. Jane Smith',
                         'label' => ['text' => 'Name', 'class' => 'mb-2'],
                         'required' => true,
-                        'aria-describedby' => 'customer_name_error'
+                        'aria-describedby' => 'customer_name_error',
                     ]); ?>
                     <div id="customer_name_error" class="invalid-feedback">Please enter your name.</div>
                 </div>
@@ -37,7 +42,7 @@
                         'placeholder' => 'E.g. janesmith@gmail.com',
                         'label' => ['text' => 'Email', 'class' => 'mb-2'],
                         'required' => true,
-                        'aria-describedby' => 'customer_email_error'
+                        'aria-describedby' => 'customer_email_error',
                     ]); ?>
                     <div id="customer_email_error" class="invalid-feedback">Please enter a valid email address.</div>
                 </div>
@@ -53,7 +58,7 @@
                         'label' => ['text' => 'Phone', 'class' => 'mb-2'],
                         'pattern' => '\d{10}',
                         'required' => true,
-                        'aria-describedby' => 'customer_phone_error'
+                        'aria-describedby' => 'customer_phone_error',
                     ]); ?>
                     <div id="customer_phone_error" class="invalid-feedback">Phone number must be 10 digits.</div>
                 </div>
@@ -68,12 +73,12 @@
                             'General Inquiry' => 'General Inquiry',
                             'Support' => 'Support',
                             'Feedback' => 'Feedback',
-                            'Complaint' => 'Complaint'
+                            'Complaint' => 'Complaint',
                         ],
                         'class' => 'form-select rounded-0 shadow-none border-dark',
                         'label' => ['text' => 'Enquiry Type', 'class' => 'mb-2'],
                         'required' => true,
-                        'aria-describedby' => 'message_type_error'
+                        'aria-describedby' => 'message_type_error',
                     ]); ?>
                     <div id="message_type_error" class="invalid-feedback">Please select an enquiry type.</div>
                 </div>
@@ -87,14 +92,15 @@
                         'label' => ['text' => 'Description', 'class' => 'mb-2'],
                         'required' => true,
                         'minlength' => 10,
-                        'aria-describedby' => 'description_error'
+                        'aria-describedby' => 'description_error',
                     ]); ?>
-                    <div id="description_error" class="invalid-feedback">Description must be at least 10 characters.</div>
+                    <div id="description_error" class="invalid-feedback">Description must be at least 10 characters.
+                    </div>
                 </div>
 
 
             </fieldset>
-            <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-dark w-100 mt-3']) ?>
+            <?= $this->Form->submit('Send Message', ['class' => 'btn btn-dark w-100 rounded-0 mt-3']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

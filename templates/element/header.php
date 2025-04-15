@@ -8,7 +8,6 @@
 
 <?= $this->Html->meta('icon') ?>
 <?= $this->Html->css(['styles', 'button']) ?>
-<?= $this->Html->script('gg-searchbar') ?>
 
 
 <!-- Bootstrap 5.3.3 CSS -->

@@ -53,7 +53,7 @@ class AppController extends Controller
             'lang' => 'en', // default 'en'
             'size' => 'normal',  // normal/compact
             'callback' => null, // `callback` data attribute for the recaptcha div, default `null`
-            'scriptBlock' => true // Value for `block` option for HtmlHelper::script() call
+            'scriptBlock' => true, // Value for `block` option for HtmlHelper::script() call
         ]);
 
         /*
@@ -61,5 +61,20 @@ class AppController extends Controller
          * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
          */
         $this->loadComponent('FormProtection');
+    }
+
+    /**
+     * @param \Cake\Event\EventInterface $event
+     * @return \Cake\Http\Response|null|void
+     */
+    public function beforeFilter(EventInterface $event)
+    {
+        if (!$this->Authentication->getIdentity()) {
+            $contactMessagesTable = $this->fetchTable('ContactMessages');
+            // Create and pass an empty entity
+            $this->set('contactMessage', $contactMessagesTable->newEmptyEntity());
+        }
+
+        return parent::beforeFilter($event);
     }
 }

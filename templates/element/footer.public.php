@@ -109,37 +109,24 @@
 </div>
 
 
-<div id="contact-fab" class="fab-button black" aria-label="Contact Us">
+<div id="contact-fab" class="fab-button black" aria-label="Contact Us"
+     data-bs-toggle="modal" data-bs-target="#contactModal" role="button">
     <span class="material-symbols-outlined">contact_support</span>
 </div>
 
-<div id="contact-modal" class="contact-modal">
-    <div class="contact-modal-content">
-        <span class="close-modal">&times;</span>
-        <h2>Contact Us</h2>
-        <?php
-        $contactMessage = $this->get('contactMessage');
-        echo $this->element('contact_form', compact('contactMessage'));
-        ?>
+<div class="modal fade"
+     id="contactModal" tabindex="-1" aria-labelledby="contactModalCenteredScrollable"
+     aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-0 border-black">
+            <div class="modal-body">
+                <?php
+                $contactMessage = $this->get('contactMessage');
+                $isModal = true;
+                echo $this->element('contact_form', compact('contactMessage', 'isModal'));
+                ?>
+            </div>
+        </div>
     </div>
 </div>
 
-<script>
-    const fab = document.getElementById('contact-fab');
-    const modal = document.getElementById('contact-modal');
-    const close = document.querySelector('.close-modal');
-
-    fab.addEventListener('click', () => {
-        modal.style.display = 'block';
-    });
-
-    close.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-</script>

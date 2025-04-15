@@ -61,8 +61,6 @@ class PagesController extends AppController
             $subpage = $path[1];
         }
         $this->set(compact('page', 'subpage'));
-        $contactMessagesTable = $this->fetchTable('ContactMessages');
-        $this->set('contactMessage', $contactMessagesTable->newEmptyEntity());
 
         try {
             return $this->render(implode('/', $path));
