@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\ORM\Query;
+use function Cake\Error\debug;
 
 /**
  * Products Controller
@@ -28,14 +29,16 @@ class ProductsController extends AppController
     {
         $queryParams = $this->request->getQuery();
         $query = $this->prepareProductQuery([], $queryParams);
-
-        $filterOptions = $this->Products->productFilters();
-        $selectedFilters = array_filter($queryParams, fn($v, $k) => $k !== 'category' && $k !== 'sort' && is_array($v), ARRAY_FILTER_USE_BOTH);
-
+        $selectedFilters = array_filter(
+            $queryParams,
+            fn($v, $k) => $k !== 'category' && $k !== 'sort' && is_array($v),
+            ARRAY_FILTER_USE_BOTH,
+        );
         $products = $this->paginate($query);
+        $productIds = collection($products)->extract('id')->toList();
+        $filterOptions = $this->Products->productFilters($productIds);
         $category = $queryParams['category'] ?? null;
         $sort = $queryParams['sort'] ?? 'relevance';
-
         $this->set(compact('products', 'category', 'filterOptions', 'selectedFilters', 'sort'));
     }
 
@@ -153,7 +156,8 @@ class ProductsController extends AppController
             }
         }
 
-        $filterOptions = $this->Products->productFilters();
+        $productIds = collection($products)->extract('id')->toList();
+        $filterOptions = $this->Products->productFilters($productIds);
 
         $selectedFilters = array_filter(
             $queryParams,
@@ -175,12 +179,10 @@ class ProductsController extends AppController
         ));
     }
 
-
-
     /**
      * @param array $productIds
      * @param array $queryParams
-     * @return Query
+     * @return \Cake\ORM\Query
      */
     private function prepareProductQuery(array $productIds = [], array $queryParams = []): Query
     {

@@ -138,30 +138,70 @@ class ProductsTable extends Table
     }
 
     /**
-     * Fetches all attributes and their associated distinct values for product filtering.
+     * Fetches all attributes and their associated distinct values for product filtering,
+     * limited to the given product IDs.
      *
+     * @param array $productIds List of product IDs to filter against.
      * @return array An array where keys are attribute names and values are arrays of distinct values.
      */
-    public function productFilters(): array
+    public function productFilters(array $productIds): array
     {
-        $attributesTable = TableRegistry::getTableLocator()->get('Attributes');
+        if (empty($productIds)) {
+            return [];
+        }
+
         $attributeValuesTable = TableRegistry::getTableLocator()->get('AttributeValues');
+        $productAttributesTable = TableRegistry::getTableLocator()->get('ProductAttributes');
+        $variantAttributesTable = TableRegistry::getTableLocator()->get('ProductVariantAttributes');
+
         $filterOptions = [];
 
-        $attributes = $attributesTable->find('all')->toArray();
+        // Get attribute_value_ids from direct product attributes
+        $productAttributeValueIds = $productAttributesTable->find()
+            ->select(['attribute_value_id'])
+            ->where(['product_id IN' => $productIds])
+            ->distinct()
+            ->all()
+            ->extract('attribute_value_id')
+            ->toArray();
 
-        foreach ($attributes as $attribute) {
-            $values = $attributeValuesTable->find('all')
-                ->where(['attribute_id' => $attribute->id])
-                ->distinct(['value'])
-                ->orderBy(['value' => 'ASC'])
-                ->all()
-                ->extract('value')
-                ->toArray();
+        // Get attribute_value_ids from variant attributes linked to the same products
+        $variantAttributeValueIds = $variantAttributesTable->find()
+            ->select(['ProductVariantAttributes.attribute_value_id'])
+            ->distinct()
+            ->matching('ProductVariants', function ($q) use ($productIds) {
+                return $q->where(['ProductVariants.product_id IN' => $productIds]);
+            })
+            ->all()
+            ->extract('attribute_value_id')
+            ->toArray();
 
-            if (!empty($values)) {
-                $filterOptions[$attribute->name] = $values;
+        $usedValueIds = array_unique(array_merge($productAttributeValueIds, $variantAttributeValueIds));
+
+        if (empty($usedValueIds)) {
+            return [];
+        }
+
+        // Fetch only the attribute values that are in use
+        $usedAttributeValues = $attributeValuesTable->find()
+            ->where(['AttributeValues.id IN' => $usedValueIds])
+            ->contain(['Attributes']) // Make sure this association exists
+            ->all();
+
+        foreach ($usedAttributeValues as $value) {
+            $attributeName = $value->attribute->name;
+            if (!isset($filterOptions[$attributeName])) {
+                $filterOptions[$attributeName] = [];
             }
+
+            if (!in_array($value->value, $filterOptions[$attributeName])) {
+                $filterOptions[$attributeName][] = $value->value;
+            }
+        }
+
+        // Sort values alphabetically for each attribute
+        foreach ($filterOptions as &$values) {
+            sort($values);
         }
 
         return $filterOptions;
