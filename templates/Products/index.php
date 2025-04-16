@@ -52,7 +52,7 @@
         <div class="col-12 d-flex justify-content-between justify-content-md-start gap-3 align-items-center">
             <small
                 class="text-muted">Showing <?= $this->Paginator->counter('{{start}}-{{end}} of {{count}} products') ?></small>
-            <?= $this->Html->link('View All', ['action' => 'index', 'category' => $this->request->getQuery('category')], ['class' => 'text-black text-body']) ?>
+<!--            --><?php //= $this->Html->link('View All', ['action' => 'index', 'category' => $this->request->getQuery('category')], ['class' => 'text-black text-body']) ?>
         </div>
     </div>
 

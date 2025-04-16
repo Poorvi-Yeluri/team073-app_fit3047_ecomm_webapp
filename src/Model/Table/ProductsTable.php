@@ -177,38 +177,36 @@ class ProductsTable extends Table
      */
     public function findFiltered(SelectQuery $query, array $filters): SelectQuery
     {
-        $attributesTable = TableRegistry::getTableLocator()->get('Attributes');
         $attributeValuesTable = TableRegistry::getTableLocator()->get('AttributeValues');
+
+        // Get groups of attribute_value_ids by filter
+        $attributeValueGroups = [];
 
         foreach ($filters as $attributeName => $selectedValues) {
             if (!is_array($selectedValues) || empty($selectedValues)) {
                 continue;
             }
 
-            $attribute = $attributesTable->find('all')
-                ->where(['name' => $attributeName])
-                ->first();
-
-            if ($attribute) {
-                $attributeValueIds = $attributeValuesTable->find('all')
-                    ->where(['attribute_id' => $attribute->id, 'value IN' => $selectedValues])
-                    ->all()
-                    ->extract('id')
-                    ->toArray();
-
-                if (!empty($attributeValueIds)) {
-                    // Filter products if ANY of their variants have the selected attribute values
-                    $query->innerJoinWith('ProductVariants', function ($qv) use ($attributeValueIds) {
-                        return $qv->innerJoinWith('ProductVariantAttributes', function ($qva) use ($attributeValueIds) {
-                            return $qva->where(['ProductVariantAttributes.attribute_value_id IN' => $attributeValueIds]);
-                        });
-                    });
-                    $query->distinct(['Products.id']);
-                }
+            $ids = $attributeValuesTable->getValueIdsForFilter($attributeName, $selectedValues);
+            if (!empty($ids)) {
+                $attributeValueGroups[] = $ids;
             }
         }
 
-        return $query;
+        // Apply filters: Mtch ANY attribute group via product OR variant
+        foreach ($attributeValueGroups as $valueIds) {
+            $query->where(function ($exp, $q) use ($valueIds) {
+                return $exp->or([
+                    'ProductAttributes.attribute_value_id IN' => $valueIds,
+                    'ProductVariantAttributes.attribute_value_id IN' => $valueIds
+                ]);
+            });
+        }
+
+        return $query
+            ->leftJoinWith('ProductAttributes')
+            ->leftJoinWith('ProductVariants.ProductVariantAttributes')
+            ->distinct(['Products.id']);
     }
 
     /**

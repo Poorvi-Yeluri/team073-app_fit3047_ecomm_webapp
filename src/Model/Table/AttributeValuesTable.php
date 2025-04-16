@@ -102,4 +102,18 @@ class AttributeValuesTable extends Table
 
         return $rules;
     }
+
+    public function getValueIdsForFilter(string $attributeName, array $values): array
+    {
+        return $this->find()
+            ->select('AttributeValues.id')
+            ->contain(['Attributes'])
+            ->where([
+                'Attributes.name' => $attributeName,
+                'AttributeValues.value IN' => $values
+            ])
+            ->all()
+            ->extract('id')
+            ->toList();
+    }
 }
