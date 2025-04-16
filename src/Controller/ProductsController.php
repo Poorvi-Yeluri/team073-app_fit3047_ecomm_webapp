@@ -138,7 +138,6 @@ class ProductsController extends AppController
         $queryParams = $this->request->getQuery();
         $products = [];
         $usedFallback = false;
-        $selectedFilters = [];
 
         // Only proceed if the query term is not empty
         if (!empty($queryTerm)) {
@@ -155,9 +154,8 @@ class ProductsController extends AppController
                 $query = $this->prepareProductQuery($productIds, $queryParams);
 
                 // Only paginate if the query is valid and returns results
-                if ($query) {
-                    $products = $this->paginate($query);
-                }
+                $products = $this->paginate($query);
+
             }
         }
 
@@ -227,7 +225,7 @@ class ProductsController extends AppController
                 $query->orderBy(['base_price' => 'DESC']);
                 break;
             case 'latest':
-                $query->orderBy(['created_at' => 'DESC']);
+                $query->orderBy(['Products.created_at' => 'DESC']);
                 break;
             case 'name-asc':
                 $query->orderBy(['name' => 'ASC']);

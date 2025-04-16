@@ -128,7 +128,7 @@
     </div>
 
 
-    <?php if ($this->Paginator->hasPrev() || $this->Paginator->hasNext()) : ?>
+    <?php if (!empty($products) && ($this->Paginator->hasPrev() || $this->Paginator->hasNext())) : ?>
         <nav aria-label="Product Pagination">
             <ul class="pagination justify-content-center mt-4">
                 <?= $this->Paginator->prev('< ' . __('Previous')) ?>

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -198,7 +197,7 @@ class ProductsTable extends Table
             $query->where(function ($exp, $q) use ($valueIds) {
                 return $exp->or([
                     'ProductAttributes.attribute_value_id IN' => $valueIds,
-                    'ProductVariantAttributes.attribute_value_id IN' => $valueIds
+                    'ProductVariantAttributes.attribute_value_id IN' => $valueIds,
                 ]);
             });
         }
@@ -211,14 +210,12 @@ class ProductsTable extends Table
 
     /**
      * @param string $slug
-     * @return SelectQuery
+     * @return \Cake\ORM\Query\SelectQuery
      */
     public function findBySlug(string $slug): SelectQuery
     {
         return $this->find()->where(['slug' => $slug]);
     }
-
-
 
     /**
      * Finds products and variants using a full-text search query.
@@ -266,8 +263,6 @@ class ProductsTable extends Table
 
         return $conn->execute($sql, ['term' => $queryTerm])->fetchAll('assoc');
     }
-
-
 
     /**
      * Finds products and variants using a LIKE search query (fallback).
