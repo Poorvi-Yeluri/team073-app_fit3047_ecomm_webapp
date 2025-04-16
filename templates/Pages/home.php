@@ -44,7 +44,7 @@
                     <div class="carousel-item active">
                         <img src="/img/landing-page/categories-section/cozy_house.jpeg" class="d-block w-100 img-fluid"
                              alt="Jewellery" style="object-fit: cover; height: 500px;">
-                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                        <div class="carousel-caption d-block d-md-block bg-dark bg-opacity-50 rounded p-3">
                             <h5 class="font-sans text-white" style="letter-spacing: 2px;">Jewellery</h5>
                             <p class="fs-6 font-sans text-white" style="letter-spacing: 1px;">Exquisite craftsmanship in every piece.</p>
                         </div>
@@ -54,7 +54,7 @@
                     <div class="carousel-item">
                         <img src="/img/landing-page/categories-section/gold_ring.jpeg" class="d-block w-100 img-fluid"
                              alt="Gifts" style="object-fit: cover; height: 500px;">
-                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                        <div class="carousel-caption d-block d-md-block bg-dark bg-opacity-50 rounded p-3">
                             <h5 class="font-sans text-white" style="letter-spacing: 2px;">Gifts</h5>
                             <p class="fs-6 font-sans text-white" style="letter-spacing: 1px;">Timeless treasures for loved ones.</p>
                         </div>
@@ -64,7 +64,7 @@
                     <div class="carousel-item">
                         <img src="/img/landing-page/categories-section/emerald_ring.png" class="d-block w-100 img-fluid"
                              alt="Emerald Ring" style="object-fit: cover; height: 500px;">
-                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                        <div class="carousel-caption d-block d-md-block bg-dark bg-opacity-50 rounded p-3">
                             <h5 class="font-sans text-white" style="letter-spacing: 2px;">Emerald Ring</h5>
                             <p class="fs-6 font-sans text-white" style="letter-spacing: 1px;">Bold elegance in every detail.</p>
                         </div>
@@ -74,7 +74,7 @@
                     <div class="carousel-item">
                         <img src="/img/landing-page/categories-section/nice_chair.jpeg" class="d-block w-100 img-fluid"
                              alt="Furniture" style="object-fit: cover; height: 500px;">
-                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                        <div class="carousel-caption d-block d-md-block bg-dark bg-opacity-50 rounded p-3">
                             <h5 class="font-sans text-white" style="letter-spacing: 2px;">Furniture</h5>
                             <p class="fs-6 font-sans text-white" style="letter-spacing: 1px;">Comfort meets modern design.</p>
                         </div>
