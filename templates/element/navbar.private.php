@@ -1,73 +1,77 @@
-<!-- Top Navbar with Search -->
-<div class="container d-flex gap-0 justify-content-start justify-content-lg-between align-items-center">
-    <!-- Toggler Button for Offcanvas (Only visible on mobile) -->
-    <button class="navbar-toggler border-0 d-md-none"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#mobileMenu"
-            aria-controls="mobileMenu">
-        <span class="material-symbols-outlined">menu</span>
-    </button>
+<!-- Admin Navbar -->
+<div class="container-fluid border-bottom py-3 px-3 px-md-5">
+    <div class="d-flex align-items-center justify-content-between w-100 font-sans">
 
-    <!-- Site Title -->
-    <a class="logo-brand" href="/users/">GLEAM AND GRACE</a>
+        <!-- Left: Logo -->
+        <a class="logo-brand" href="/">
+            GLEAM <i class="text-small">AND</i> GRACE
+        </a>
 
-    <ul class="d-none d-md-flex justify-content-center gap-5 ">
+        <!-- Center: Navigation Links -->
+        <div class="d-none d-md-flex gap-5 justify-content-center align-items-center fw-bold fs-6">
+            <!-- Contact Dropdown -->
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="contactDropdown" data-bs-toggle="dropdown">
+                    Contact Messages
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="contactDropdown">
+                    <li><a class="dropdown-item text-center" href="/contact-messages/">View Messages</a></li>
+                </ul>
+            </div>
 
-        <!-- Contact Messages Dropdown -->
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle"
-               href="#"
-               id="contactDropdown"
-               role="button"
-               data-bs-toggle="dropdown"
-               aria-expanded="false">
-                Contact Messages
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="contactDropdown">
-                <li><a class="dropdown-item text-center" href="/contact-messages/">View Messages</a></li>
-            </ul>
-        </li>
+            <!-- Users Dropdown -->
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="usersDropdown" data-bs-toggle="dropdown">
+                    Users
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="usersDropdown">
+                    <li><a class="dropdown-item text-center" href="/users/">All Users</a></li>
+                    <li><a class="dropdown-item text-center" href="/users/add">Add User</a></li>
+                </ul>
+            </div>
+        </div>
 
-        <!-- Users Dropdown -->
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="usersDropdown" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false">
-                Users
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="usersDropdown">
-                <li><a class="dropdown-item text-center" href="/users/">All Users</a></li>
-                <li><a class="dropdown-item text-center" href="/users/add">Add User</a></li>
-            </ul>
-        </li>
+        <!-- Right: Logout Button -->
+        <div class="d-none d-md-block">
+            <?= $this->Form->create(null, ['url' => '/auth/logout', 'method' => 'post']) ?>
+            <?= $this->Form->button('Logout', ['class' => 'btn btn-dark w-100 rounded-0']) ?>
+            <?= $this->Form->end() ?>
+        </div>
 
-    </ul>
-    <!-- Icons (Visible for larger screens) -->
-    <div class="d-none d-md-flex gap-3 fs-sm-7">
-        <a href="/auth/logout" class="btn btn-md btn-dark">Logout</a>
+
+        <!-- Mobile Toggler -->
+        <button class="navbar-toggler d-md-none border-0"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#adminOffcanvas"
+                aria-controls="adminOffcanvas"
+                aria-label="Toggle navigation">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
     </div>
 </div>
 
-<!-- Offcanvas Menu for Mobile -->
-<div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="mobileMenu">
+<!-- Offcanvas Menu (Mobile Only) -->
+<div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="adminOffcanvas" aria-labelledby="adminOffcanvasLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title">Menu</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        <h5 class="offcanvas-title" id="adminOffcanvasLabel">Menu</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav fw-bold fs-6" style="font-family: Avenir; letter-spacing: 1px;">
+            <!-- Contact Dropdown -->
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="contactDropdownMobile" role="button"
-                   data-bs-toggle="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="contactDropdownMobile" data-bs-toggle="dropdown">
                     Contact Messages
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="contactDropdownMobile">
                     <li><a class="dropdown-item text-center" href="/contact-messages/">View Messages</a></li>
                 </ul>
             </li>
+
+            <!-- Users Dropdown -->
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="usersDropdownMobile" role="button"
-                   data-bs-toggle="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="usersDropdownMobile" data-bs-toggle="dropdown">
                     Users
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="usersDropdownMobile">
@@ -75,11 +79,6 @@
                     <li><a class="dropdown-item text-center" href="/users/add">Add User</a></li>
                 </ul>
             </li>
-            <li class="nav-item mt-3">
-                <a href="/auth/logout" class="btn btn-md btn-dark w-100">Logout</a>
-            </li>
         </ul>
     </div>
 </div>
-
-
