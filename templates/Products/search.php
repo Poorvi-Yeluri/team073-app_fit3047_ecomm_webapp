@@ -58,9 +58,15 @@
         </div>
 
         <div class="col-12 d-flex justify-content-between justify-content-md-start gap-3 align-items-center">
-            <small
-                class="text-muted">Showing <?= $this->Paginator->counter('{{start}}-{{end}} of {{count}} products') ?></small>
-<!--            --><?php //= $this->Html->link('View All', ['action' => 'index', 'category' => $this->request->getQuery('category')], ['class' => 'text-black text-body']) ?>
+            <small class="text-muted">
+                <?php if (isset($products) && $products instanceof \Cake\Datasource\ResultSetInterface): ?>
+                    Showing <?= $this->Paginator->counter('{{start}}-{{end}} of {{count}} products') ?>
+                <?php else: ?>
+                    Showing <?= count($products) ?> product<?= count($products) !== 1 ? 's' : '' ?>
+                <?php endif; ?>
+            </small>
+
+            <!--            --><?php //= $this->Html->link('View All', ['action' => 'index', 'category' => $this->request->getQuery('category')], ['class' => 'text-black text-body']) ?>
         </div>
     </div>
 
@@ -128,7 +134,7 @@
     </div>
 
 
-    <?php if (!empty($products) && ($this->Paginator->hasPrev() || $this->Paginator->hasNext())) : ?>
+    <?php if (isset($products) && $products instanceof \Cake\Datasource\ResultSetInterface): ?>
         <nav aria-label="Product Pagination">
             <ul class="pagination justify-content-center mt-4">
                 <?= $this->Paginator->prev('< ' . __('Previous')) ?>
@@ -137,6 +143,7 @@
             </ul>
         </nav>
     <?php endif; ?>
+
 
 </div>
 

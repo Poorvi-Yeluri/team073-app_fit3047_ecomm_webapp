@@ -136,33 +136,25 @@ class ProductsController extends AppController
     {
         $queryTerm = trim($this->request->getQuery('q') ?? '');
         $queryParams = $this->request->getQuery();
-        $products = [];
         $usedFallback = false;
+        $selectedFilters = [];
+        $products = [];
 
-        // Only proceed if the query term is not empty
         if (!empty($queryTerm)) {
-            // Search for products based on query term
             $searchResult = $this->Products->search($queryTerm);
             $usedFallback = $searchResult['usedFallback'];
-
-            // Get matched product IDs
             $productIds = collection($searchResult['results'])->extract('id')->toList();
 
-            // If product IDs are available, apply filtering and sorting
             if (!empty($productIds)) {
-                // Prepare query based on product IDs and filters
                 $query = $this->prepareProductQuery($productIds, $queryParams);
-
-                // Only paginate if the query is valid and returns results
-                $products = $this->paginate($query);
-
+                if ($query->count() > 0) {
+                    $products = $this->paginate($query);
+                }
             }
         }
 
-        // Fetch filter options
         $filterOptions = $this->Products->productFilters();
 
-        // Fetch selected filters from query params
         $selectedFilters = array_filter(
             $queryParams,
             fn($v, $k) => $k !== 'category' && $k !== 'sort' && $k !== 'q' && is_array($v),
@@ -171,6 +163,7 @@ class ProductsController extends AppController
 
         $category = $queryParams['category'] ?? null;
         $sort = $queryParams['sort'] ?? 'relevance';
+
         $this->set(compact(
             'products',
             'queryTerm',
@@ -181,6 +174,8 @@ class ProductsController extends AppController
             'sort',
         ));
     }
+
+
 
     /**
      * @param array $productIds
