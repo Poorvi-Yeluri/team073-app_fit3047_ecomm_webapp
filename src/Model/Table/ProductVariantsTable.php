@@ -47,6 +47,23 @@ class ProductVariantsTable extends Table
             'foreignKey' => 'product_id',
             'joinType' => 'INNER',
         ]);
+
+        $this->hasMany('ProductVariantAttributes', [
+            'foreignKey' => 'product_variant_id',
+            'joinType' => 'INNER',
+        ]);
+
+        $this->hasMany('ProductVariantImages', [
+            'foreignKey' => 'variant_id',
+            'joinType' => 'INNER',
+        ]);
+
+        $this->belongsToMany('AttributeValues', [
+            'through' => 'ProductVariantAttributes',
+            'foreignKey' => 'product_variant_id',
+            'targetForeignKey' => 'attribute_value_id',
+            'propertyName' => 'variant_attribute_values', // Recommended: Use a specific property name
+        ]);
     }
 
     /**

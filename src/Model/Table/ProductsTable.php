@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -43,6 +46,28 @@ class ProductsTable extends Table
         $this->hasMany('ProductVariants', [
             'foreignKey' => 'product_id',
         ]);
+
+        $this->hasMany('ProductAttributes', [
+            'foreignKey' => 'product_id',
+            'joinType' => 'INNER',
+        ]);
+
+        $this->hasMany('ProductImages', [
+            'foreignKey' => 'product_id',
+            'joinType' => 'INNER',
+        ]);
+
+        $this->belongsToMany('Attributes', [
+            'through' => 'ProductAttributes',
+            'foreignKey' => 'product_id',
+            'targetForeignKey' => 'attribute_id',
+        ]);
+
+        $this->belongsToMany('AttributeValues', [
+            'through' => 'ProductAttributes',
+            'foreignKey' => 'product_id',
+            'targetForeignKey' => 'attribute_value_id',
+        ]);
     }
 
     /**
@@ -77,7 +102,14 @@ class ProductsTable extends Table
         $validator
             ->integer('stock_quantity')
             ->requirePresence('stock_quantity', 'create')
-            ->notEmptyString('stock_quantity');
+            ->notEmptyString('stock_quantity')
+            ->greaterThan('base_price', 0, 'Base price must be a positive number.');
+
+        $validator
+            ->integer('stock_quantity')
+            ->requirePresence('stock_quantity', 'create')
+            ->notEmptyString('stock_quantity')
+            ->greaterThan('stock_quantity', 0, 'Stock quantity must be a positive integer.');
 
         $validator
             ->dateTime('created_at')
@@ -85,6 +117,110 @@ class ProductsTable extends Table
 
         return $validator;
     }
+
+    /**
+     * @param $name
+     * @param $excludeId
+     * @return string
+     */
+    public function generateSlug($name, $excludeId = null): string
+    {
+        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name)));
+
+        // Check if slug already exists and append a number if necessary
+        $slugBase = $slug;
+        $counter = 1;
+
+        while ($this->exists(['slug' => $slug, 'id !=' => $excludeId])) {
+            $slug = $slugBase . '-' . $counter++;
+        }
+
+        return $slug;
+    }
+
+    /**
+     * Fetches all attributes and their associated distinct values for product filtering.
+     *
+     * @return array An array where keys are attribute names and values are arrays of distinct values.
+     */
+    public function productFilters(): array
+    {
+        $attributesTable = TableRegistry::getTableLocator()->get('Attributes');
+        $attributeValuesTable = TableRegistry::getTableLocator()->get('AttributeValues');
+        $filterOptions = [];
+
+        $attributes = $attributesTable->find('all')->toArray();
+
+        foreach ($attributes as $attribute) {
+            $values = $attributeValuesTable->find('all')
+                ->where(['attribute_id' => $attribute->id])
+                ->distinct(['value'])
+                ->orderBy(['value' => 'ASC'])
+                ->all()
+                ->extract('value')
+                ->toArray();
+
+            if (!empty($values)) {
+                $filterOptions[$attribute->name] = $values;
+            }
+        }
+
+        return $filterOptions;
+    }
+
+    /**
+     * Fetches products based on the provided filter parameters.
+     *
+     * @param \Cake\ORM\Query $query The base query object.
+     * @param array $filters An array of filter parameters (attributeName => [value1, value2, ...]).
+     * @return \Cake\ORM\Query The modified query object with filters applied.
+     */
+    public function findFiltered(SelectQuery $query, array $filters): SelectQuery
+    {
+        $attributesTable = TableRegistry::getTableLocator()->get('Attributes');
+        $attributeValuesTable = TableRegistry::getTableLocator()->get('AttributeValues');
+
+        foreach ($filters as $attributeName => $selectedValues) {
+            if (!is_array($selectedValues) || empty($selectedValues)) {
+                continue;
+            }
+
+            $attribute = $attributesTable->find('all')
+                ->where(['name' => $attributeName])
+                ->first();
+
+            if ($attribute) {
+                $attributeValueIds = $attributeValuesTable->find('all')
+                    ->where(['attribute_id' => $attribute->id, 'value IN' => $selectedValues])
+                    ->all()
+                    ->extract('id')
+                    ->toArray();
+
+                if (!empty($attributeValueIds)) {
+                    // Filter products if ANY of their variants have the selected attribute values
+                    $query->innerJoinWith('ProductVariants', function ($qv) use ($attributeValueIds) {
+                        return $qv->innerJoinWith('ProductVariantAttributes', function ($qva) use ($attributeValueIds) {
+                            return $qva->where(['ProductVariantAttributes.attribute_value_id IN' => $attributeValueIds]);
+                        });
+                    });
+                    $query->distinct(['Products.id']);
+                }
+            }
+        }
+
+        return $query;
+    }
+
+    /**
+     * @param string $slug
+     * @return SelectQuery
+     */
+    public function findBySlug(string $slug): SelectQuery
+    {
+        return $this->find()->where(['slug' => $slug]);
+    }
+
+
 
     /**
      * Finds products and variants using a full-text search query.
@@ -95,41 +231,45 @@ class ProductsTable extends Table
     public function findProductsByFullText(string $queryTerm): array
     {
         $conn = $this->getConnection();
+
         $sql = "
-        SELECT
-            'product' AS type,
-            id,
-            name AS title,
-            description,
-            category,
-            base_price AS price,
-            NULL AS variant_name,
-            NULL AS variant_value,
-            NULL AS sku,
-            NULL AS product_id
-        FROM products
-        WHERE MATCH(name, description, category) AGAINST (:term IN NATURAL LANGUAGE MODE)
-
+        (
+            SELECT
+                p.id,
+                p.name AS title,
+                p.description,
+                p.category,
+                p.base_price AS price,
+                NULL AS variant_name,
+                NULL AS variant_value,
+                NULL AS sku,
+                NULL AS product_id,
+                'product' AS type
+            FROM products p
+            WHERE MATCH(p.name, p.description, p.category) AGAINST (:term IN BOOLEAN MODE)
+        )
         UNION
-
-        SELECT
-            'variant' AS type,
-            v.id,
-            p.name AS title,
-            NULL AS description,
-            p.category,
-            v.price,
-            v.variant_name,
-            v.variant_value,
-            v.sku,
-            v.product_id
-        FROM product_variants v
-        JOIN products p ON v.product_id = p.id
-        WHERE MATCH(variant_name, variant_value, v.sku) AGAINST (:term IN NATURAL LANGUAGE MODE)
+        (
+            SELECT
+                pv.product_id AS id,
+                NULL AS title,
+                NULL AS description,
+                NULL AS category,
+                pv.price,
+                NULL AS variant_name,
+                NULL AS variant_value,
+                pv.sku,
+                pv.product_id,
+                'variant' AS type
+            FROM product_variants pv
+            WHERE MATCH(pv.sku) AGAINST (:term IN BOOLEAN MODE)
+        )
     ";
 
         return $conn->execute($sql, ['term' => $queryTerm])->fetchAll('assoc');
     }
+
+
 
     /**
      * Finds products and variants using a LIKE search query (fallback).
@@ -140,37 +280,39 @@ class ProductsTable extends Table
     public function findProductsByLike(string $likeTerm): array
     {
         $conn = $this->getConnection();
+
         $sql = "
-        SELECT
-            'product' AS type,
-            id,
-            name AS title,
-            description,
-            category,
-            base_price AS price,
-            NULL AS variant_name,
-            NULL AS variant_value,
-            NULL AS sku,
-            NULL AS product_id
-        FROM products
-        WHERE name LIKE :like OR description LIKE :like OR category LIKE :like
-
+        (
+            SELECT
+                p.id,
+                p.name AS title,
+                p.description,
+                p.category,
+                p.base_price AS price,
+                NULL AS variant_name,
+                NULL AS variant_value,
+                NULL AS sku,
+                NULL AS product_id,
+                'product' AS type
+            FROM products p
+            WHERE p.name LIKE :like OR p.description LIKE :like
+        )
         UNION
-
-        SELECT
-            'variant' AS type,
-            v.id,
-            p.name AS title,
-            NULL AS description,
-            p.category,
-            v.price,
-            v.variant_name,
-            v.variant_value,
-            v.sku,
-            v.product_id
-        FROM product_variants v
-        JOIN products p ON v.product_id = p.id
-        WHERE v.variant_name LIKE :like OR v.variant_value LIKE :like OR v.sku LIKE :like
+        (
+            SELECT
+                pv.product_id AS id,
+                NULL AS title,
+                NULL AS description,
+                NULL AS category,
+                pv.price,
+                NULL AS variant_name,
+                NULL AS variant_value,
+                pv.sku,
+                pv.product_id,
+                'variant' AS type
+            FROM product_variants pv
+            WHERE pv.sku LIKE :like
+        )
     ";
 
         return $conn->execute($sql, ['like' => $likeTerm])->fetchAll('assoc');

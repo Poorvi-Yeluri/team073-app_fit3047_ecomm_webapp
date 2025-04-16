@@ -191,6 +191,7 @@ class AuthController extends AppController
     {
         $this->request->allowMethod(['get', 'post']);
         $result = $this->Authentication->getResult();
+        \Cake\Error\debug($result);
 
         // if user passes authentication, grant access to the system
         if ($result && $result->isValid()) {

@@ -44,7 +44,6 @@
         <!-- Right Icons -->
         <div class="d-none d-md-flex align-items-center gap-3">
             <span class="material-symbols-outlined" style="cursor: pointer;">shopping_cart</span>
-            <span class="material-symbols-outlined" style="cursor: pointer;">contact_support</span>
             <span class="material-symbols-outlined"
                   id="popoverButton"
                   data-bs-toggle="popover"
@@ -60,24 +59,31 @@
 <div class="container-fluid d-none d-md-flex border-bottom py-3 px-3 px-md-5">
     <div class="d-flex flex-wrap gap-5 justify-content-center w-100">
         <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'home-decor']]) ?>">Home Decor</a>
-        <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'jewellery']]) ?>">Jewelry</a>
+        <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'jewellery']]) ?>">Jewellery</a>
         <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'gifts']]) ?>">Gifts</a>
         <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'clearance']]) ?>">Clearance</a>
     </div>
 </div>
 
 <!-- Offcanvas Navigation (Mobile only) -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="width: 75%;">
+<div class="offcanvas offcanvas-start"
+     tabindex="-1"
+     id="offcanvasNavbar"
+     data-bs-backdrop="false"
+     aria-labelledby="offcanvasNavbarLabel" style="width: 75%;">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <button type="button"
+                class="btn-close text-reset"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
         <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="#">Home Decor</a></li>
-            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="#">Jewelry</a></li>
-            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="#">Gifts</a></li>
-            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="#">Clearance</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'home-decor']]) ?>">Home Decor</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'jewellery']]) ?>">Jewellery</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'gifts']]) ?>">Gifts</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'clearance']]) ?>">Clearance</a></li>
         </ul>
     </div>
 </div>

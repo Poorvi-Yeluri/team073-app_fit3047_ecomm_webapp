@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\ORM\Query;
+
 /**
  * Products Controller
  *
@@ -20,35 +22,39 @@ class ProductsController extends AppController
     }
 
     /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void
      */
-    public function index()
+    public function index(): void
     {
-        $category = $this->request->getQuery('category');
+        $queryParams = $this->request->getQuery();
+        $query = $this->prepareProductQuery([], $queryParams);
 
-        $query = $this->Products->find();
-
-        if (!empty($category)) {
-            $query->where(['category' => $category]);
-        }
+        $filterOptions = $this->Products->productFilters();
+        $selectedFilters = array_filter($queryParams, fn($v, $k) => $k !== 'category' && $k !== 'sort' && is_array($v), ARRAY_FILTER_USE_BOTH);
 
         $products = $this->paginate($query);
-        $this->set(compact('products', 'category'));
-    }
+        $category = $queryParams['category'] ?? null;
+        $sort = $queryParams['sort'] ?? 'relevance';
 
+        $this->set(compact('products', 'category', 'filterOptions', 'selectedFilters', 'sort'));
+    }
 
     /**
      * View method
      *
-     * @param string|null $id Product id.
+     * @param string|null $slug Product slug.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $slug = null)
     {
-        $product = $this->Products->get($id, contain: ['ProductVariants']);
+        $product = $this->Products
+            ->findBySlug($slug)
+            ->contain([
+                'ProductVariants' => ['ProductVariantImages'],
+                'ProductImages',
+            ])
+            ->firstOrFail();
         $this->set(compact('product'));
     }
 
@@ -62,6 +68,7 @@ class ProductsController extends AppController
         $product = $this->Products->newEmptyEntity();
         if ($this->request->is('post')) {
             $product = $this->Products->patchEntity($product, $this->request->getData());
+            $product->slug = $this->Products->generateSlug($product->name, $id ?? null);
             if ($this->Products->save($product)) {
                 $this->Flash->success(__('The product has been saved.'));
 
@@ -79,11 +86,12 @@ class ProductsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null)
     {
         $product = $this->Products->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $product = $this->Products->patchEntity($product, $this->request->getData());
+            $product->slug = $this->Products->generateSlug($product->name, $id);
             if ($this->Products->save($product)) {
                 $this->Flash->success(__('The product has been saved.'));
 
@@ -101,7 +109,7 @@ class ProductsController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $product = $this->Products->get($id);
@@ -124,18 +132,113 @@ class ProductsController extends AppController
      * @param string|null $queryTerm The search term provided in the query string parameter 'q'. Defaults to null.
      * @return \Cake\Http\Response|null Renders the search results view.
      */
-    public function search(?string $queryTerm = null)
+    public function search(): void
     {
         $queryTerm = trim($this->request->getQuery('q') ?? '');
-        $results = [];
+        $queryParams = $this->request->getQuery();
+        $products = [];
         $usedFallback = false;
+        $selectedFilters = [];
 
+        // Only proceed if the query term is not empty
         if (!empty($queryTerm)) {
+            // Search for products based on query term
             $searchResult = $this->Products->search($queryTerm);
-            $results = $searchResult['results'];
             $usedFallback = $searchResult['usedFallback'];
+
+            // Get matched product IDs
+            $productIds = collection($searchResult['results'])->extract('id')->toList();
+
+            // If product IDs are available, apply filtering and sorting
+            if (!empty($productIds)) {
+                // Prepare query based on product IDs and filters
+                $query = $this->prepareProductQuery($productIds, $queryParams);
+
+                // Only paginate if the query is valid and returns results
+                if ($query) {
+                    $products = $this->paginate($query);
+                }
+            }
         }
 
-        $this->set(compact('results', 'queryTerm', 'usedFallback'));
+        // Fetch filter options
+        $filterOptions = $this->Products->productFilters();
+
+        // Fetch selected filters from query params
+        $selectedFilters = array_filter(
+            $queryParams,
+            fn($v, $k) => $k !== 'category' && $k !== 'sort' && $k !== 'q' && is_array($v),
+            ARRAY_FILTER_USE_BOTH,
+        );
+
+        $category = $queryParams['category'] ?? null;
+        $sort = $queryParams['sort'] ?? 'relevance';
+        $this->set(compact(
+            'products',
+            'queryTerm',
+            'usedFallback',
+            'category',
+            'filterOptions',
+            'selectedFilters',
+            'sort',
+        ));
+    }
+
+    /**
+     * @param array $productIds
+     * @param array $queryParams
+     * @return Query
+     */
+    private function prepareProductQuery(array $productIds = [], array $queryParams = []): Query
+    {
+        $category = $queryParams['category'] ?? null;
+        $sort = $queryParams['sort'] ?? 'relevance';
+
+        $query = $this->Products->find()
+            ->contain([
+                'ProductVariants.ProductVariantAttributes.AttributeValues',
+                'ProductImages',
+            ]);
+
+        // Apply the filter to restrict the query to search results if product IDs are passed
+        if (!empty($productIds)) {
+            $query->where(['Products.id IN' => $productIds]);
+        }
+
+        // Apply category filter if available
+        if (!empty($category)) {
+            $query->where(['category' => $category]);
+        }
+
+        // Apply additional filters from query params
+        $selectedFilters = array_filter($queryParams, function ($value, $key) {
+            return $key !== 'category' && $key !== 'sort' && $key !== 'q' && is_array($value) && !empty($value);
+        }, ARRAY_FILTER_USE_BOTH);
+
+        // Applying custom filters if any
+        $query = $this->Products->findFiltered($query, $selectedFilters);
+
+        // Apply sorting
+        switch ($sort) {
+            case 'price-asc':
+                $query->orderBy(['base_price' => 'ASC']);
+                break;
+            case 'price-desc':
+                $query->orderBy(['base_price' => 'DESC']);
+                break;
+            case 'latest':
+                $query->orderBy(['created_at' => 'DESC']);
+                break;
+            case 'name-asc':
+                $query->orderBy(['name' => 'ASC']);
+                break;
+            case 'name-desc':
+                $query->orderBy(['name' => 'DESC']);
+                break;
+            default:
+                break;
+        }
+
+        return $query;
     }
 }

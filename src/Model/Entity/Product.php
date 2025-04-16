@@ -16,6 +16,7 @@ use Cake\ORM\Entity;
  * @property int $stock_quantity
  * @property \Cake\I18n\DateTime $created_at
  * @property string $image_url
+ * @property string $slug
  *
  * @property \App\Model\Entity\ProductVariant[] $product_variants
  */
@@ -39,5 +40,6 @@ class Product extends Entity
         'created_at' => true,
         'product_variants' => true,
         'image_url' => true,
+        'slug' => true,
     ];
 }
