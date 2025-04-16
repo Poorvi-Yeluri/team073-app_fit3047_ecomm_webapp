@@ -143,8 +143,6 @@
             </ul>
         </nav>
     <?php endif; ?>
-
-
 </div>
 
 <div class="offcanvas offcanvas-start w-sm-75 w-md-50"

@@ -5,10 +5,10 @@
  */
 ?>
 <div class="container">
-    <div class="col-12 col-lg-5 mb-lg-5">
+    <div class="col-12 col-lg-5 mt-2 font-sans">
         <?= $this->Form->create($user) ?>
         <fieldset>
-            <legend class="fs-2 mb-3" style="font-family: Baskerville"><?= __('Register User') ?></legend>
+            <legend class="mb-3 font-serif text-h2"><?= __('Register User') ?></legend>
 
             <div class="row mb-3">
                 <div class="col-md-6">

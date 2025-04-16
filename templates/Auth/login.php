@@ -10,7 +10,7 @@
                         'type' => 'email',
                         'label' => 'Email Address',
                         'value' => '',
-                        'class' => 'form-control',
+                        'class' => 'form-control rounded-0 shadow-none border-dark',
                         'required' => true,
                         'autofocus' => true
                     ]); ?>
@@ -21,20 +21,22 @@
                         'type' => 'password',
                         'label' => 'Password',
                         'value' => '',
-                        'class' => 'form-control',
+                        'class' => 'form-control rounded-0 shadow-none border-dark',
                         'required' => true,
                         'autofocus' => true
                     ]); ?>
                 </div>
 
-                <div class="mb-3 justify-content-end d-flex gap-3 text-small">
+                <div class="mb-1 justify-content-end d-flex">
                     <?= $this->Html->link(
                         'Create new account',
                         ['controller' => 'Auth', 'action' => 'register'],
+                        ['class' => 'btn btn-sm btn-link text-dark']
                     ) ?>
                     <?= $this->Html->link(
                         'Forgot password?',
                         ['controller' => 'Auth', 'action' => 'forgetPassword'],
+                        ['class' => 'btn btn-sm btn-link text-dark']
                     ) ?>
                 </div>
 
