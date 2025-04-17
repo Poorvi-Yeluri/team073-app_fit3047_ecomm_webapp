@@ -1,124 +1,74 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Product $product
- */
-?>
-<div class="container mt-5">
+<div class="container mt-3">
     <div class="row">
-        <div class="col-md-6">
-            <div class="mb-3">
-                <?php if (!empty($product->product_images)) : ?>
-                    <img src="<?= h($product->product_images[0]->image_url) ?>" style="object-fit: cover" alt="<?= h($product->name) ?>"
-                         class="img-fluid mb-3">
-                <?php else : ?>
-                    <img src="https://picsum.photos/" style="object-fit: cover" alt="No Image Available"
-                         class="img-fluid mb-3">
-                <?php endif; ?>
+        <!-- Main Image with Thumbnails Below -->
+        <div class="col-md-7">
+            <div class="text-center mb-3">
+                <img id="mainProductImage"
+                     src="<?= h($product['image_url'] ?? 'https://picsum.photos/600/600') ?>"
+                     alt="<?= h($product['name']) ?>"
+                     class="img-fluid border"
+                     style="object-fit: cover; width: 100%; max-height: 500px;">
             </div>
-            <div class="row">
-                <?php if (!empty($product->product_images)) : ?>
-                    <?php foreach ($product->product_images as $image) : ?>
-                        <div class="col-4">
-                            <img src="<?= h($image->image_url) ?>" alt="<?= h($product->name) ?>" class="img-thumbnail">
-                        </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </div>
-        </div>
 
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title"><?= h($product->name) ?></h3>
-                    <p class="card-text"><?= h($product->category) ?></p>
-
-                    <p class="h4"><?= $this->Number->format($product->base_price) ?></p>
-
-                    <form action="/cart/add" method="post" class="mb-3">
-                        <input type="hidden" name="product_id" value="<?= h($product->id) ?>">
-
-                        <div class="form-group">
-                            <label for="quantity"><?= __('Quantity') ?></label>
-                            <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1">
-                        </div>
-                        <button type="submit" class="btn btn-primary"><?= __('Add to Cart') ?></button>
-                    </form>
-
-                    <form action="/wishlist/add" method="post">
-                        <input type="hidden" name="product_id" value="<?= h($product->id) ?>">
-                        <button type="submit" class="btn btn-outline-secondary"><?= __('Add to Wishlist') ?></button>
-                    </form>
-
-                    <hr>
-
-                    <div class="mb-3">
-                        <strong><?= __('Description') ?></strong>
-                        <p><?= h($product->description) ?></p>
+            <?php if (!empty($product['images'])) : ?>
+                <div class="mt-3">
+                    <div id="thumbnailRow" class="d-flex overflow-auto gap-2 px-1 pb-1 border-bottom" style="scroll-behavior: smooth;">
+                        <?php foreach ($product['images'] as $index => $image) : ?>
+                            <img src="<?= h($image) ?>"
+                                 alt="<?= h($product['name']) ?>"
+                                 class="thumb-image img-thumbnail p-0 rounded-0"
+                                 data-src="<?= h($image) ?>"
+                                 style="cursor:pointer; width: 120px; height: 120px; object-fit: cover; flex: 0 0 auto;">
+                        <?php endforeach; ?>
                     </div>
                 </div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Product Info (right column) -->
+        <div class="col-md-5 p-5" style="background-color: var(--light-gray);">
+            <h3><?= h($product['name']) ?></h3>
+            <h5 class="font-sans weight-regular">$<?= $this->Number->format(
+                $product['base_price'], ['places' => 2, 'precision' => 2, 'locale' => 'en_US', 'currency' => true]
+                ) ?></h5>
+            <div class="d-flex flex-column my-3">
+                <span class="font-sans">Quantity</span>
+                <select name="quantity" class="w-25 p-2 border-gray" style="height: 35px;" id="quantity">
+                    <?php for ($i = 1; $i <= 10; $i++): ?>
+                        <option value="<?= $i ?>"><?= $i ?></option>
+                    <?php endfor; ?>
+                </select>
+            </div>
+
+            <div class="d-flex w-75 gap-2 font-sans mb-3">
+                <button class="btn btn-md rounded-pill w-100" style="background-color: var(--accent-color); color: var(--white)">Add to Cart</button>
+                <button class="btn btn-md btn-secondary rounded-pill w-100">Wishlist</button>
+            </div>
+
+            <div class="mb-3">
+                <strong><?= __('Description') ?></strong>
+                <p><?= h($product['description']) ?></p>
             </div>
         </div>
     </div>
-
-    <?php if (!empty($product->product_variants)) : ?>
-        <div class="row mt-5">
-            <div class="col-md-12">
-                <h4><?= __('Also available in other Styles') ?></h4>
-                <div class="row">
-                    <?php foreach ($product->product_variants as $variant) : ?>
-                        <div class="col-md-3">
-                            <div class="card">
-                                <?php if (!empty($variant->product_variant_images)) : ?>
-                                    <img src="<?= h($variant->product_variant_images[0]->image_url) ?>" alt="<?= h($variant->name) ?>"
-                                         class="card-img-top">
-                                <?php else : ?>
-                                    <img src="https://picsum.photos/" alt="<?= h($variant->name) ?>"
-                                         class="card-img-top">
-                                <?php endif; ?>
-                                <div class="card-body">
-                                    <h5 class="card-title"><?= h($variant->name) ?></h5>
-                                    <p class="h6"><?= $this->Number->format($variant->price) ?></p>
-                                    <a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', $product->id, '?' => ['variant' => $variant->id]]) ?>"
-                                       class="btn btn-outline-primary"><?= __('View Variant') ?></a>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
-    <?php endif; ?>
 
     <div class="row mt-5">
         <div class="col-md-12">
             <h4><?= __('You May Like') ?></h4>
             <div class="row">
-                <?php foreach ($productVariants as $recommendedProduct) : ?>
-                    <div class="col-md-3">
-                        <div class="card">
-                            <img src="<?= h($recommendedProduct->image_url) ?>"
-                                 alt="<?= h($recommendedProduct->name) ?>" class="card-img-top">
-                            <div class="card-body">
-                                <h5 class="card-title"><?= h($recommendedProduct->name) ?></h5>
-                                <p class="h6"><?= $this->Number->format($recommendedProduct->base_price) ?></p>
-                                <a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', $recommendedProduct->id]) ?>"
-                                   class="btn btn-outline-primary"><?= __('View Details') ?></a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+
             </div>
         </div>
     </div>
 
+    <!-- Customer Reviews Section -->
     <div class="row mt-5">
         <div class="col-md-12">
             <h4><?= __('Customer Reviews') ?></h4>
 
-            <?php if (!empty($product->reviews)) : ?>
+            <?php if (!empty($product['reviews'])) : ?>
                 <div class="list-group">
-                    <?php foreach ($product->reviews as $review) : ?>
+                    <?php foreach ($product['reviews'] as $review) : ?>
                         <div class="list-group-item">
                             <h5 class="mb-1"><?= h($review->customer_name) ?></h5>
                             <p class="mb-1"><?= h($review->review_text) ?></p>
@@ -129,29 +79,6 @@
             <?php else : ?>
                 <p><?= __('No reviews yet.') ?></p>
             <?php endif; ?>
-
-            <h5 class="mt-4"><?= __('Write a Review') ?></h5>
-            <form action="/reviews/add" method="post">
-                <div class="form-group">
-                    <label for="customer_name"><?= __('Your Name') ?></label>
-                    <input type="text" name="customer_name" id="customer_name" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="review_text"><?= __('Your Review') ?></label>
-                    <textarea name="review_text" id="review_text" class="form-control" rows="4" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="rating"><?= __('Rating') ?></label>
-                    <select name="rating" id="rating" class="form-control" required>
-                        <option value="5"><?= __('5 Stars') ?></option>
-                        <option value="4"><?= __('4 Stars') ?></option>
-                        <option value="3"><?= __('3 Stars') ?></option>
-                        <option value="2"><?= __('2 Stars') ?></option>
-                        <option value="1"><?= __('1 Star') ?></option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary"><?= __('Submit Review') ?></button>
-            </form>
         </div>
     </div>
 </div>

@@ -6,10 +6,10 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-12 col-lg-4">
+        <div class="col-12 col-lg-4 font-sans">
             <?= $this->Form->create() ?>
             <fieldset>
-                <legend class="fs-2 mb-3" style="font-family: Baskerville"><?= __('Forgot Password?') ?></legend>
+                <legend class="fs-2 mb-3 font-serif"><?= __('Forgot Password?') ?></legend>
                 <?= $this->Flash->render() ?>
                 <p>Enter your email address registered with our system below to reset your password: </p>
 
@@ -28,7 +28,7 @@
             <?= $this->Form->end() ?>
 
             <div class="mt-3 justify-content-end d-flex">
-                <?= $this->Html->link('Back to login', ['controller' => 'Auth', 'action' => 'login'], ['class' => 'button button-outline text-dark']) ?>
+                <?= $this->Html->link('Back to login', ['controller' => 'Auth', 'action' => 'login'], ['class' => 'btn btn-outline-dark rounded-0']) ?>
             </div>
         </div>
     </div>

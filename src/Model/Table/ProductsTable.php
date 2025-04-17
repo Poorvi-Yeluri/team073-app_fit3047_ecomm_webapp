@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\Collection\Collection;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -252,10 +253,62 @@ class ProductsTable extends Table
      * @param string $slug
      * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findBySlug(string $slug): SelectQuery
+    public function findBySlug(string $slug): array
     {
-        return $this->find()->where(['slug' => $slug]);
+        $product = $this->find()
+            ->where(['slug' => $slug])
+            ->contain([
+                'ProductImages',
+                'ProductAttributes.AttributeValues.Attributes',
+                'ProductVariants.ProductVariantImages',
+                'ProductVariants.ProductVariantAttributes.AttributeValues.Attributes',
+            ])
+            ->firstOrFail();
+
+        $attributeOptions = [];
+        $variantData = [];
+
+        foreach ($product->product_variants as $variant) {
+            $variantAttributes = [];
+
+            foreach ($variant->product_variant_attributes as $pva) {
+                $attrName = $pva->attribute_value->attribute->name;
+                $attrValue = $pva->attribute_value->value;
+
+                $variantAttributes[$attrName] = $attrValue;
+
+                // Collect unique options
+                $attributeOptions[$attrName][] = $attrValue;
+            }
+
+            $variantData[] = [
+                'id' => $variant->id,
+                'sku' => $variant->sku,
+                'price' => $variant->price,
+                'stock_quantity' => $variant->stock_quantity,
+                'images' => collection($variant->product_variant_images)->extract('image_url')->toList(),
+                'attributes' => $variantAttributes,
+            ];
+        }
+
+        // Deduplicate attribute values
+        foreach ($attributeOptions as $key => $values) {
+            $attributeOptions[$key] = array_unique($values);
+        }
+
+        return [
+            'id' => $product->id,
+            'name' => $product->name,
+            'slug' => $product->slug,
+            'description' => $product->description,
+            'category' => $product->category,
+            'base_price' => $product->base_price,
+            'images' => collection($product->product_images)->extract('image_url')->toList(),
+            'attributes' => $attributeOptions,
+            'variants' => $variantData,
+        ];
     }
+
 
     /**
      * Finds products and variants using a full-text search query.

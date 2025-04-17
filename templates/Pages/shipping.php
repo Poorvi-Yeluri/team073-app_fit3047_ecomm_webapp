@@ -6,7 +6,7 @@ $this->Html->css('style')
 <div class="container">
     <h1>Shipping FAQ</h1>
 
-    <div class="accordion" id="shippingAccordion">
+    <div class="accordion my-4" id="shippingAccordion">
         <!-- Shipping Process -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingShippingProcess">

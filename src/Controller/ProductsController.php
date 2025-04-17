@@ -51,13 +51,7 @@ class ProductsController extends AppController
      */
     public function view(?string $slug = null)
     {
-        $product = $this->Products
-            ->findBySlug($slug)
-            ->contain([
-                'ProductVariants' => ['ProductVariantImages'],
-                'ProductImages',
-            ])
-            ->firstOrFail();
+        $product = $this->Products->findBySlug($slug);
         $this->set(compact('product'));
     }
 
