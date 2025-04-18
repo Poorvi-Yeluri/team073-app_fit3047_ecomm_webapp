@@ -27,6 +27,13 @@ class ProductsController extends AppController
      */
     public function index(): void
     {
+        // use the correct view template based on user authentication
+        if ($this->Authentication->getIdentity()) {
+            $this->viewBuilder()->setTemplate('index.private');
+        } else {
+            $this->viewBuilder()->setTemplate('index.public');
+        }
+
         $queryParams = $this->request->getQuery();
         $query = $this->prepareProductQuery([], $queryParams);
         $selectedFilters = array_filter(

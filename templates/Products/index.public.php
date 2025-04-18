@@ -7,7 +7,6 @@
  * @var string|null $sort
  */
 ?>
-
 <div class="container">
     <h3 class="text-uppercase"><?= str_replace('-', ' ', $this->request->getQuery('category')) ?? 'Products' ?></h3>
     <div class="row gy-2 my-3 font-sans">

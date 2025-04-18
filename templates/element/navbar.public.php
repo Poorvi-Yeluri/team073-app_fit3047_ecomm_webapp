@@ -163,13 +163,13 @@
 
     let currentIndex = 0;
 
-    function changeContentAndStyle() {
-        // Change text content
-        document.getElementById("textContent").textContent = texts[currentIndex];
-        document.getElementById("changeTextDiv").classList.remove(...bgColors);
-        document.getElementById("changeTextDiv").classList.add(bgColors[currentIndex]);
-        currentIndex = (currentIndex + 1) % texts.length;
-    }
-
-    setInterval(changeContentAndStyle, 3000);
+    // function changeContentAndStyle() {
+    //     // Change text content
+    //     document.getElementById("textContent").textContent = texts[currentIndex];
+    //     document.getElementById("changeTextDiv").classList.remove(...bgColors);
+    //     document.getElementById("changeTextDiv").classList.add(bgColors[currentIndex]);
+    //     currentIndex = (currentIndex + 1) % texts.length;
+    // }
+    //
+    // setInterval(changeContentAndStyle, 3000);
 </script>
