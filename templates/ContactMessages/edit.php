@@ -24,7 +24,19 @@ $this->Breadcrumbs->add('Edit Message', ['action' => 'edit', $contactMessage->id
             <div class="card-body">
                 <?= $this->Form->create($contactMessage, ['class' => 'needs-validation']) ?>
                 <div class="mb-3">
-                    <?= $this->Form->control('message_type', ['label' => 'Message Type', 'class' => 'form-control']) ?>
+                    <?= $this->Form->control('message_type', [
+                        'label' => 'Message Type',
+                        'type' => 'select',
+                        'options' => [
+                            'complaint' => 'Complaint',
+                            'query' => 'Query',
+                            'feedback' => 'Feedback',
+                            'suggestion' => 'Suggestion'
+                        ],
+                        'class' => 'form-control',
+                        'disabled' => true, // Disable the field
+                        'default' => $contactMessage->message_type // Ensure the current value is shown
+                    ]) ?>
                 </div>
                 <div class="mb-3">
                     <?= $this->Form->control('description', ['label' => 'Description', 'class' => 'form-control']) ?>
@@ -38,9 +50,7 @@ $this->Breadcrumbs->add('Edit Message', ['action' => 'edit', $contactMessage->id
                 <div class="mb-3">
                     <?= $this->Form->control('customer_phone', ['label' => 'Customer Phone', 'class' => 'form-control']) ?>
                 </div>
-                <div class="mb-3">
-                    <?= $this->Form->control('created_at', ['label' => 'Sent At', 'class' => 'form-control', 'empty' => true]) ?>
-                </div>
+
                 <div class="d-flex justify-content-end">
                     <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary', 'style' => 'font-family: Avenir']) ?>
                 </div>
