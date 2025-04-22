@@ -32,14 +32,21 @@ $this->Breadcrumbs->add('Contact Messages', ['controller' => 'ContactMessages', 
                 <td class="text-center"><?= h($contactMessage->customer_phone) ?></td>
                 <td class="text-center"><?= h($contactMessage->message_type) ?></td>
                 <td class="text-center"><?= h($contactMessage->description) ?></td>
-                <td class="text-center"><?= $this->Time->format($contactMessage->created_at, 'MMM dd, yyyy, hh:mm a') ?></td>
+                <td class="text-center"><?= $this->Time->format($contactMessage->created_at, 'dd MMM yyyy, hh:mm a') ?></td>
                 <td class="text-center">
-                    <?= $this->Form->postLink(__('View'), ['action' => 'view', $contactMessage->id], [
+                    <?= $this->Html->link(__('View'), ['action' => 'view', $contactMessage->id], [
                         'class' => 'btn btn-sm btn-primary rounded-3',
+                    ]) ?>
+                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $contactMessage->id], [
+                        'class' => 'btn btn-sm btn-warning rounded-3',
                     ]) ?>
                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contactMessage->id], [
                         'class' => 'btn btn-sm btn-danger rounded-3',
-                        'confirm' => __('Are you sure you want to delete # {0}?', $contactMessage->id),
+                        'confirm' => __('Are you sure you want to delete the message from {0} ({1}) - Sent at {2}',
+                            $contactMessage->customer_name,
+                            $contactMessage->message_type,
+                            $this->Time->format(new \DateTime($contactMessage->created_at), 'dd MMM yyyy, hh:mm a')
+                        ),
                     ]) ?>
                 </td>
             </tr>

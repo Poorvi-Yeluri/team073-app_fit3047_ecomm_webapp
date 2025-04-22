@@ -18,7 +18,11 @@ $this->Breadcrumbs->add('View Message', ['action' => 'view', $contactMessage->id
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $contactMessage->id], ['class' => 'btn btn-primary btn-sm']) ?>
                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contactMessage->id], [
                         'class' => 'btn btn-danger btn-sm',
-                        'confirm' => __('Are you sure you want to delete # {0}?', $contactMessage->id)
+                        'confirm' => __('Are you sure you want to delete {0} ({1})? Sent on: {2}',
+                            $contactMessage->customer_name,
+                            $contactMessage->message_type,
+                            $this->Time->format($contactMessage->created_at, 'dd MMM yyyy, hh:mm a')
+                        )
                     ]) ?>
                     <?= $this->Html->link(__('Back to List'), ['action' => 'index'], ['class' => 'btn btn-secondary btn-sm']) ?>
                 </div>
@@ -47,7 +51,7 @@ $this->Breadcrumbs->add('View Message', ['action' => 'view', $contactMessage->id
                         </tr>
                         <tr>
                             <th><?= __('Sent At') ?></th>
-                            <td><?= $this->Time->format($contactMessage->created_at, 'MMM dd, yyyy, hh:mm a') ?></td>
+                            <td><?= $this->Time->format($contactMessage->created_at, 'dd MMM yyyy, hh:mm a') ?></td>
                         </tr>
                         </tbody>
                     </table>
