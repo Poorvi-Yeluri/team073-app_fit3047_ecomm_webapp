@@ -4,30 +4,34 @@
  * @var \App\Model\Entity\User $user
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4><?= __('Add User') ?></h4>
+        <div>
+            <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'btn btn-sm btn-secondary ms-2']) ?>
         </div>
-    </aside>
-    <div class="column column-80">
-        <div class="users form content">
-            <?= $this->Form->create($user) ?>
-            <fieldset>
-                <legend><?= __('Add User') ?></legend>
-                <?php
-                    echo $this->Form->control('first_name');
-                    echo $this->Form->control('last_name');
-                    echo $this->Form->control('email');
-                    echo $this->Form->control('password');
-                    echo $this->Form->control('phone');
-                    echo $this->Form->control('nonce');
-                    echo $this->Form->control('nonce_expiry', ['empty' => true]);
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
+    </div>
+
+    <div class="card p-4 shadow-sm rounded-3">
+        <?= $this->Form->create($user, ['class' => 'needs-validation']) ?>
+        <div class="mb-3">
+            <?= $this->Form->control('first_name', ['label' => 'First Name', 'class' => 'form-control']) ?>
         </div>
+        <div class="mb-3">
+            <?= $this->Form->control('last_name', ['label' => 'Last Name', 'class' => 'form-control']) ?>
+        </div>
+        <div class="mb-3">
+            <?= $this->Form->control('email', ['label' => 'Email', 'class' => 'form-control']) ?>
+        </div>
+        <div class="mb-3">
+            <?= $this->Form->control('password', ['label' => 'Password', 'class' => 'form-control']) ?>
+        </div>
+        <div class="mb-3">
+            <?= $this->Form->control('phone', ['label' => 'Phone', 'class' => 'form-control']) ?>
+        </div>
+        <div class="d-flex justify-content-end">
+            <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary', 'style' => 'font-family: Avenir']) ?>
+        </div>
+        <?= $this->Form->end() ?>
     </div>
 </div>
