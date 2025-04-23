@@ -150,10 +150,6 @@ VALUES (1, 1),
 
 INSERT INTO product_images (product_id, image_url, is_main, created_at, modified_at)
 VALUES (1, 'https://images.unsplash.com/photo-1602752250055-5ebb552fc3ae?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (1, '', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (1, '', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (1, '', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (1, '', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        (2, 'https://images.unsplash.com/photo-1713004539634-a6694a83f3d9?q=80&w=3042&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        (3, 'https://cdn11.bigcommerce.com/s-79hupch4/images/stencil/1920w/products/9777/59303/floyd-wooden-wall-art-geometric-uttermost-04160___44646.1719669011.jpg?c=2', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        (4, 'https://plus.unsplash.com/premium_photo-1670475872881-6ac52730b6ee?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
