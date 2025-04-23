@@ -424,3 +424,17 @@ input.form-control:focus {
     object-position: center;
 }
 
+/* === Placeholder Styling === */
+::placeholder {
+    color: #6c757d;
+    opacity: 1; /* Ensures it's not faded too much */
+}
+
+::placeholder,
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+    color: #aaa !important; /* much lighter grey */
+    opacity: 1;
+}
+

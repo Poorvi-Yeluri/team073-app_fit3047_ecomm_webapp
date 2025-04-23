@@ -43,7 +43,7 @@
 
         <!-- Right Icons -->
         <div class="d-none d-md-flex align-items-center gap-3">
-            <span class="material-symbols-outlined" style="cursor: pointer;">shopping_cart</span>
+            <!-- <span class="material-symbols-outlined" style="cursor: pointer;">shopping_cart</span> -->
             <span class="material-symbols-outlined"
                   id="popoverButton"
                   data-bs-toggle="popover"
