@@ -178,11 +178,6 @@ VALUES (1, 'https://picsum.photos/id/237/800/600', CURRENT_TIMESTAMP, CURRENT_TI
        (11, 'https://picsum.photos/id/249/800/600', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        (12, 'https://picsum.photos/id/250/800/600', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--- Seed cart_items
-INSERT INTO `cart_items` (`id`, `user_id`, `variant_id`, `quantity`, `added_at`)
-VALUES (1, 1, 1, 1, NOW()),
-       (2, 2, 2, 2, NOW()),
-       (3, 1, 5, 1, NOW());
 
 -- Seed contact_messages
 INSERT INTO `contact_messages` (`id`, `message_type`, `description`, `customer_name`, `customer_email`,
@@ -194,14 +189,3 @@ VALUES (1, 'General Inquiry', 'Interested in your gold necklace.', 'Alice Brown'
        (3, 'Feedback', 'Love the quality of the silver earrings!', 'Charlie White', 'charlie.white@example.com',
         '555-111-2222', NOW());
 
--- Seed orders
-INSERT INTO `orders` (`id`, `user_id`, `order_date`, `total_price`, `status`, `shipping_address`)
-VALUES (1, 1, NOW(), 150.00, 'Delivered', '123 Main St, Anytown, USA'),
-       (2, 2, NOW(), 90.00, 'Shipped', '456 Oak Ave, Someville, USA'),
-       (3, 1, NOW(), 25.00, 'Pending', '123 Main St, Anytown, USA');
-
--- Seed order_items
-INSERT INTO `order_items` (`id`, `order_id`, `variant_id`, `quantity`, `price`)
-VALUES (1, 1, 1, 1, 150.00),
-       (2, 2, 2, 2, 45.00),
-       (3, 3, 5, 1, 25.00);
