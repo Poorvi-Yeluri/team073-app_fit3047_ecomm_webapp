@@ -3,9 +3,9 @@
         window.location.href = "<?= $this->Url->build(['controller' => 'contact-messages', 'action' => 'index']) ?>";
     </script>
 <?php else : ?>
-    <section class="w-100 h-100 d-none d-md-flex justify-content-center align-items-center position-relative" id="hero-section">
+    <section class="w-100 d-none d-md-flex justify-content-center align-items-center position-relative" id="hero-section">
         <img src="/img/hero-section.jpg" alt="hero image" class="object-fit-cover w-100"
-             style="height: 100%; object-position: center;">
+             style="height: 500px; object-position: center;">
         <div class="position-absolute top-50 start-50 translate-middle text-center text-light px-3">
             <p class="fs-1 font-serif" style="color: white;">
                 30% OFF RUSTIC RANGE
@@ -14,8 +14,11 @@
                 Create a wonderful rustic experience with our range
             </p>
             <button class="btn btn-lg btn-dark rounded-0 fs-6"
-                    style="background-color: black; color: white; letter-spacing: 2.5px">SHOP NOW
+                    onclick="document.getElementById('categories-section').scrollIntoView({ behavior: 'smooth' });"
+                    style="background-color: black; color: white; letter-spacing: 2.5px">
+                SHOP NOW
             </button>
+
         </div>
     </section>
 
