@@ -33,41 +33,43 @@
             <h5 class="font-sans weight-regular">$<?= $this->Number->format(
                     $product['base_price'], ['places' => 2, 'precision' => 2, 'locale' => 'en_US', 'currency' => true]
                 ) ?></h5>
-            <div class="d-flex flex-column my-3">
-                <span class="font-sans">Quantity</span>
-                <select name="quantity" class="w-25 p-2 border-gray" style="height: 35px;" id="quantity">
-                    <?php for ($i = 1; $i <= 10; $i++): ?>
-                        <option value="<?= $i ?>"><?= $i ?></option>
-                    <?php endfor; ?>
-                </select>
-            </div>
+            <?php if (!$this->Identity->isLoggedIn()) : ?>
+                <div class="d-flex flex-column my-3">
+                    <span class="font-sans">Quantity</span>
+                    <select name="quantity" class="w-25 p-2 border-gray" style="height: 35px;" id="quantity">
+                        <?php for ($i = 1; $i <= 10; $i++): ?>
+                            <option value="<?= $i ?>"><?= $i ?></option>
+                        <?php endfor; ?>
+                    </select>
+                </div>
+            <?php endif; ?>
 
             <!-- <div class="d-flex w-75 gap-2 font-sans mb-3">
                  <button class="btn btn-md rounded-pill w-100" style="background-color: var(--accent-color); color: var(--white)">Add to Cart</button>
                  <button class="btn btn-md btn-secondary rounded-pill w-100">Wishlist</button>
              </div> -->
 
-            <div class="mb-3">
-                <strong><?= __('Description') ?></strong>
+            <div class="mb-3 mt-3">
+                <strong class="text-h4"><?= __('Description') ?></strong>
                 <p><?= h($product['description']) ?></p>
             </div>
 
-            <div class="mb-4">
-                <strong><?= __('Interested in Purchasing?') ?></strong><br>
-                If you would like to purchase this product, please contact us on
-                <a class="text-dark"
-                   style="border-bottom: 2px solid var(--accent-color); text-decoration: none;"
-                   href="tel:+618121234567">
-                    +61 812 123 4567
-                </a>
-                <br> <br>
-                You can also submit an enquiry through our
-                <a class="text-dark fw-bold" href="#" data-bs-toggle="modal" data-bs-target="#contactModal">
-                    Contact Form
-                </a>.
-            </div>
-
-
+            <?php if (!$this->Identity->isLoggedIn()) : ?>
+                <div class="mb-4">
+                    <strong><?= __('Interested in Purchasing?') ?></strong><br>
+                    If you would like to purchase this product, please contact us on
+                    <a class="text-dark"
+                       style="border-bottom: 2px solid var(--accent-color); text-decoration: none;"
+                       href="tel:+618121234567">
+                        +61 812 123 4567
+                    </a>
+                    <br> <br>
+                    You can also submit an enquiry through our
+                    <a class="text-dark fw-bold" href="#" data-bs-toggle="modal" data-bs-target="#contactModal">
+                        Contact Form
+                    </a>.
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 

@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\Collection\Collection;
+use ArrayObject;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\EventInterface;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Text;
 use Cake\Validation\Validator;
 
 /**
@@ -102,8 +105,8 @@ class ProductsTable extends Table
         $validator
             ->integer('stock_quantity')
             ->requirePresence('stock_quantity', 'create')
-            ->notEmptyString('stock_quantity')
-            ->greaterThan('stock_quantity', 0, 'Stock quantity must be a positive integer.');
+            ->lessThanOrEqual('stock_quantity', 9999, 'Stock cannot exceed 9999.')
+            ->notEmptyString('stock_quantity');
 
         $validator
             ->dateTime('created_at')
@@ -113,24 +116,30 @@ class ProductsTable extends Table
     }
 
     /**
-     * @param $name
-     * @param $excludeId
-     * @return string
+     * @param \Cake\Event\EventInterface $event
+     * @param \Cake\Datasource\EntityInterface $entity
+     * @param \ArrayObject $options
+     * @return void
      */
-    public function generateSlug($name, $excludeId = null): string
+    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name)));
+        if ($entity->isNew() && !$entity->slug) {
+            $slugBase = strtolower(Text::slug($entity->name));
 
-        // Check if slug already exists and append a number if necessary
-        $slugBase = $slug;
-        $counter = 1;
+            $slug = substr($slugBase, 0, 191);
+            $counter = 1;
 
-        // Ensure that when $excludeId is null, the condition does not fail
-        while ($this->exists(['slug' => $slug, $excludeId !== null ? 'id !=' : 'id IS NOT NULL' => $excludeId])) {
-            $slug = $slugBase . '-' . $counter++;
+            $conditions = ['slug' => $slug];
+            if (!$entity->isNew()) {
+                $conditions['id !='] = $entity->id;
+            }
+
+            while ($this->exists($conditions)) {
+                $slug = substr($slugBase . '-' . $counter++, 0, 191);
+                $conditions['slug'] = $slug;
+            }
+            $entity->slug = $slug;
         }
-
-        return $slug;
     }
 
     /**
@@ -303,7 +312,6 @@ class ProductsTable extends Table
             'variants' => $variantData,
         ];
     }
-
 
     /**
      * Finds products and variants using a full-text search query.

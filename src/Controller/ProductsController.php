@@ -72,24 +72,49 @@ class ProductsController extends AppController
         $product = $this->Products->newEmptyEntity();
 
         if ($this->request->is('post')) {
-            debug($this->request->getData());
-            // Patch the form data into the product entity
-            $product = $this->Products->patchEntity($product, $this->request->getData(), [
-                'associated' => ['ProductImages']
-            ]);
+            $data = $this->request->getData();
 
-            // Handle image uploads if necessary
-            if (!empty($product->product_images)) {
-                // Save uploaded images, for example, move them to the appropriate folder
-                foreach ($product->product_images as $image) {
-                    // You can implement your file upload logic here
-                    // For example, move the uploaded image to the desired folder
-                }
+            // Extract and remove image files from the main data
+            $imagesData = $data['product_images'] ?? [];
+            unset($data['product_images']);
+
+            if (empty($data['image_url'])) {
+                $data['image_url'] = 'https://picsum.photos/200/300'; // You can change this to a default image path
             }
 
-            $product->slug = $this->Products->generateSlug($product->name);
+            // Save product first
+            $product = $this->Products->patchEntity($product, $data);
 
             if ($this->Products->save($product)) {
+                $productId = $product->id;
+
+                $imageEntities = [];
+
+                foreach ($imagesData as $uploadedFile) {
+                    if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                        $filename = time() . '_' . $uploadedFile->getClientFilename();
+                        $uploadPath = WWW_ROOT . 'img' . DS . 'products' . DS;
+
+                        // Ensure the upload directory exists
+                        if (!file_exists($uploadPath)) {
+                            mkdir($uploadPath, 0775, true);
+                        }
+
+                        $uploadedFile->moveTo($uploadPath . $filename);
+
+                        $imageEntity = $this->Products->ProductImages->newEntity([
+                            'product_id' => $productId,
+                            'image_url' => 'products/' . $filename,
+                        ]);
+
+                        $imageEntities[] = $imageEntity;
+                    }
+                }
+
+                if (!empty($imageEntities)) {
+                    $this->Products->ProductImages->saveMany($imageEntities);
+                }
+
                 $this->Flash->success(__('The product has been saved.'));
                 return $this->redirect(['action' => 'index']);
             }
@@ -99,6 +124,7 @@ class ProductsController extends AppController
 
         $this->set(compact('product'));
     }
+
 
 
     /**
@@ -110,19 +136,62 @@ class ProductsController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $product = $this->Products->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $product = $this->Products->patchEntity($product, $this->request->getData());
-            $product->slug = $this->Products->generateSlug($product->name, $id);
-            if ($this->Products->save($product)) {
-                $this->Flash->success(__('The product has been saved.'));
+        $product = $this->Products->get($id, [
+            'contain' => ['ProductImages'], // Include images if you want to list or modify them
+        ]);
 
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $data = $this->request->getData();
+
+            // Extract and remove image files from the main data
+            $imagesData = $data['product_images'] ?? [];
+            unset($data['product_images']);
+
+            // If image_url is empty and no new images are uploaded, keep the current one
+            if (empty($data['image_url']) && empty($imagesData)) {
+                $data['image_url'] = $product->image_url ?? 'https://picsum.photos/200/300';
+            }
+
+            $product = $this->Products->patchEntity($product, $data);
+
+            if ($this->Products->save($product)) {
+                $productId = $product->id;
+                $imageEntities = [];
+
+                foreach ($imagesData as $uploadedFile) {
+                    if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                        $filename = time() . '_' . $uploadedFile->getClientFilename();
+                        $uploadPath = WWW_ROOT . 'img' . DS . 'products' . DS;
+
+                        if (!file_exists($uploadPath)) {
+                            mkdir($uploadPath, 0775, true);
+                        }
+
+                        $uploadedFile->moveTo($uploadPath . $filename);
+
+                        $imageEntity = $this->Products->ProductImages->newEntity([
+                            'product_id' => $productId,
+                            'image_url' => 'products' . DS . $filename,
+                        ]);
+
+                        $imageEntities[] = $imageEntity;
+                    }
+                }
+
+                if (!empty($imageEntities)) {
+                    $this->Products->ProductImages->saveMany($imageEntities);
+                }
+
+                $this->Flash->success(__('The product has been updated.'));
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The product could not be saved. Please, try again.'));
+
+            $this->Flash->error(__('The product could not be updated. Please, try again.'));
         }
+
         $this->set(compact('product'));
     }
+
 
     /**
      * Delete method
@@ -134,15 +203,34 @@ class ProductsController extends AppController
     public function delete(?string $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $product = $this->Products->get($id);
-        if ($this->Products->delete($product)) {
-            $this->Flash->success(__('The product has been deleted.'));
-        } else {
-            $this->Flash->error(__('The product could not be deleted. Please, try again.'));
+
+        $connection = $this->Products->getConnection();
+        $connection->begin();
+
+        try {
+            $product = $this->Products->get($id,
+                ['contain' => ['ProductVariants', 'ProductImages', 'ProductAttributes']]
+            );
+
+            $this->Products->ProductVariants->deleteAll(['product_id' => $id]);
+            $this->Products->ProductImages->deleteAll(['product_id' => $id]);
+            $this->Products->ProductAttributes->deleteAll(['product_id' => $id]);
+
+            if ($this->Products->delete($product)) {
+                $connection->commit();
+                $this->Flash->success(__('The product has been deleted.'));
+            } else {
+                $connection->rollback();
+                $this->Flash->error(__('The product could not be deleted. Please, try again.'));
+            }
+        } catch (\Exception $e) {
+            $connection->rollback();
+            $this->Flash->error(__('Error deleting product: ' . $e->getMessage()));
         }
 
         return $this->redirect(['action' => 'index']);
     }
+
 
     /**
      * Search method
