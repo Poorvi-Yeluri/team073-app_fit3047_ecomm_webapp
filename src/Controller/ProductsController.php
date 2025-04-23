@@ -70,18 +70,36 @@ class ProductsController extends AppController
     public function add()
     {
         $product = $this->Products->newEmptyEntity();
+
         if ($this->request->is('post')) {
-            $product = $this->Products->patchEntity($product, $this->request->getData());
-            $product->slug = $this->Products->generateSlug($product->name, $id ?? null);
+            debug($this->request->getData());
+            // Patch the form data into the product entity
+            $product = $this->Products->patchEntity($product, $this->request->getData(), [
+                'associated' => ['ProductImages']
+            ]);
+
+            // Handle image uploads if necessary
+            if (!empty($product->product_images)) {
+                // Save uploaded images, for example, move them to the appropriate folder
+                foreach ($product->product_images as $image) {
+                    // You can implement your file upload logic here
+                    // For example, move the uploaded image to the desired folder
+                }
+            }
+
+            $product->slug = $this->Products->generateSlug($product->name);
+
             if ($this->Products->save($product)) {
                 $this->Flash->success(__('The product has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
+
             $this->Flash->error(__('The product could not be saved. Please, try again.'));
         }
+
         $this->set(compact('product'));
     }
+
 
     /**
      * Edit method

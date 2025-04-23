@@ -103,12 +103,6 @@ class ProductsTable extends Table
             ->integer('stock_quantity')
             ->requirePresence('stock_quantity', 'create')
             ->notEmptyString('stock_quantity')
-            ->greaterThan('base_price', 0, 'Base price must be a positive number.');
-
-        $validator
-            ->integer('stock_quantity')
-            ->requirePresence('stock_quantity', 'create')
-            ->notEmptyString('stock_quantity')
             ->greaterThan('stock_quantity', 0, 'Stock quantity must be a positive integer.');
 
         $validator
@@ -131,7 +125,8 @@ class ProductsTable extends Table
         $slugBase = $slug;
         $counter = 1;
 
-        while ($this->exists(['slug' => $slug, 'id !=' => $excludeId])) {
+        // Ensure that when $excludeId is null, the condition does not fail
+        while ($this->exists(['slug' => $slug, $excludeId !== null ? 'id !=' : 'id IS NOT NULL' => $excludeId])) {
             $slug = $slugBase . '-' . $counter++;
         }
 

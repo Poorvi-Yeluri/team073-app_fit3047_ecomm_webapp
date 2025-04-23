@@ -15,6 +15,7 @@
                     <div id="thumbnailRow" class="d-flex overflow-auto gap-2 px-1 pb-1 border-bottom"
                          style="scroll-behavior: smooth;">
                         <?php foreach ($product['images'] as $index => $image) : ?>
+<!--                        --><?php //= debug($product['images']) ?>
                             <img src="<?= h($image) ?>"
                                  alt="<?= h($product['name']) ?>"
                                  class="thumb-image img-thumbnail p-0 rounded-0"
