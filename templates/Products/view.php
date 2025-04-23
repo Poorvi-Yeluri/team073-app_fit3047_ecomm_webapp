@@ -4,15 +4,16 @@
         <div class="col-md-7">
             <div class="text-center mb-3">
                 <img id="mainProductImage"
-                     src="<?= h($product['image_url'] ?? 'https://picsum.photos/600/600') ?>"
+                     src="<?= h($product['images'][0] ?? 'https://picsum.photos/600/600') ?>"
                      alt="<?= h($product['name']) ?>"
                      class="img-fluid border"
-                     style="object-fit: cover; width: 100%; max-height: 500px;">
+                     style="object-fit: cover; width: 100%; max-height: 400px;">
             </div>
 
             <?php if (!empty($product['images'])) : ?>
                 <div class="mt-3">
-                    <div id="thumbnailRow" class="d-flex overflow-auto gap-2 px-1 pb-1 border-bottom" style="scroll-behavior: smooth;">
+                    <div id="thumbnailRow" class="d-flex overflow-auto gap-2 px-1 pb-1 border-bottom"
+                         style="scroll-behavior: smooth;">
                         <?php foreach ($product['images'] as $index => $image) : ?>
                             <img src="<?= h($image) ?>"
                                  alt="<?= h($product['name']) ?>"
@@ -29,7 +30,7 @@
         <div class="col-md-5 p-5" style="background-color: var(--light-gray);">
             <h3><?= h($product['name']) ?></h3>
             <h5 class="font-sans weight-regular">$<?= $this->Number->format(
-                $product['base_price'], ['places' => 2, 'precision' => 2, 'locale' => 'en_US', 'currency' => true]
+                    $product['base_price'], ['places' => 2, 'precision' => 2, 'locale' => 'en_US', 'currency' => true]
                 ) ?></h5>
             <div class="d-flex flex-column my-3">
                 <span class="font-sans">Quantity</span>
@@ -40,24 +41,36 @@
                 </select>
             </div>
 
-           <!-- <div class="d-flex w-75 gap-2 font-sans mb-3">
-                <button class="btn btn-md rounded-pill w-100" style="background-color: var(--accent-color); color: var(--white)">Add to Cart</button>
-                <button class="btn btn-md btn-secondary rounded-pill w-100">Wishlist</button>
-            </div> -->
+            <!-- <div class="d-flex w-75 gap-2 font-sans mb-3">
+                 <button class="btn btn-md rounded-pill w-100" style="background-color: var(--accent-color); color: var(--white)">Add to Cart</button>
+                 <button class="btn btn-md btn-secondary rounded-pill w-100">Wishlist</button>
+             </div> -->
 
             <div class="mb-3">
                 <strong><?= __('Description') ?></strong>
                 <p><?= h($product['description']) ?></p>
             </div>
 
-        <div class="mb-4">
-            <strong><?= __('Interested in purchasing?')?></strong>
-            <br> If you would like to purchase this product, please contact us on +61 812 123 4567.<br> <br>You can also submit an enquiry through our <br> <a class="text-dark weight-bold" href="/contact-messages/add">Contact Form</a>
-        </div>
+            <div class="mb-4">
+                <strong><?= __('Interested in Purchasing?') ?></strong><br>
+                If you would like to purchase this product, please contact us on
+                <a class="text-dark"
+                   style="border-bottom: 2px solid var(--accent-color); text-decoration: none;"
+                   href="tel:+618121234567">
+                    +61 812 123 4567
+                </a>
+                <br> <br>
+                You can also submit an enquiry through our
+                <a class="text-dark fw-bold" href="#" data-bs-toggle="modal" data-bs-target="#contactModal">
+                    Contact Form
+                </a>.
+            </div>
+
+
         </div>
     </div>
 
-   <!-- <div class="row mt-5">
+    <!-- <div class="row mt-5">
         <div class="col-md-12">
             <h4><?= __('You May Like') ?></h4>
             <div class="row">
@@ -67,7 +80,7 @@
     </div> -->
 
     <!-- Customer Reviews Section -->
-   <!-- <div class="row mt-5">
+    <!-- <div class="row mt-5">
         <div class="col-md-12">
             <h4><?= __('Customer Reviews') ?></h4>
 
@@ -88,3 +101,16 @@
     </div>
 </div>
 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const thumbnails = document.querySelectorAll(".thumb-image");
+            const mainImage = document.getElementById("mainProductImage");
+
+            thumbnails.forEach(thumb => {
+                thumb.addEventListener("click", () => {
+                    const newSrc = thumb.getAttribute("data-src");
+                    mainImage.src = newSrc;
+                });
+            });
+        });
+    </script>

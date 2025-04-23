@@ -93,7 +93,7 @@
                         'maxlength' => 500,
                         'aria-describedby' => 'description_error',
                     ]); ?>
-                    <div id="description_error" class="invalid-feedback">Description can't exceed 10 characters.
+                    <div id="description_error" class="invalid-feedback">Description can't be empty or exceed 500 characters.
                     </div>
                 </div>
 
