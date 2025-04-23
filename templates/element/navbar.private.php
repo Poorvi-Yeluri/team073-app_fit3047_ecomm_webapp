@@ -63,7 +63,7 @@
 </div>
 
 <!-- Offcanvas Menu (Mobile Only) -->
-<div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="adminOffcanvas" aria-labelledby="adminOffcanvasLabel">
+<div class="offcanvas offcanvas-start d-md-none" data-bs-backdrop="false" tabindex="-1" id="adminOffcanvas" aria-labelledby="adminOffcanvasLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="adminOffcanvasLabel">Menu</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>

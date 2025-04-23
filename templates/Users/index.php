@@ -14,13 +14,13 @@
         </a>
     </div>
 
-    <table id="usersTable" class="table table-striped table-bordered align-middle">
+    <table class="table datatable table-striped table-bordered align-middle">
         <thead>
         <tr>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Created</th>
+            <th>Created At</th>
             <th class="actions"><?= __('Actions') ?></th>
         </tr>
         </thead>
@@ -58,20 +58,3 @@
     </table>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $('#usersTable').DataTable({
-            "paging": true,
-            "searching": true,
-            "info": true,
-            "lengthChange": true,
-            "order": [[0, 'asc']],
-            layout: {
-                topStart: 'pageLength',
-                topEnd: 'search',
-                bottomStart: 'info',
-                bottomEnd: 'paging'
-            }
-        });
-    });
-</script>

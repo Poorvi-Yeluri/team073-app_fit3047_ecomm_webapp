@@ -12,7 +12,7 @@ $this->Breadcrumbs->add('Contact Messages', ['controller' => 'ContactMessages', 
         <h3 class="fs-2 mb-0"><?= __('Contact Messages') ?></h3>
     </div>
 
-    <table id="contactMessagesTable" class="table table-striped table-bordered align-middle">
+    <table class="table datatable table-striped table-bordered align-middle">
         <thead class="table-light">
         <tr>
             <th><?= __('Name') ?></th>
@@ -66,23 +66,9 @@ $this->Breadcrumbs->add('Contact Messages', ['controller' => 'ContactMessages', 
     </div>
 </div>
 
-<!-- DataTables and Offcanvas Script -->
+<!-- Offcanvas Script -->
 <script>
     $(document).ready(function () {
-        $('#contactMessagesTable').DataTable({
-            paging: true,
-            searching: true,
-            info: true,
-            lengthChange: true,
-            order: [[0, 'asc']],
-            layout: {
-                topStart: 'pageLength',
-                topEnd: 'search',
-                bottomStart: 'info',
-                bottomEnd: 'paging'
-            }
-        });
-
         const offcanvas = document.getElementById('descriptionOffcanvas');
         offcanvas.addEventListener('show.bs.offcanvas', function (event) {
             const trigger = event.relatedTarget;

@@ -54,13 +54,12 @@
                         'type' => 'tel',
                         'class' => 'form-control rounded-0 shadow-none border-dark',
                         'placeholder' => 'E.g. 0450012347',
-                        'maxLength' => 10,
+                        'maxlength' => 15,
                         'label' => ['text' => 'Phone', 'class' => 'mb-2'],
-                        'pattern' => '\d{10}',
                         'required' => true,
                         'aria-describedby' => 'customer_phone_error',
                     ]); ?>
-                    <div id="customer_phone_error" class="invalid-feedback">Phone number must be 10 digits.</div>
+                    <div id="customer_phone_error" class="invalid-feedback">Phone number must not exceed 15 digits.</div>
                 </div>
 
                 <!-- Message Type -->
@@ -91,13 +90,12 @@
                         'placeholder' => 'Describe your message',
                         'label' => ['text' => 'Description', 'class' => 'mb-2'],
                         'required' => true,
-                        'minlength' => 10,
+                        'maxlength' => 500,
                         'aria-describedby' => 'description_error',
                     ]); ?>
-                    <div id="description_error" class="invalid-feedback">Description must be at least 10 characters.
+                    <div id="description_error" class="invalid-feedback">Description can't exceed 10 characters.
                     </div>
                 </div>
-
 
             </fieldset>
             <?= $this->Form->submit('Send Message', ['class' => 'btn btn-dark w-100 rounded-0 mt-3']) ?>
@@ -105,41 +103,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const form = document.querySelector('.needs-validation');
-        const fields = ['customer_name', 'customer_email', 'customer_phone', 'message_type', 'description'];
-
-        // Phone field to allow only numbers
-        document.getElementById('customer_phone').addEventListener('input', (e) => {
-            e.target.value = e.target.value.replace(/\D/g, '');
-        });
-
-        const validateField = (field) => {
-            const errorElement = document.getElementById(field.id + '_error');
-            const isValid = field.checkValidity();
-            field.classList.toggle('is-invalid', !isValid);
-            field.classList.toggle('is-valid', isValid);
-            errorElement.style.display = isValid ? 'none' : 'block';
-        };
-
-        form.addEventListener('input', (e) => validateField(e.target));
-
-        form.addEventListener('submit', (e) => {
-            let isValid = true;
-            fields.forEach(id => {
-                const field = document.getElementById(id);
-                validateField(field);
-                if (!field.checkValidity()) isValid = false;
-            });
-
-            if (!isValid) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            form.classList.add('was-validated');
-        });
-    });
-</script>

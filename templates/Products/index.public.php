@@ -9,16 +9,18 @@
 ?>
 <div class="container">
     <h3 class="text-uppercase"><?= str_replace('-', ' ', $this->request->getQuery('category')) ?? 'Products' ?></h3>
-    <div class="row gy-2 my-3 font-sans">
+    <div class="row gy-3 my-3 font-sans">
         <div class="col-12 d-flex justify-content-between align-items-center">
+            <!-- Filters Button -->
             <div class="d-flex align-items-center gap-2"
                  data-bs-toggle="offcanvas"
                  data-bs-target="#offcanvasFilterOptions"
                  aria-controls="offcanvasFilterOptions">
-                <h6>Filters</h6>
+                <h5>Filters</h5>
                 <span class="material-symbols-outlined mb-2">filter_list</span>
             </div>
 
+            <!-- Sort By Dropdown -->
             <div class="d-flex align-items-center gap-2">
                 <small>Sort By:</small>
                 <?= $this->Form->create(null, [
@@ -38,7 +40,7 @@
                     'latest' => 'Latest'
                 ], [
                     'default' => $sort ?? 'relevance',
-                    'class' => 'form-select form-select-sm',
+                    'class' => 'form-select form-select-md',
                     'aria-label' => 'Sort By',
                     'onchange' => 'this.form.submit()'
                 ]) ?>
@@ -49,8 +51,9 @@
         </div>
 
         <div class="col-12 d-flex justify-content-between justify-content-md-start gap-3 align-items-center">
-            <small
-                class="text-muted">Showing <?= $this->Paginator->counter('{{start}}-{{end}} of {{count}} products') ?></small>
+            <small class="text-muted">
+                Showing <?= $this->Paginator->counter('{{start}}-{{end}} of {{count}} products') ?>
+            </small>
             <!--            --><?php //= $this->Html->link('View All', ['action' => 'index', 'category' => $this->request->getQuery('category')], ['class' => 'text-black text-body']) ?>
         </div>
     </div>
@@ -130,7 +133,7 @@
     <?php endif; ?>
 
 </div>
-<div class="offcanvas offcanvas-start w-sm-75 w-md-50"
+<div class="offcanvas offcanvas-start w-md-50"
      tabindex="-1"
      id="offcanvasFilterOptions"
      aria-labelledby="offcanvasFiltersLabel"

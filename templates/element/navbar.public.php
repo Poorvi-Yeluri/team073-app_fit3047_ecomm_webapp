@@ -1,6 +1,6 @@
 <!-- Top banner -->
 <div class="container-fluid py-2" style="background-color: var(--accent-color)">
-    <div class="d-flex w-100 justify-content-center align-items-center ps-3 ps-md-5">
+    <div class="d-flex w-100 justify-content-center align-items-center ps-3">
         <a class="text-white text-decoration-none ps-md-5" href="#" id="textContent">
             Our Biggest Sale!
         </a>
@@ -37,7 +37,7 @@
         </div>
 
         <!-- Center: Logo -->
-        <a class="logo-brand fs-sm-1 text-center" href="/">
+        <a class="logo-brand fs-sm-1 me-md-5 pe-md-5" href="/">
             GLEAM <i class="text-small">AND</i> GRACE
         </a>
 
@@ -153,23 +153,16 @@
         "Hurry! Special Discounts Ahead!"
     ];
 
-    const bgColors = [
-        "bg-success",  // Green background
-        "bg-primary",  // Primary color background
-        "bg-dark",     // Dark background
-        "bg-warning",   // Yellow background
-        "bg-black",    // Black background
-    ];
+    function changeContentAndStyle() {
+        const textEl = document.getElementById("textContent");
 
-    let currentIndex = 0;
+        // Pick random text and background color
+        const randomText = texts[Math.floor(Math.random() * texts.length)];
 
-    // function changeContentAndStyle() {
-    //     // Change text content
-    //     document.getElementById("textContent").textContent = texts[currentIndex];
-    //     document.getElementById("changeTextDiv").classList.remove(...bgColors);
-    //     document.getElementById("changeTextDiv").classList.add(bgColors[currentIndex]);
-    //     currentIndex = (currentIndex + 1) % texts.length;
-    // }
-    //
-    // setInterval(changeContentAndStyle, 3000);
+        // Update text and background
+        textEl.textContent = randomText;
+    }
+
+    // Start interval after DOM is ready
+        setInterval(changeContentAndStyle, 3000);
 </script>

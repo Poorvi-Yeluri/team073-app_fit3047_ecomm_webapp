@@ -17,9 +17,7 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <?= $this->element('header') ?>
-</head>
+<?= $this->element('header') ?>
 <body class="d-flex flex-column min-vh-100">
 <?= $this->element('navbar') ?>
 <main class="container-fluid py-4 px-md-0 flex-grow-1">
