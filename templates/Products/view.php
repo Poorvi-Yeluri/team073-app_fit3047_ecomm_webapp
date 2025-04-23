@@ -40,15 +40,20 @@
                 </select>
             </div>
 
-            <div class="d-flex w-75 gap-2 font-sans mb-3">
+           <!-- <div class="d-flex w-75 gap-2 font-sans mb-3">
                 <button class="btn btn-md rounded-pill w-100" style="background-color: var(--accent-color); color: var(--white)">Add to Cart</button>
                 <button class="btn btn-md btn-secondary rounded-pill w-100">Wishlist</button>
-            </div>
+            </div> !-->
 
             <div class="mb-3">
                 <strong><?= __('Description') ?></strong>
                 <p><?= h($product['description']) ?></p>
             </div>
+
+        <div class="mb-4">
+            <strong><?= __('Interested in purchasing?')?></strong>
+            <br> If you would like to purchase this product, please contact us on +61 812 123 4567.<br> <br>You can also submit an enquiry through our <br> <a class="text-dark weight-bold" href="/contact-messages/add">Contact Form</a>
+        </div>
         </div>
     </div>
 
