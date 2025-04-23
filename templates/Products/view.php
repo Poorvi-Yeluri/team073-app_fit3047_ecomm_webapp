@@ -43,7 +43,7 @@
            <!-- <div class="d-flex w-75 gap-2 font-sans mb-3">
                 <button class="btn btn-md rounded-pill w-100" style="background-color: var(--accent-color); color: var(--white)">Add to Cart</button>
                 <button class="btn btn-md btn-secondary rounded-pill w-100">Wishlist</button>
-            </div> !-->
+            </div> -->
 
             <div class="mb-3">
                 <strong><?= __('Description') ?></strong>
@@ -57,17 +57,17 @@
         </div>
     </div>
 
-    <div class="row mt-5">
+   <!-- <div class="row mt-5">
         <div class="col-md-12">
             <h4><?= __('You May Like') ?></h4>
             <div class="row">
 
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Customer Reviews Section -->
-    <div class="row mt-5">
+   <!-- <div class="row mt-5">
         <div class="col-md-12">
             <h4><?= __('Customer Reviews') ?></h4>
 
@@ -87,3 +87,4 @@
         </div>
     </div>
 </div>
+-->
