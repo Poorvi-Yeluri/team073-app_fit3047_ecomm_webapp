@@ -80,6 +80,17 @@
                 </ul>
             </li>
 
+            <!-- Products Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="productDropdownMobile" data-bs-toggle="dropdown">
+                    Products
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="productsDropdownMobile">
+                    <li><a class="dropdown-item text-center" href="/products/">View Products</a></li>
+                    <li><a class="dropdown-item text-center" href="/products/add">Add Product</a></li>
+                </ul>
+            </li>
+
             <!-- Users Dropdown -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="usersDropdownMobile" data-bs-toggle="dropdown">
