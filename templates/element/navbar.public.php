@@ -85,6 +85,13 @@
             <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'gifts']]) ?>">Gifts</a></li>
             <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'clearance']]) ?>">Clearance</a></li>
         </ul>
+        <hr />
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Auth', 'action' => 'login', '?' => ['category' => 'home-decor']]) ?>">Login</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Auth', 'action' => 'register', '?' => ['category' => 'jewellery']]) ?>">Register</a></li>
+        </ul>
+        <hr />
+
     </div>
 </div>
 
