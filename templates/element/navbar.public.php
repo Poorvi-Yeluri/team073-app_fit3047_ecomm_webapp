@@ -10,7 +10,7 @@
 
 <!-- Top Navbar -->
 <div class="container-fluid border-bottom py-2 px-3 px-md-5">
-    <div class="d-flex w-100 justify-content-evenly justify-content-md-between align-items-center">
+    <div class="d-flex w-100 justify-content-start gap-2 justify-content-md-between align-items-center">
 
         <!-- Left: Toggler + Search -->
         <div class="d-flex align-items-center gap-3">
