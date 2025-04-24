@@ -69,7 +69,7 @@
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <ul class="navbar-nav fw-bold fs-6" style="font-family: Avenir; letter-spacing: 1px;">
+        <ul class="navbar-nav fw-bold fs-6 font-sans">
             <!-- Contact Dropdown -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="contactDropdownMobile" data-bs-toggle="dropdown">
@@ -100,6 +100,13 @@
                     <li><a class="dropdown-item text-center" href="/users/">All Users</a></li>
                     <li><a class="dropdown-item text-center" href="/users/add">Add User</a></li>
                 </ul>
+            </li>
+            <li class="nav-item my-3">
+                <div class="d-block d-md-none">
+                    <?= $this->Form->create(null, ['url' => '/auth/logout', 'method' => 'post']) ?>
+                    <?= $this->Form->button('Logout', ['class' => 'btn btn-dark w-100 rounded-0']) ?>
+                    <?= $this->Form->end() ?>
+                </div>
             </li>
         </ul>
     </div>

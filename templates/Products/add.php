@@ -5,7 +5,7 @@
  */
 ?>
 <div class="container mt-4">
-    <div class="w-75">
+    <div class="col-12 col-lg-6">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4><?= __('Add Product') ?></h4>
             <div>
