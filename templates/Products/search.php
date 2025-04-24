@@ -9,7 +9,11 @@
 ?>
 
 <div class="container">
-    <h3 class="text-uppercase"><?= str_replace('-', ' ', $this->request->getQuery('category')) ?? 'Products' ?></h3>
+    <h3 class="text-uppercase">
+        <?= $this->request->getQuery('category')
+            ? str_replace('-', ' ', $this->request->getQuery('category'))
+            : 'Products' ?>
+    </h3>
     <div class="row gy-2 my-3 font-sans">
         <div class="col-12 d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-2"
