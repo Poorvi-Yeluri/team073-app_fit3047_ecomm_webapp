@@ -1,11 +1,12 @@
 <!-- Top banner -->
 <div class="container-fluid py-2" style="background-color: var(--accent-color)">
-    <div class="d-flex w-100 justify-content-center align-items-center ps-3">
-        <a class="text-white text-decoration-none ps-md-5" href="#" id="textContent">
+    <div class="d-flex w-100 justify-content-center align-items-center">
+        <a class="text-white text-decoration-none text-center" href="#" id="textContent">
             Our Biggest Sale!
         </a>
     </div>
 </div>
+
 
 <!-- Top Navbar -->
 <div class="container-fluid border-bottom py-2 px-3 px-md-5">
@@ -36,8 +37,13 @@
             </form>
         </div>
 
-        <!-- Center: Logo -->
-        <a class="logo-brand fs-sm-1 me-md-5 pe-md-5" href="/">
+        <!-- Center: Logo (md, lg) -->
+        <a class="logo-brand d-none d-md-block position-absolute start-50 translate-middle-x" href="/" style="z-index: 1;">
+            GLEAM <i class="text-small">AND</i> GRACE
+        </a>
+
+        <!-- Center: Logo (sm) -->
+        <a class="logo-brand fs-1 d-block d-md-none" href="/">
             GLEAM <i class="text-small">AND</i> GRACE
         </a>
 
