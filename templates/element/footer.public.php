@@ -13,7 +13,7 @@
         <h5>Quick Links</h5>
         <ul class="list-unstyled">
             <li><a href="/pages/home" class="text-dark">Home</a></li>
-            <li><a href="#" class="text-dark">Shop</a></li>
+            <li><a href="/products" class="text-dark">Shop</a></li>
             <li><a href="/pages/about" class="text-dark">About</a></li>
             <li><a href="/contact-messages/add" class="text-dark">Contact</a></li>
         </ul>
@@ -58,8 +58,8 @@
                  data-bs-parent="#mobileFooterAccordion">
                 <div class="accordion-body mt-space-1">
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-dark">Home</a></li>
-                        <li><a href="#" class="text-dark">Shop</a></li>
+                        <li><a href="/" class="text-dark">Home</a></li>
+                        <li><a href="/products" class="text-dark">Shop</a></li>
                         <li><a href="/pages/about" class="text-dark">About</a></li>
                         <li><a href="/contact-messages/add" class="text-dark">Contact</a></li>
                     </ul>
