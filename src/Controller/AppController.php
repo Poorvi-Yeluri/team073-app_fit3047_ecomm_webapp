@@ -53,7 +53,7 @@ class AppController extends Controller
             'lang' => 'en', // default 'en'
             'size' => 'normal',  // normal/compact
             'callback' => null, // `callback` data attribute for the recaptcha div, default `null`
-            'scriptBlock' => true, // Value for `block` option for HtmlHelper::script() call
+            'scriptBlock' => true // Value for `block` option for HtmlHelper::script() call
         ]);
 
         /*

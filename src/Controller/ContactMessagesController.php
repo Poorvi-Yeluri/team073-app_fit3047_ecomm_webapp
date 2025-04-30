@@ -54,13 +54,18 @@ class ContactMessagesController extends AppController
     {
         $contactMessage = $this->ContactMessages->newEmptyEntity();
         if ($this->request->is('post')) {
-            $contactMessage = $this->ContactMessages->patchEntity($contactMessage, $this->request->getData());
-            if ($this->ContactMessages->save($contactMessage)) {
-                $this->Flash->success(__('The contact message has been saved.'));
+            if ($this->Recaptcha->verify()) {
+                $contactMessage = $this->ContactMessages->patchEntity($contactMessage, $this->request->getData());
+                if ($this->ContactMessages->save($contactMessage)) {
+                    $this->Flash->success(__('The contact message has been saved.'));
 
-                return $this->redirect($this->referer());
+                    return $this->redirect($this->referer());
+                } else {
+                    $this->Flash->error(__('The contact message could not be saved. Please, try again.'));
+                }
+            } else {
+                $this->Flash->error(__('Recaptcha verification failed.'));
             }
-            $this->Flash->error(__('The contact message could not be saved. Please, try again.'));
         }
         $this->set(compact('contactMessage'));
     }
