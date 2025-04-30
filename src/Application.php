@@ -14,6 +14,7 @@ declare(strict_types=1);
  * @since     3.3.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App;
 
 use Authentication\AuthenticationService;
@@ -27,6 +28,7 @@ use Cake\Datasource\FactoryLocator;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\BodyParserMiddleware;
+use Cake\Http\Middleware\CspMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\ORM\Locator\TableLocator;
@@ -110,7 +112,27 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 'httponly' => true,
             ]))
 
-            // Add Authentication support by plugin
+//            ->add(new CspMiddleware([
+//                'script-src' => [
+//                    'allow' => [
+//                        'https://www.google.com/recaptcha',
+//                        'https://www.google.com/recaptcha/api.js?hl=en',
+//                        'https://www.gstatic.com/recaptcha/releases/w0_qmZVSdobukXrBwYd9dTF7/recaptcha__en.js',
+//                        'https://code.jquery.com/jquery-3.6.0.min.js',
+//                        'https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js',
+//                        'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js',
+//                        'https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.2.2/b-3.2.2/b-colvis-3.2.2/cr-2.0.4/fc-5.0.4/fh-4.0.1/rr-1.5.0/sp-2.3.3/sl-3.0.0/sr-1.4.1/datatables.min.js',
+//                        'https://cdn.datatables.net/responsive/3.0.4/js/dataTables.responsive.js',
+//                        'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js',
+//                    ],
+//                    'self' => true,
+//                    'unsafe-inline' => false,
+//                    'unsafe-eval' => false,
+//                ],
+//            ]))
+
+
+                // Add Authentication support by plugin
             ->add(new AuthenticationMiddleware($this));
 
         return $middlewareQueue;
