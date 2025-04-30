@@ -100,6 +100,14 @@ return [
             'path' => CACHE,
             'url' => env('CACHE_DEFAULT_URL', null),
         ],
+        '_cake_translations_' => [
+            'className' => FileEngine::class,
+            'prefix' => 'myapp_cake_translations_',
+            'path' => CACHE . 'persistent' . DS,
+            'serialize' => true,
+            'duration' => '+1 years',
+            'url' => env('CACHE_CAKECORE_URL', null),
+        ],
 
         /*
          * Configure the cache used for general framework caching.
@@ -107,14 +115,14 @@ return [
          * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
          * If you set 'className' => 'Null' core cache will be disabled.
          */
-        '_cake_core_' => [
-            'className' => FileEngine::class,
-            'prefix' => 'myapp_cake_core_',
-            'path' => CACHE . 'persistent' . DS,
-            'serialize' => true,
-            'duration' => '+1 years',
-            'url' => env('CACHE_CAKECORE_URL', null),
-        ],
+//        '_cake_core_' => [
+//            'className' => FileEngine::class,
+//            'prefix' => 'myapp_cake_core_',
+//            'path' => CACHE . 'persistent' . DS,
+//            'serialize' => true,
+//            'duration' => '+1 years',
+//            'url' => env('CACHE_CAKECORE_URL', null),
+//        ],
 
         /*
          * Configure the cache for model and datasource caches. This cache
