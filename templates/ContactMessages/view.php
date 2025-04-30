@@ -15,15 +15,15 @@ $this->Breadcrumbs->add('View Message', ['action' => 'view', $contactMessage->id
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0 font-serif"><?= h($contactMessage->message_type) ?></h4>
                 <div class="btn-group">
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $contactMessage->id], ['class' => 'btn btn-primary btn-sm']) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contactMessage->id], [
-                        'class' => 'btn btn-danger btn-sm',
-                        'confirm' => __('Are you sure you want to delete {0} ({1})? Sent on: {2}',
-                            $contactMessage->customer_name,
-                            $contactMessage->message_type,
-                            $this->Time->format($contactMessage->created_at, 'dd MMM yyyy, hh:mm a')
-                        )
-                    ]) ?>
+<!--                    --><?php //= $this->Html->link(__('Edit'), ['action' => 'edit', $contactMessage->id], ['class' => 'btn btn-primary btn-sm']) ?>
+<!--                    --><?php //= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contactMessage->id], [
+//                        'class' => 'btn btn-danger btn-sm',
+//                        'confirm' => __('Are you sure you want to delete {0} ({1})? Sent on: {2}',
+//                            $contactMessage->customer_name,
+//                            $contactMessage->message_type,
+//                            $this->Time->format($contactMessage->created_at, 'dd MMM yyyy, hh:mm a')
+//                        )
+//                    ]) ?>
                     <?= $this->Html->link(__('Back to List'), ['action' => 'index'], ['class' => 'btn btn-secondary btn-sm']) ?>
                 </div>
             </div>

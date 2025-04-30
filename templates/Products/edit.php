@@ -117,7 +117,7 @@
 
                     </fieldset>
 
-                    <?= $this->Form->submit('Update', ['class' => 'btn btn-dark w-100 rounded-0 mt-3']) ?>
+                    <?= $this->Form->submit('Update', ['class' => 'btn btn-dark w-100 mt-3']) ?>
                     <?= $this->Form->end() ?>
                 </div>
             </div>

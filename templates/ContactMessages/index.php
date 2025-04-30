@@ -8,8 +8,11 @@ $this->Breadcrumbs->add('Contact Messages', ['controller' => 'ContactMessages', 
 ?>
 
 <div class="container py-4 font-sans">
-    <div class="d-flex justify-content-between align-items-center mb-4 font-serif">
-        <h3 class="fs-2 mb-0"><?= __('Contact Messages') ?></h3>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0 font-serif"><?= __('Contact Messages') ?></h4>
+<!--        --><?php //= $this->Html->link(__('Add'), ['action' => 'add'], [
+//            'class' => 'btn btn-success rounded-3',
+//        ]) ?>
     </div>
 
     <table class="table datatable table-striped table-bordered align-middle">
@@ -37,17 +40,14 @@ $this->Breadcrumbs->add('Contact Messages', ['controller' => 'ContactMessages', 
                     <?= $this->Html->link(__('View'), ['action' => 'view', $contactMessage->id], [
                         'class' => 'btn btn-sm btn-primary rounded-3',
                     ]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $contactMessage->id], [
-                        'class' => 'btn btn-sm btn-warning rounded-3',
-                    ]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contactMessage->id], [
-                        'class' => 'btn btn-sm btn-danger rounded-3',
-                        'confirm' => __('Are you sure you want to delete the message from {0} ({1}) - Sent at {2}',
-                            $contactMessage->customer_name,
-                            $contactMessage->message_type,
-                            $this->Time->format(new \DateTime($contactMessage->created_at), 'dd MMM yyyy, hh:mm a')
-                        ),
-                    ]) ?>
+<!--                    --><?php //= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contactMessage->id], [
+//                        'class' => 'btn btn-sm btn-danger rounded-3',
+//                        'confirm' => __('Are you sure you want to delete the message from {0} ({1}) - Sent at {2}',
+//                            $contactMessage->customer_name,
+//                            $contactMessage->message_type,
+//                            $this->Time->format(new \DateTime($contactMessage->created_at), 'dd MMM yyyy, hh:mm a')
+//                        ),
+//                    ]) ?>
                 </td>
             </tr>
         <?php endforeach; ?>

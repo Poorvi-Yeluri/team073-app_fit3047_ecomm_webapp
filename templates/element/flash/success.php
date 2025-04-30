@@ -42,7 +42,7 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
                 toast.classList.add('fade');
                 setTimeout(function() {
                     toast.remove();
-                }, 100);
+                }, 1000);
             }, delay);
         });
     });

@@ -5,13 +5,11 @@
  */
 ?>
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4><?= __('Users') ?></h4>
-        <a class="btn btn-md btn-primary "
-           style="font-family: Avenir"
-           href='<?= $this->Url->build(['action' => 'add']) ?>'>
-            Add User
-        </a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0 font-serif"><?= __('Users') ?></h4>
+        <?= $this->Html->link(__('Add User'), ['action' => 'add'], [
+            'class' => 'btn btn-success rounded-3',
+        ]) ?>
     </div>
 
     <table class="table datatable table-striped table-bordered align-middle">
@@ -32,16 +30,14 @@
                 <td><?= h($user->phone) ?></td>
                 <td><?= $this->Time->format($user->created, 'dd MMM yyyy, hh:mm a') ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(
-                        __('View'),
-                        ['action' => 'view', $user->id],
-                        ['class' => 'btn btn-sm btn-info'],
-                    ) ?>
-                    <?= $this->Html->link(
-                        __('Edit'),
-                        ['action' => 'edit', $user->id],
-                        ['class' => 'btn btn-sm btn-warning'],
-                    ) ?>
+                    <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], [
+                        'class' => 'btn btn-sm btn-primary rounded-3',
+                    ]) ?>
+
+                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], [
+                        'class' => 'btn btn-sm btn-warning rounded-3'
+                    ]) ?>
+
                     <?= $this->Form->postLink(
                         __('Delete'),
                         ['action' => 'delete', $user->id],
