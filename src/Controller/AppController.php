@@ -70,11 +70,35 @@ class AppController extends Controller
     public function beforeFilter(EventInterface $event)
     {
         if (!$this->Authentication->getIdentity()) {
-            $contactMessagesTable = $this->fetchTable('ContactMessages');
-            // Create and pass an empty entity
-            $this->set('contactMessage', $contactMessagesTable->newEmptyEntity());
+            $this->provideContactMessage();
         }
 
         return parent::beforeFilter($event);
     }
+
+    /**
+     * @param EventInterface $event
+     * @return void
+     */
+    public function beforeRender(EventInterface $event): void
+    {
+        parent::beforeRender($event);
+
+        // Always set contactMessage
+        if (!$this->viewBuilder()->getVar('contactMessage')) {
+            $this->set('contactMessage', $this->fetchTable('ContactMessages')->newEmptyEntity());
+        }
+    }
+
+
+    /**
+     * @return void
+     */
+    protected function provideContactMessage(): void
+    {
+        $this->set('contactMessage', $this->fetchTable('ContactMessages')->newEmptyEntity());
+    }
+
+
+
 }

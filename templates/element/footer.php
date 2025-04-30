@@ -20,5 +20,7 @@
         integrity="sha384-zAVoatBLtEAzOhdX4Xkli8AOOsRiPj+iFEsCh/BBYnKNHJCM/G8PNGupst4xx3Ft"
         crossorigin="anonymous"></script>
 
+<script src="https://www.google.com/recaptcha/api.js"></script>
+
 <?= $this->Html->script('form-validation') ?>
 <?= $this->Html->script('datatable-init') ?>

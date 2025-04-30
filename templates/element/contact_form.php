@@ -100,7 +100,11 @@
                 </div>
 
                 <!-- reCaptcha -->
-                <?= $this->Recaptcha->display() ?>
+                <div id="recaptcha-container" class="mb-3">
+                    <?= $this->Recaptcha->display() ?>
+                </div>
+
+
             </fieldset>
             <?= $this->Form->submit('Send Message', ['class' => 'btn btn-dark w-100 rounded-0 mt-3']) ?>
             <?= $this->Form->end() ?>
