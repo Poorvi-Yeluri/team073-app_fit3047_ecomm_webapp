@@ -59,7 +59,8 @@
                         'required' => true,
                         'aria-describedby' => 'customer_phone_error',
                     ]); ?>
-                    <div id="customer_phone_error" class="invalid-feedback">Phone number must not exceed 15 digits.</div>
+                    <div id="customer_phone_error" class="invalid-feedback">Phone number must not exceed 15 digits.
+                    </div>
                 </div>
 
                 <!-- Message Type -->
@@ -93,10 +94,13 @@
                         'maxlength' => 500,
                         'aria-describedby' => 'description_error',
                     ]); ?>
-                    <div id="description_error" class="invalid-feedback">Description can't be empty or exceed 500 characters.
+                    <div id="description_error" class="invalid-feedback">Description can't be empty or exceed 500
+                        characters.
                     </div>
                 </div>
 
+                <!-- reCaptcha -->
+                <?= $this->Recaptcha->display() ?>
             </fieldset>
             <?= $this->Form->submit('Send Message', ['class' => 'btn btn-dark w-100 rounded-0 mt-3']) ?>
             <?= $this->Form->end() ?>

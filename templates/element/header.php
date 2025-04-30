@@ -9,6 +9,8 @@
 
     <?= $this->Html->meta('icon') ?>
     <?= $this->Html->css(['styles', 'button']) ?>
+    <?= $this->fetch('script') ?>
+
 
 
     <!-- Bootstrap 5.3.3 CSS -->
@@ -46,4 +48,5 @@
     <?= $this->Html->css('https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css') ?>
     <?= $this->Html->script('https://code.jquery.com/jquery-3.6.0.min.js') ?>
     <?= $this->Html->script('https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js') ?>
+
 </head>
