@@ -45,7 +45,7 @@
         <!-- Right: Logout Button -->
         <div class="d-none d-md-block">
             <?= $this->Form->create(null, ['url' => '/auth/logout', 'method' => 'post']) ?>
-            <?= $this->Form->button('Logout', ['class' => 'btn btn-dark w-100 rounded-0']) ?>
+            <?= $this->Form->button('Logout', ['class' => 'btn btn-dark w-100']) ?>
             <?= $this->Form->end() ?>
         </div>
 
