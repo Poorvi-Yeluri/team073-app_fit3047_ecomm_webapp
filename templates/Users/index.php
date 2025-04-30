@@ -30,9 +30,9 @@
                 <td><?= h($user->phone) ?></td>
                 <td><?= $this->Time->format($user->created, 'dd MMM yyyy, hh:mm a') ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], [
-                        'class' => 'btn btn-sm btn-primary rounded-3',
-                    ]) ?>
+<!--                    --><?php //= $this->Html->link(__('View'), ['action' => 'view', $user->id], [
+//                        'class' => 'btn btn-sm btn-primary rounded-3',
+//                    ]) ?>
 
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], [
                         'class' => 'btn btn-sm btn-warning rounded-3'
