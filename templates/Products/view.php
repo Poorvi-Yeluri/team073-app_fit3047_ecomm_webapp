@@ -33,16 +33,16 @@
             <h5 class="font-sans weight-regular">$<?= $this->Number->format(
                     $product['base_price'], ['places' => 2, 'precision' => 2, 'locale' => 'en_US', 'currency' => true]
                 ) ?></h5>
-            <?php if (!$this->Identity->isLoggedIn()) : ?>
-                <div class="d-flex flex-column my-3">
-                    <span class="font-sans">Quantity</span>
-                    <select name="quantity" class="w-25 p-2 border-gray" style="height: 35px;" id="quantity">
-                        <?php for ($i = 1; $i <= 10; $i++): ?>
-                            <option value="<?= $i ?>"><?= $i ?></option>
-                        <?php endfor; ?>
-                    </select>
-                </div>
-            <?php endif; ?>
+<!--            --><?php //if (!$this->Identity->isLoggedIn()) : ?>
+<!--                <div class="d-flex flex-column my-3">-->
+<!--                    <span class="font-sans">Quantity</span>-->
+<!--                    <select name="quantity" class="w-25 p-2 border-gray" style="height: 35px;" id="quantity">-->
+<!--                        --><?php //for ($i = 1; $i <= 10; $i++): ?>
+<!--                            <option value="--><?php //= $i ?><!--">--><?php //= $i ?><!--</option>-->
+<!--                        --><?php //endfor; ?>
+<!--                    </select>-->
+<!--                </div>-->
+<!--            --><?php //endif; ?>
 
             <!-- <div class="d-flex w-75 gap-2 font-sans mb-3">
                  <button class="btn btn-md rounded-pill w-100" style="background-color: var(--accent-color); color: var(--white)">Add to Cart</button>
