@@ -57,7 +57,7 @@ class ContactMessagesController extends AppController
             if ($this->Recaptcha->verify()) {
                 $contactMessage = $this->ContactMessages->patchEntity($contactMessage, $this->request->getData());
                 if ($this->ContactMessages->save($contactMessage)) {
-                    $this->Flash->success(__("Your contact message for has been sent."));
+                    $this->Flash->success(__("Your contact message has been sent."));
 
                     return $this->redirect($this->referer());
                 } else {
