@@ -18,14 +18,21 @@ TRUNCATE TABLE users;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- Seed users
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `phone`, `nonce`, `nonce_expiry`, `created`,
-                     `modified`)
-VALUES (1, 'John', 'Doe', 'john.doe@example.com', '$2y$10$xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', '123-456-7890', NULL, NULL,
-        NOW(), NOW()),
-       (2, 'Jane', 'Smith', 'jane.smith@example.com', '$2y$10$yyyyyyyyyyyyyyyyyyyyyyyyyyyyy', '987-654-3210', NULL,
-        NULL, NOW(), NOW()),
-       (3, 'Peter', 'Jones', 'peter.jones@example.com', '$2y$10$zzzzzzzzzzzzzzzzzzzzzzzzzzz', '111-222-3333', NULL,
-        NULL, NOW(), NOW());
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `phone`, `nonce`, `nonce_expiry`, `created`, `modified`)
+VALUES
+    (1, 'John', 'Doe', 'john.doe@example.com', '$2y$10$xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', '0412 345 678', NULL, NULL, NOW(), NOW()),
+    (2, 'Jane', 'Smith', 'jane.smith@example.com', '$2y$10$yyyyyyyyyyyyyyyyyyyyyyyyyyyyy', '0423 456 789', NULL, NULL, NOW(), NOW()),
+    (3, 'Peter', 'Jones', 'peter.jones@example.com', '$2y$10$zzzzzzzzzzzzzzzzzzzzzzzzzzz', '0434 567 890', NULL, NULL, NOW(), NOW()),
+    (4, 'Emily', 'Brown', 'emily.brown@webmail.com', '$2y$10$aaaaaaaaaaaaaaaaaaaaaaaaaaa', '0455 678 901', NULL, NULL, NOW(), NOW()),
+    (5, 'Liam', 'Wilson', 'liam.wilson@mailservice.com', '$2y$10$bbbbbbbbbbbbbbbbbbbbbbbbbbb', '0466 789 012', NULL, NULL, NOW(), NOW()),
+    (6, 'Chloe', 'Taylor', 'chloe.taylor@fastmail.com', '$2y$10$ccccccccccccccccccccccccccc', '0477 890 123', NULL, NULL, NOW(), NOW()),
+    (7, 'Noah', 'Lee', 'noah.lee@inbox.net', '$2y$10$ddddddddddddddddddddddddddd', '0488 901 234', NULL, NULL, NOW(), NOW()),
+    (8, 'Olivia', 'Martin', 'olivia.martin@email.com', '$2y$10$eeeeeeeeeeeeeeeeeeeeeeeeeee', '0499 012 345', NULL, NULL, NOW(), NOW()),
+    (9, 'Jack', 'White', 'jack.white@provider.com', '$2y$10$fffffffffffffffffffffffffff', '02 9123 4567', NULL, NULL, NOW(), NOW()),
+    (10, 'Ava', 'Walker', 'ava.walker@domain.com', '$2y$10$ggggggggggggggggggggggggggg', '03 9876 5432', NULL, NULL, NOW(), NOW()),
+    (11, 'Lucas', 'Hall', 'lucas.hall@australiamail.com', '$2y$10$hhhhhhhhhhhhhhhhhhhhhhhhhhh', '0410 234 567', NULL, NULL, NOW(), NOW()),
+    (12, 'Zoe', 'Adams', 'zoe.adams@samplemail.com', '$2y$10$iiiiiiiiiiiiiiiiiiiiiiiiiii', '0409 345 678', NULL, NULL, NOW(), NOW()),
+    (13, 'Ethan', 'Campbell', 'ethan.campbell@ozmail.net', '$2y$10$jjjjjjjjjjjjjjjjjjjjjjjjjjj', '0401 456 789', NULL, NULL, NOW(), NOW());
 
 -- Seed attributes
 INSERT INTO attributes (id, name, created_at, modified_at)
@@ -335,13 +342,28 @@ VALUES (1, 'https://picsum.photos/id/237/800/600', CURRENT_TIMESTAMP, CURRENT_TI
 
 
 -- Seed contact_messages
-INSERT INTO `contact_messages` (`id`, `message_type`, `description`, `customer_name`, `customer_email`,
-                                `customer_phone`, `created_at`)
-VALUES (1, 'General Inquiry', 'Interested in your gold necklace.', 'Alice Brown', 'alice.brown@example.com',
-        '555-123-4567', NOW()),
-       (2, 'Complaint', 'The wooden vase arrived damaged.', 'Bob Green', 'bob.green@example.com', '555-987-6543',
-        NOW()),
-       (3, 'Feedback', 'Love the quality of the silver earrings!', 'Charlie White', 'charlie.white@example.com',
-        '555-111-2222', NOW());
+INSERT INTO `contact_messages` (`id`, `message_type`, `description`, `customer_name`, `customer_email`, `customer_phone`, `created_at`)
+VALUES
+    (1, 'General Inquiry', 'Interested in your gold necklace.', 'Alice Brown', 'alice.brown@gmail.com', '0411 223 344', NOW()),
+    (2, 'Complaint', 'The wooden vase arrived damaged.', 'Bob Green', 'bob.green@live.com.au', '0422 334 455', NOW()),
+    (3, 'Feedback', 'Love the quality of the silver earrings!', 'Charlie White', 'charlie.white@outlook.com', '0433 445 566', NOW()),
+    (4, 'Support', 'Having trouble logging into my account.', 'Diana King', 'diana.king@outlook.com', '0412 345 678', NOW()),
+    (5, 'Feedback', 'Your gift wrapping was lovely!', 'Ethan Clark', 'ethan.clark@mail.com', '0423 456 789', NOW()),
+    (6, 'Complaint', 'Received the wrong item in my order.', 'Fiona Scott', 'fiona.scott@gmail.com', '0434 567 890', NOW()),
+    (7, 'General Inquiry', 'Do you ship to New Zealand?', 'George Young', 'george.young@webmail.com', '0445 678 901', NOW()),
+    (8, 'Support', 'Need help updating my delivery address.', 'Holly Adams', 'holly.adams@yahoo.com', '0456 789 012', NOW()),
+    (9, 'Complaint', 'Mirror arrived shattered. Requesting replacement.', 'Ian Lee', 'ian.lee@example.com', '0467 890 123', NOW()),
+    (10, 'Feedback', 'Impressed by your eco-friendly packaging.', 'Jasmine Rose', 'jasmine.rose@mailbox.com', '0478 901 234', NOW()),
+    (11, 'Support', 'Can’t apply the promo code.', 'Kevin Baker', 'kevin.baker@provider.com', '0489 012 345', NOW()),
+    (12, 'General Inquiry', 'Are custom engravings available?', 'Laura Turner', 'laura.turner@aol.com', '0490 123 456', NOW()),
+    (13, 'Feedback', 'Loved the hand-painted candle holder!', 'Max Harris', 'max.harris@ozmail.com', '0401 234 567', NOW()),
+    (14, 'General Inquiry', 'Do you offer gift cards?', 'Nina Wells', 'nina.wells@gmail.com', '0402 345 678', NOW()),
+    (15, 'Complaint', 'Received a faulty lamp, need a replacement.', 'Oscar Blake', 'oscar.blake@mail.com', '0413 456 789', NOW()),
+    (16, 'Support', 'Order history not showing on my account.', 'Paula Reid', 'paula.reid@live.com.au', '0424 567 890', NOW()),
+    (17, 'Feedback', 'Fantastic experience at your store!', 'Quentin Hall', 'quentin.hall@outlook.com', '0435 678 901', NOW()),
+    (18, 'Support', 'Can I change the delivery date for my order?', 'Rachel Moore', 'rachel.moore@yahoo.com', '0446 789 012', NOW()),
+    (19, 'Complaint', 'Received a refund but still got charged.', 'Samuel Doyle', 'samuel.doyle@provider.com', '0457 890 123', NOW());
+
+
 
 
