@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\ContactMessage> $contactMessages
+ * @var string|null $type
  */
 
 use Cake\Utility\Text;
@@ -11,59 +12,73 @@ $this->Breadcrumbs->add('Contact Messages', ['controller' => 'ContactMessages', 
 ?>
 
 <div class="container py-4 font-sans">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="mb-0 font-serif"><?= __('Contact Messages') ?></h4>
-        <!--        --><?php //= $this->Html->link(__('Add'), ['action' => 'add'], [
-        //            'class' => 'btn btn-success rounded-3',
-        //        ]) ?>
-    </div>
+    <div class="row">
+        <!-- Left Side Categories -->
+        <div class="col-md-3 mb-4">
+            <div class="list-group">
+                <div class="list-group-item fw-bold d-flex justify-content-between align-items-center">
+                    Message Types
+                    <button id="toggleMsgTypes" class="btn btn-sm btn-outline-secondary">Hide</button>
+                </div>
+                <div id="msgTypeList">
+                    <?= $this->Html->link(__('All Messages'),
+                        ['action' => 'index'],
+                        ['class' => 'list-group-item list-group-item-action ' . (!$type ? 'active' : '')]
+                    ) ?>
+                    <?php foreach (['General Inquiry', 'Complaint', 'Feedback', 'Support'] as $msgType): ?>
+                        <?= $this->Html->link(
+                            __($msgType),
+                            ['action' => 'index', '?' => ['type' => $msgType]],
+                            ['class' => 'list-group-item list-group-item-action ' . ($type === $msgType ? 'active' : '')]
+                        ) ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
 
-    <table class="table datatable table-striped table-bordered align-middle">
-        <thead class="table-light">
-        <tr>
-            <th><?= __('Name') ?></th>
-            <th><?= __('Email') ?></th>
-            <th><?= __('Phone') ?></th>
-            <th><?= __('Type') ?></th>
-            <th><?= __('Description') ?></th>
-            <th><?= __('Sent At') ?></th>
-            <!--            <th class="text-center">--><?php //= __('Actions') ?><!--</th>-->
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($contactMessages as $contactMessage): ?>
-            <tr>
-                <td class="text-center"><?= h($contactMessage->customer_name) ?></td>
-                <td class="text-center"><?= h($contactMessage->customer_email) ?></td>
-                <td class="text-center"><?= h($contactMessage->customer_phone) ?></td>
-                <td class="text-center"><?= h($contactMessage->message_type) ?></td>
-                <td class="text-center">
-                    <span class="d-inline-block text-truncate text-dark"
-                          style="max-width: 200px; cursor: pointer;"
-                          data-bs-toggle="offcanvas"
-                          data-bs-target="#descriptionOffcanvas"
-                          data-description="<?= h($contactMessage->description) ?>">
-                        <?= h(Text::truncate($contactMessage->description, 60, ['ellipsis' => '...'])) ?>
-                    </span>
-                </td>
-                <td class="text-center"><?= $this->Time->format($contactMessage->created_at, 'dd MMM yyyy, hh:mm a') ?></td>
-<!--                <td class="text-center">-->
-<!--                    --><?php //= $this->Html->link(__('View'), ['action' => 'view', $contactMessage->id], [
-//                        'class' => 'btn btn-sm btn-primary rounded-3',
-//                    ]) ?>
-<!--                    --><?php //= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contactMessage->id], [
-//                        'class' => 'btn btn-sm btn-danger rounded-3',
-//                        'confirm' => __('Are you sure you want to delete the message from {0} ({1}) - Sent at {2}',
-//                            $contactMessage->customer_name,
-//                            $contactMessage->message_type,
-//                            $this->Time->format(new \DateTime($contactMessage->created_at), 'dd MMM yyyy, hh:mm a')
-//                        ),
-//                    ]) ?>
-<!--                </td>-->
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <!-- Messages Table -->
+            <table class="table datatable table-striped table-bordered align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th><?= __('Name') ?></th>
+                    <th><?= __('Email') ?></th>
+                    <th><?= __('Phone') ?></th>
+                    <th><?= __('Type') ?></th>
+                    <th><?= __('Description') ?></th>
+                    <th><?= __('Sent At') ?></th>
+                    <th class="text-center"><?= __('Actions') ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($contactMessages as $contactMessage): ?>
+                    <tr>
+                        <td class="text-center"><?= h($contactMessage->customer_name) ?></td>
+                        <td class="text-center"><?= h($contactMessage->customer_email) ?></td>
+                        <td class="text-center"><?= h($contactMessage->customer_phone) ?></td>
+                        <td class="text-center"><?= h($contactMessage->message_type) ?></td>
+                        <td class="text-center">
+                            <span class="d-inline-block text-truncate text-dark"
+                                  style="max-width: 200px; cursor: pointer;"
+                                  data-bs-toggle="offcanvas"
+                                  data-bs-target="#descriptionOffcanvas"
+                                  data-description="<?= h($contactMessage->description) ?>">
+                                <?= h(Text::truncate($contactMessage->description, 60, ['ellipsis' => '...'])) ?>
+                            </span>
+                        </td>
+                        <td class="text-center"><?= $this->Time->format($contactMessage->created_at, 'dd MMM yyyy') ?></td>
+                        <td class="text-center">
+                            <?= $this->Html->link(__('View'), ['action' => 'view', $contactMessage->id], [
+                                'class' => 'btn btn-outline-dark btn-sm rounded-3'
+                            ]) ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <!-- Offcanvas for Full Description -->
@@ -80,14 +95,24 @@ $this->Breadcrumbs->add('Contact Messages', ['controller' => 'ContactMessages', 
     </div>
 </div>
 
-<!-- Offcanvas Script -->
+<!-- Offcanvas Script + Toggle Script -->
 <script>
-    $(document).ready(function () {
+    // For description viewer
+    document.addEventListener('DOMContentLoaded', function () {
         const offcanvas = document.getElementById('descriptionOffcanvas');
         offcanvas.addEventListener('show.bs.offcanvas', function (event) {
             const trigger = event.relatedTarget;
             const description = trigger.getAttribute('data-description');
             document.getElementById('offcanvasDescriptionText').textContent = description;
+        });
+
+        // For hiding/showing message type list
+        const toggleBtn = document.getElementById('toggleMsgTypes');
+        const msgTypeList = document.getElementById('msgTypeList');
+        toggleBtn.addEventListener('click', function () {
+            const isHidden = msgTypeList.style.display === 'none';
+            msgTypeList.style.display = isHidden ? 'block' : 'none';
+            this.textContent = isHidden ? 'Hide' : 'Show';
         });
     });
 </script>
