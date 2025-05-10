@@ -26,10 +26,22 @@ class ContactMessagesController extends AppController
      */
     public function index()
     {
+        // Get the filter type from the query parameter
+        $type = $this->request->getQuery('type', '');
+
+        // Build the query based on the filter type
         $query = $this->ContactMessages->find();
+
+        // Apply message type filter
+        if (!empty($type)) {
+            $query->where(['message_type' => $type]);
+        }
+
+        // Paginate the results
         $contactMessages = $this->paginate($query);
 
-        $this->set(compact('contactMessages'));
+        // Pass the contact messages and filter type to the view
+        $this->set(compact('contactMessages', 'type'));
     }
 
     /**
