@@ -35,6 +35,10 @@ class ProductsController extends AppController
         }
 
         $queryParams = $this->request->getQuery();
+        // Allow the JS dropdown to send ?order=stock-asc or stock-desc
+        if (isset($queryParams['order'])) {
+            $queryParams['sort'] = $queryParams['order'];
+        }
         $query = $this->prepareProductQuery([], $queryParams);
         $selectedFilters = array_filter(
             $queryParams,
@@ -336,6 +340,12 @@ class ProductsController extends AppController
                 break;
             case 'name-desc':
                 $query->orderBy(['name' => 'DESC']);
+                break;
+            case 'stock-asc':
+                $query->orderBy(['Products.stock_quantity' => 'ASC']);
+                break;
+            case 'stock-desc':
+                $query->orderBy(['Products.stock_quantity' => 'DESC']);
                 break;
             default:
                 break;
