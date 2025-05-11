@@ -438,3 +438,20 @@ select::placeholder {
     opacity: 1;
 }
 
+.custom-stock-badge {
+    font-family: sans-serif;
+    color: #212529; /* consistent dark text */
+}
+
+.low-stock {
+    background-color: #d9534f;
+}
+
+.medium-stock {
+    background-color: #eba714;
+}
+
+.high-stock {
+    background-color: #5cb85c;
+}
+
