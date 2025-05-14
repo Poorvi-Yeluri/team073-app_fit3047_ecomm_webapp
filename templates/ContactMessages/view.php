@@ -13,19 +13,16 @@ $this->Breadcrumbs->add('View Message', ['action' => 'view', $contactMessage->id
         <div class="card shadow-sm">
             <!-- Card Header with Title and Actions -->
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h4 class="mb-0 font-serif"><?= h($contactMessage->message_type) ?></h4>
-                <div class="btn-group">
-<!--                    --><?php //= $this->Html->link(__('Edit'), ['action' => 'edit', $contactMessage->id], ['class' => 'btn btn-primary btn-sm']) ?>
-<!--                    --><?php //= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contactMessage->id], [
-//                        'class' => 'btn btn-danger btn-sm',
-//                        'confirm' => __('Are you sure you want to delete {0} ({1})? Sent on: {2}',
-//                            $contactMessage->customer_name,
-//                            $contactMessage->message_type,
-//                            $this->Time->format($contactMessage->created_at, 'dd MMM yyyy, hh:mm a')
-//                        )
-//                    ]) ?>
+                <!-- Back to List Button on the Left -->
+                <div class="btn-group mr-3">
                     <?= $this->Html->link(__('Back to List'), ['action' => 'index'], ['class' => 'btn btn-secondary btn-sm']) ?>
                 </div>
+
+                <!-- Title with Customer Name, Message Type, and Date -->
+                <h4 class="mb-0 font-serif mx-auto">
+                    <?= h($contactMessage->customer_name) ?> - <?= h($contactMessage->message_type) ?> -
+                    <?= $this->Time->format($contactMessage->created_at, 'dd MMM yyyy') ?>
+                </h4>
             </div>
 
             <!-- Card Body with Details -->
@@ -51,7 +48,7 @@ $this->Breadcrumbs->add('View Message', ['action' => 'view', $contactMessage->id
                         </tr>
                         <tr>
                             <th><?= __('Sent At') ?></th>
-                            <td><?= $this->Time->format($contactMessage->created_at, 'dd MMM yyyy, hh:mm a') ?></td>
+                            <td><?= $this->Time->format($contactMessage->created_at, 'dd MMM yyyy') ?></td>
                         </tr>
                         </tbody>
                     </table>
