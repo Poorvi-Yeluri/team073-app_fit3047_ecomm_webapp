@@ -215,7 +215,6 @@ DROP TABLE IF EXISTS `product_variants`;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product_variants` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
   `product_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `price` decimal(10,2) NOT NULL,
