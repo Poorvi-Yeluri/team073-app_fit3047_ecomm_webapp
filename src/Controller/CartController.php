@@ -132,13 +132,15 @@ class CartController extends AppController
             ];
         }
 
+        // Get the base URL of the current site (domain)
+        $baseUrl = 'https://' . $this->request->domain();
         try {
             $checkoutSession = $this->stripe->checkout->sessions->create([
                 'payment_method_types' => ['card'],
                 'line_items' => $lineItems,
                 'mode' => 'payment',
-                'success_url' => 'https://28dd-49-199-153-27.ngrok-free.app/orders/success?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => 'https://28dd-49-199-153-27.ngrok-free.app/order/cancel?session_id={CHECKOUT_SESSION_ID}',
+                'success_url' => $baseUrl . '/orders/success?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => $baseUrl . '/order/cancel?session_id={CHECKOUT_SESSION_ID}',
             ]);
 
             return $this->redirect($checkoutSession->url);
