@@ -47,9 +47,9 @@ class CartController extends AppController
             'contain' => ['Products', 'ProductVariantAttributes.AttributeValues.Attributes']
         ]);
 
-        $quantity = (int)($data['quantity'] ?? 1);
-        if ($quantity <= 0 || $quantity > $variant->stock_quantity) {
-            $this->Flash->error("Invalid quantity selected.");
+        $quantityToAdd = (int)($data['quantity'] ?? 1);
+        if ($quantityToAdd <= 0) {
+            $this->Flash->error("Invalid quantity.");
             return $this->redirect($this->referer());
         }
 
@@ -73,17 +73,23 @@ class CartController extends AppController
         }
 
         $cart = $session->read('Cart.items') ?? [];
-
         $key = $variantId . '-' . md5(json_encode($attributes));
+        $existingQuantity = isset($cart[$key]) ? $cart[$key]['quantity'] : 0;
+        $newTotalQuantity = $existingQuantity + $quantityToAdd;
+
+        if ($newTotalQuantity > $variant->stock_quantity) {
+            $this->Flash->error("Only {$variant->stock_quantity} in stock for {$variant->name}. You have {$existingQuantity} in your cart.");
+            return $this->redirect($this->referer());
+        }
 
         if (isset($cart[$key])) {
-            $cart[$key]['quantity'] += $quantity;
+            $cart[$key]['quantity'] += $quantityToAdd;
         } else {
             $cart[$key] = [
                 'variant_id' => $variantId,
                 'name' => $variant->name,
                 'price' => $variant->price,
-                'quantity' => $quantity,
+                'quantity' => $quantityToAdd,
                 'attributes' => $attributes,
                 'image' => $variant->main_image_url,
             ];
@@ -94,6 +100,7 @@ class CartController extends AppController
 
         return $this->redirect($this->referer());
     }
+
 
     /**
      * Remove a product variant from the cart by cart key
