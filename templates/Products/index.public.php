@@ -66,7 +66,7 @@
         <?php foreach ($products as $product) : ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                 <div class="card h-100 shadow-md rounded-0">
-                    <img src="<?= h($product->image_url) ?>" alt="<?= h($product->name) ?>"
+                    <img src="<?= h($product->main_image_url) ?>" alt="<?= h($product->name) ?>"
                          style="object-fit: cover; height: 280px;">
                     <div class="card-body">
                         <h5 class="card-title"><?= h($product->name) ?></h5>

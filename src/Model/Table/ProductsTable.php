@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Product;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
@@ -16,19 +17,19 @@ use Cake\Validation\Validator;
  * Products Model
  *
  * @property \App\Model\Table\ProductVariantsTable&\Cake\ORM\Association\HasMany $ProductVariants
- * @method \App\Model\Entity\Product newEmptyEntity()
- * @method \App\Model\Entity\Product newEntity(array $data, array $options = [])
- * @method array<\App\Model\Entity\Product> newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Product get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\Product findOrCreate($search, ?callable $callback = null, array $options = [])
- * @method \App\Model\Entity\Product patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method array<\App\Model\Entity\Product> patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\Product|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
- * @method \App\Model\Entity\Product saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
- * @method iterable<\App\Model\Entity\Product>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Product>|false saveMany(iterable $entities, array $options = [])
- * @method iterable<\App\Model\Entity\Product>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Product> saveManyOrFail(iterable $entities, array $options = [])
- * @method iterable<\App\Model\Entity\Product>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Product>|false deleteMany(iterable $entities, array $options = [])
- * @method iterable<\App\Model\Entity\Product>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Product> deleteManyOrFail(iterable $entities, array $options = [])
+ * @method Product newEmptyEntity()
+ * @method Product newEntity(array $data, array $options = [])
+ * @method array<Product> newEntities(array $data, array $options = [])
+ * @method Product get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method Product findOrCreate($search, ?callable $callback = null, array $options = [])
+ * @method Product patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method array<Product> patchEntities(iterable $entities, array $data, array $options = [])
+ * @method Product|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method Product saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method iterable<Product>|\Cake\Datasource\ResultSetInterface<Product>|false saveMany(iterable $entities, array $options = [])
+ * @method iterable<Product>|\Cake\Datasource\ResultSetInterface<Product> saveManyOrFail(iterable $entities, array $options = [])
+ * @method iterable<Product>|\Cake\Datasource\ResultSetInterface<Product>|false deleteMany(iterable $entities, array $options = [])
+ * @method iterable<Product>|\Cake\Datasource\ResultSetInterface<Product> deleteManyOrFail(iterable $entities, array $options = [])
  */
 class ProductsTable extends Table
 {
@@ -255,62 +256,18 @@ class ProductsTable extends Table
 
     /**
      * @param string $slug
-     * @return \Cake\ORM\Query\SelectQuery
+     * @return Product
      */
-    public function findBySlug(string $slug): array
+    public function findBySlug(string $slug): Product
     {
-        $product = $this->find()
+        return $this->find()
             ->where(['slug' => $slug])
             ->contain([
                 'ProductImages',
-                'ProductAttributes.AttributeValues.Attributes',
                 'ProductVariants.ProductVariantImages',
                 'ProductVariants.ProductVariantAttributes.AttributeValues.Attributes',
             ])
             ->firstOrFail();
-
-        $attributeOptions = [];
-        $variantData = [];
-
-        foreach ($product->product_variants as $variant) {
-            $variantAttributes = [];
-
-            foreach ($variant->product_variant_attributes as $pva) {
-                $attrName = $pva->attribute_value->attribute->name;
-                $attrValue = $pva->attribute_value->value;
-
-                $variantAttributes[$attrName] = $attrValue;
-
-                // Collect unique options
-                $attributeOptions[$attrName][] = $attrValue;
-            }
-
-            $variantData[] = [
-                'id' => $variant->id,
-                'sku' => $variant->sku,
-                'price' => $variant->price,
-                'stock_quantity' => $variant->stock_quantity,
-                'images' => collection($variant->product_variant_images)->extract('image_url')->toList(),
-                'attributes' => $variantAttributes,
-            ];
-        }
-
-        // Deduplicate attribute values
-        foreach ($attributeOptions as $key => $values) {
-            $attributeOptions[$key] = array_unique($values);
-        }
-
-        return [
-            'id' => $product->id,
-            'name' => $product->name,
-            'slug' => $product->slug,
-            'description' => $product->description,
-            'category' => $product->category,
-            'base_price' => $product->base_price,
-            'images' => collection($product->product_images)->extract('image_url')->toList(),
-            'attributes' => $attributeOptions,
-            'variants' => $variantData,
-        ];
     }
 
     /**
