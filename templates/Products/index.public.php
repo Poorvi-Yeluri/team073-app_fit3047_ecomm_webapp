@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\Product> $products
+ * @var iterable<\App\Model\Entity\ProductVariant> $variants
  * @var array $filterOptions
  * @var array $selectedFilters
  * @var string|null $sort
@@ -64,68 +64,30 @@
     </div>
 
     <div class="row">
-        <?php foreach ($products as $product) : ?>
+        <?php foreach ($variants as $variant) : ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                 <div class="card h-100 shadow-md rounded-0">
-                    <img src="<?= h($product->main_image_url) ?>" alt="<?= h($product->name) ?>"
+                    <img src="<?= h($variant->main_image_url) ?>" alt="<?= h($variant->name) ?>"
                          style="object-fit: cover; height: 280px;">
                     <div class="card-body">
-                        <h5 class="card-title"><?= h($product->name) ?></h5>
+                        <h5 class="card-title"><?= h($variant->name) ?></h5>
                         <p class="card-text fw-bold">
-                            $<?= number_format((float)$product->base_price, 2) ?>
+                            $<?= number_format((float)$variant->price, 2) ?>
                         </p>
-
-                        <?php
-                        $colorMap = [
-                            'Red' => '#FF4136',
-                            'Blue' => '#0074D9',
-                            'White' => '#FFFFFF',
-                            'Black' => '#111111',
-                            'Gold' => '#FFD700',
-                            'Silver' => '#C0C0C0',
-                            'Green' => '#2ECC40',
-                            'Purple' => '#B10DC9',
-                        ];
-
-                        $colors = [];
-
-                        foreach ($product->product_variants as $variant) {
-                            foreach ($variant->product_variant_attributes as $attr) {
-                                if ($attr->attribute_value->attribute_id === 2) {
-                                    $colorName = $attr->attribute_value->value;
-                                    $colors[strtolower($colorName)] = $colorMap[$colorName] ?? '#ccc';
-                                }
-                            }
-                        }
-                        ?>
-
-                        <?php if (!empty($colors)) : ?>
-                            <div class="mt-2">
-                                <small class="text-muted">Colors:</small>
-                                <div class="d-flex flex-wrap gap-2 mt-1">
-                                    <?php foreach ($colors as $name => $hex) : ?>
-                                        <div title="<?= ucfirst($name) ?>"
-                                             style="width: 18px; height: 18px; border-radius: 50%;
-                                                 background-color: <?= h($hex) ?>; border: 1px solid #999;">
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
-                        <?php endif; ?>
                     </div>
                     <div class="card-footer bg-transparent border-0">
                         <div class="d-flex flex-column justify-content-between gap-2">
-                            <a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', $product->slug]) ?>"
+                            <a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', $variant->slug]) ?>"
                                class="btn w-100 rounded-2"
                                style="color: var(--white);
                        background-color: var(--accent-color)">
                                 View Details
                             </a>
                             <?= $this->Form->create(null, [
-                                'url' => ['controller' => 'Cart', 'action' => 'add', $product->id],
+                                'url' => ['controller' => 'Cart', 'action' => 'add', $variant->id],
                                 'type' => 'post',
                                 'class' => 'add-to-cart-form',
-                                'data-product-id' => $product->id
+                                'data-product-id' => $variant->id
                             ]) ?>
                             <?= $this->Form->button(__('Add to Cart'), [
                                 'class' => 'btn w-100 rounded-2 btn-dark'
@@ -151,6 +113,8 @@
     <?php endif; ?>
 
 </div>
+
+
 <div class="offcanvas offcanvas-start w-md-50"
      tabindex="-1"
      id="offcanvasFilterOptions"

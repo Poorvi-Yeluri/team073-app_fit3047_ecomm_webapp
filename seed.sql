@@ -78,6 +78,7 @@ VALUES
 (1, 2),  -- Color
 (1, 3),  -- Size
 
+
 -- Home-decor: uses Material and Color
 (2, 2),  -- Color
 
@@ -94,37 +95,63 @@ VALUES
 
 
 -- Seed product_variants
-INSERT INTO product_variants (id, product_id, name, price, stock_quantity, sku, created_at)
+INSERT INTO product_variants (id, product_id, name, slug, price, stock_quantity, sku, created_at)
 VALUES
--- Jewellery
-(1, 1, 'Gold Necklace - Red / Small', 120.00, 25, 'NECK-GOLD-RED-S', NOW()),
-(2, 1, 'Gold Necklace - Blue / Medium', 120.00, 25, 'NECK-GOLD-BLUE-M', NOW()),
-(3, 1, 'Gold Necklace - Black / Large', 120.00, 25, 'NECK-GOLD-BLACK-L', NOW()),
-(4, 1, 'Gold Necklace - White / XL', 120.00, 25, 'NECK-GOLD-WHITE-XL', NOW()),
+-- Jewellery: only Color (Size is now a shared product-level attribute)
+(1, 1, 'Gold Necklace - Red', 'gold-necklace-red', 120.00, 25, 'NECK-GOLD-RED', NOW()),
+(2, 1, 'Gold Necklace - Blue', 'gold-necklace-blue', 120.00, 25, 'NECK-GOLD-BLUE', NOW()),
+(3, 1, 'Gold Necklace - Black', 'gold-necklace-black', 120.00, 25, 'NECK-GOLD-BLACK', NOW()),
+(4, 1, 'Gold Necklace - White', 'gold-necklace-white', 120.00, 25, 'NECK-GOLD-WHITE', NOW()),
 
 -- Home-decor
-(5, 2, 'Ceramic Vase - Red', 45.00, 12, 'VASE-CERAMIC-RED', NOW()),
-(6, 2, 'Ceramic Vase - Blue', 45.00, 12, 'VASE-CERAMIC-BLUE', NOW()),
-(7, 5, 'Wood Vase - Red', 45.00, 13, 'VASE-WOOD-RED', NOW()),
-(8, 5, 'Wood Vase - Blue', 45.00, 13, 'VASE-WOOD-BLUE', NOW()),
+(5, 2, 'Ceramic Vase - Red', 'ceramic-vase-red', 45.00, 12, 'VASE-CERAMIC-RED', NOW()),
+(6, 2, 'Ceramic Vase - Blue', 'ceramic-vase-blue', 45.00, 12, 'VASE-CERAMIC-BLUE', NOW()),
+(7, 5, 'Wood Vase - Red', 'wood-vase-red', 45.00, 13, 'VASE-WOOD-RED', NOW()),
+(8, 5, 'Wood Vase - Blue', 'wood-vase-blue', 45.00, 13, 'VASE-WOOD-BLUE', NOW()),
 
 -- Gifts
-(9, 3, 'Gift Mug - Blue / Medium', 15.00, 35, 'MUG-BLUE-MEDIUM', NOW()),
-(10, 3, 'Gift Mug - Green / Large', 15.00, 35, 'MUG-GREEN-LARGE', NOW()),
+(9, 3, 'Gift Mug - Blue / Medium', 'gift-mug-blue-medium', 15.00, 35, 'MUG-BLUE-MEDIUM', NOW()),
+(10, 3, 'Gift Mug - Green / Large', 'gift-mug-green-large', 15.00, 35, 'MUG-GREEN-LARGE', NOW()),
 
 -- Clearance
-(11, 4, 'Candle Set - White / Small', 10.00, 15, 'CANDLE-WHITE-SMALL', NOW()),
-(12, 4, 'Candle Set - Yellow / Medium', 10.00, 15, 'CANDLE-YELLOW-MEDIUM', NOW());
+(11, 4, 'Candle Set - White / Small', 'candle-set-white-small', 10.00, 15, 'CANDLE-WHITE-SMALL', NOW()),
+(12, 4, 'Candle Set - Yellow / Medium', 'candle-set-yellow-medium', 10.00, 15, 'CANDLE-YELLOW-MEDIUM', NOW());
+
 
 
 -- Seed product_variant_attributes
--- Jewellery: Only Color and Size
+-- Jewellery: Only Color (Size comes from product attributes)
+
 INSERT INTO product_variant_attributes (product_variant_id, attribute_value_id)
 VALUES
-    (1, 5), (1, 9),   -- Red, Small
-    (2, 6), (2, 10),  -- Blue, Medium
-    (3, 8), (3, 11),  -- Black, Large
-    (4, 7), (4, 15),  -- White, Extra Large
+    -- Red Gold Necklace (Small, Medium, Large, XL)
+    (1, 5), -- Red
+    (1, 9), -- Small
+    (1, 10), -- Medium
+    (1, 11), -- Large
+    (1, 15), -- Extra Large
+
+    -- Blue Gold Necklace (Small, Medium, Large, XL)
+    (2, 6), -- Blue
+    (2, 9), -- Small
+    (2, 10), -- Medium
+    (2, 11), -- Large
+    (2, 15), -- Extra Large
+
+    -- Black Gold Necklace (Small, Medium, Large, XL)
+    (3, 8), -- Black
+    (3, 9), -- Small
+    (3, 10), -- Medium
+    (3, 11), -- Large
+    (3, 15), -- Extra Large
+
+    -- White Gold Necklace (Small, Medium, Large, XL)
+    (4, 7), -- White
+    (4, 9), -- Small
+    (4, 10), -- Medium
+    (4, 11), -- Large
+    (4, 15), -- Extra Large
+
 
 -- Home-decor: Only Material and Color
     (5, 4), (5, 5),   -- Ceramic, Red
@@ -132,7 +159,7 @@ VALUES
     (7, 3), (7, 5),   -- Wood, Red
     (8, 3), (8, 6),   -- Wood, Blue
 
--- Gifts: Anything
+-- Gifts: Anything (both color and size stay)
     (9, 6), (9, 10),  -- Blue, Medium
     (10, 13), (10, 11), -- Green, Large
 

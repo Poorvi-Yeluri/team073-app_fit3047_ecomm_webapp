@@ -21,11 +21,10 @@ $cartItems = $session->read('Cart.items') ?? [];
                 <?php foreach ($cartItems as $itemId => $item): ?>
                     <div class="cartItem p-2">
                         <div class="d-flex align-items-center">
-<!--                            <div class="d-flex align-items-center">-->
-<!--                                <img src="--><?php //= h($item['image_url']) ?><!--"-->
-<!--                                     class="me-3"-->
-<!--                                     style="width: 60px; height: 60px; object-fit: cover;">-->
-<!--                            </div>-->
+                            <img src="<?= h($item['image']) ?>"
+                                 class="me-3 rounded-2"
+                                 style="width: 60px; height: 60px; object-fit: cover;" alt="">
+
                             <div class="flex-grow-1">
                                 <strong class="font-serif"><?= h($item['name']) ?></strong><br>
                                 <span>Price: $<?= number_format($item['price'], 2) ?></span><br>

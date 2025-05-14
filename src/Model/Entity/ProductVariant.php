@@ -13,6 +13,7 @@ use Cake\ORM\Entity;
  * @property int $product_id
  * @property string $name
  * @property string $price
+ * @property string $slug
  * @property int $stock_quantity
  * @property string $sku
  * @property DateTime $created_at
@@ -36,6 +37,7 @@ class ProductVariant extends Entity
     protected array $_accessible = [
         'product_id' => true,
         'name' => true,
+        'slug' => true,
         'price' => true,
         'stock_quantity' => true,
         'sku' => true,

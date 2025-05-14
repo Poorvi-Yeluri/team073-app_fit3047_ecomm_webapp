@@ -119,29 +119,96 @@ class OrdersController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    /**
-     * @return Response|null
-     */
-    public function success(): Response|null
+    public function success()
     {
         $sessionId = $this->request->getQuery('session_id');
 
+        if (empty($sessionId)) {
+            $this->Flash->error('Invalid session ID.');
+            return $this->redirect(['controller' => 'Products', 'action' => 'index']);
+        }
+
         try {
-            $checkoutSession = $this->stripe->checkout->sessions->retrieve($sessionId);
-            // Prepare the stripe data to save to Orders table
-            $order = $this->Orders->newEntity([]);
-            $order->status = 'paid';
-            $order->total_price = $checkoutSession->amount_total / 100; // Convert from cents to dollars
+            // Retrieve the Stripe session and expand line items + products
+            $session = $this->stripe->checkout->sessions->retrieve($sessionId, [
+                'expand' => ['line_items.data.price.product']
+            ]);
+
+            // Shipping address
+            $shippingAddress = $session->collected_information->shipping_details->address ?? null;
+
+            // Customer info
+            $customerName = $session->customer_details->name ?? 'Unknown';
+            $customerEmail = $session->customer_details->email ?? 'Unknown';
+            $customerPhone = $session->customer_details->phone ?? 'Unknown';
+
+            // Payment info
+            $paymentStatus = $session->payment_status ?? 'Unknown';
+            $paymentMethod = $session->payment_method_types[0] ?? 'Unknown';
+            $currency = strtoupper($session->currency ?? 'AUD');
+
+            // Totals
+            $shippingAmount = ($session->total_details->amount_shipping ?? 0) / 100;
+            $taxAmount = ($session->total_details->amount_tax ?? 0) / 100;
+            $discountAmount = ($session->total_details->amount_discount ?? 0) / 100;
+            $totalAmount = ($session->amount_total ?? 0) / 100;
+
+            // Create order entity
+            $order = $this->Orders->newEmptyEntity();
+            $order->session_id = $sessionId;
+            $order->user_id = $this->Authentication->getIdentity()->id ?? null;
+            $order->total_price = $totalAmount;
+            $order->status = 'Completed';
+            $order->customer_name = $customerName;
+            $order->customer_email = $customerEmail;
+            $order->customer_phone = $customerPhone;
+            $order->shipping_address = json_encode($shippingAddress);
+            $order->payment_status = $paymentStatus;
+            $order->payment_method = $paymentMethod;
+            $order->shipping_amount = $shippingAmount;
+            $order->tax_amount = $taxAmount;
+            $order->discounts = json_encode($session->discounts);
+            $order->currency = $currency;
+            $order->cancel_url = $session->cancel_url ?? null;
+            $order->success_url = $session->success_url ?? null;
+            $order->expires_at = $session->expires_at;
+
             if ($this->Orders->save($order)) {
-                $session = $this->request->getSession();
-                $session->delete('Cart.items');
-                $this->Flash->success('Payment successful! Your order is being processed.');
+                // Process each line item
+                $this->processOrderItems($order->id, $session->line_items->data);
+                $this->Flash->success('Your order has been placed successfully!');
                 return $this->redirect(['controller' => 'Orders', 'action' => 'view', $order->id]);
+            } else {
+                $this->Flash->error('There was an error saving your order.');
             }
         } catch (Exception $e) {
-            $this->Flash->error('There was an error processing your payment.');
+            $this->Flash->error('Error processing order: ' . $e->getMessage());
         }
-        return $this->redirect(['controller' => 'Orders', 'action' => 'index']);
+
+        return $this->redirect(['controller' => 'Products', 'action' => 'index']);
+    }
+
+
+    /**
+     * Process the order items and link them to the order
+     */
+    private function processOrderItems($orderId, $lineItems)
+    {
+        $orderItemsTable = $this->getTableLocator()->get('OrderItems');
+
+        foreach ($lineItems as $item) {
+            $orderItem = $orderItemsTable->newEmptyEntity();
+            $orderItem->order_id = $orderId;
+            $orderItem->variant_id = $item->price->product->metadata->variant_id;
+            $orderItem->quantity = $item->quantity;
+            $orderItem->price = $item->price->unit_amount / 100; // Convert price to dollars
+            $orderItem->amount_subtotal = $item->amount_subtotal / 100; // Store subtotal in dollars
+            $orderItem->amount_total = $item->amount_total / 100; // Store total price in dollars
+            $orderItem->tax_amount = $item->amount_tax / 100; // Store tax in dollars
+            $orderItem->discount_amount = $item->amount_discount / 100; // Store discount amount
+
+            $orderItemsTable->save($orderItem);
+        }
     }
 
     /**

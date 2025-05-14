@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\Product;
+use App\Model\Entity\ProductVariant;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\ResultSetInterface;
@@ -232,12 +233,79 @@ class ProductsTable extends Table
             ->distinct(['Products.id']);
     }
 
+    public function getVariantFilters(array $variantIds): array
+    {
+        if (empty($variantIds)) {
+            return [];
+        }
+
+        $attributeValuesTable = TableRegistry::getTableLocator()->get('AttributeValues');
+        $variantAttributesTable = TableRegistry::getTableLocator()->get('ProductVariantAttributes');
+
+        $usedValueIds = $variantAttributesTable->find()
+            ->select(['attribute_value_id'])
+            ->distinct()
+            ->where(['product_variant_id IN' => $variantIds])
+            ->all()
+            ->extract('attribute_value_id')
+            ->toArray();
+
+        if (empty($usedValueIds)) {
+            return [];
+        }
+
+        // Modify the query here to prevent ambiguity with 'id' field
+        $usedAttributeValues = $attributeValuesTable->find()
+            ->where(['AttributeValues.id IN' => $usedValueIds]) // Explicitly referencing 'AttributeValues.id'
+            ->contain([
+                'Attributes' => function ($q) {
+                    return $q->select(['Attributes.id', 'Attributes.name']); // Explicitly referencing 'Attributes.id'
+                }
+            ])
+            ->all();
+
+        $filterOptions = [];
+
+        foreach ($usedAttributeValues as $value) {
+            $attrName = $value->attribute->name; // 'attribute' is from the contain
+            $filterOptions[$attrName][] = $value->value;
+        }
+
+        // Sort values
+        foreach ($filterOptions as &$values) {
+            $values = array_unique($values);
+            sort($values);
+        }
+
+        return $filterOptions;
+    }
+
+
+
+
+    /**
+     * @param string $slug
+     * @return ProductVariant
+     */
+    public function findBySlug(string $slug): ProductVariant
+    {
+        return $this->ProductVariants->find()
+            ->where(['ProductVariants.slug' => $slug])
+            ->contain([
+                'Products',
+                'ProductVariantImages',
+                'ProductVariantAttributes.AttributeValues.Attributes',
+            ])
+            ->firstOrFail();
+    }
+
+
 
     /**
      * @param string $slug
      * @return Product
      */
-    public function findBySlug(string $slug): Product
+    public function findByVariantId(string $slug): Product
     {
         return $this->find()
             ->where(['slug' => $slug])
@@ -248,6 +316,8 @@ class ProductsTable extends Table
             ])
             ->firstOrFail();
     }
+
+
 
 
     /**

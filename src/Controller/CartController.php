@@ -16,9 +16,9 @@ class CartController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-        $this->Authentication->allowUnauthenticated(['add', 'remove', 'checkout']);
-        $stripeSecretKey = Configure::read('Stripe.secret_key');
-        $this->stripe = new StripeClient($stripeSecretKey);    }
+        $this->Authentication->allowUnauthenticated(['add', 'remove', 'count', 'getItems', 'checkout']);
+        $this->stripe = new StripeClient(Configure::read('Stripe.secret_key'));
+    }
 
     /**
      * Get the current cart items in the session
@@ -27,72 +27,103 @@ class CartController extends AppController
     {
         $session = $this->request->getSession();
         $cartItems = $session->read('Cart.items') ?? [];
-        $result = [
+
+        return $this->response->withType('application/json')->withStringBody(json_encode([
             'cartItems' => $cartItems,
             'cartCount' => count($cartItems),
-        ];
-        return $this->response->withType('application/json')->withStringBody(json_encode($result));
+        ]));
     }
 
     /**
-     * Add a product to the cart
+     * Add a product variant to the cart
      */
-    public function add($productId)
+    public function add($variantId)
     {
         $this->request->allowMethod(['post']);
-
         $session = $this->request->getSession();
-        $product = $this->fetchTable('Products')->get($productId);
+        $data = $this->request->getData();
+
+        $variant = $this->fetchTable("ProductVariants")->get($variantId, [
+            'contain' => ['Products', 'ProductVariantAttributes.AttributeValues.Attributes']
+        ]);
+
+        $quantity = (int)($data['quantity'] ?? 1);
+        if ($quantity <= 0 || $quantity > $variant->stock_quantity) {
+            $this->Flash->error("Invalid quantity selected.");
+            return $this->redirect($this->referer());
+        }
+
+        $attributes = [];
+        if ($variant->product->category === 'jewellery') {
+            $size = $data['size'] ?? null;
+
+            $validSizes = array_reduce($variant->product_variant_attributes, function ($carry, $attr) {
+                if ($attr->attribute_value->attribute->name === 'Size') {
+                    $carry[] = $attr->attribute_value->value;
+                }
+                return $carry;
+            }, []);
+
+            if (!$size || !in_array($size, $validSizes)) {
+                $this->Flash->error("Please select a valid size.");
+                return $this->redirect($this->referer());
+            }
+
+            $attributes['Size'] = $size;
+        }
 
         $cart = $session->read('Cart.items') ?? [];
 
-        if (isset($cart[$productId])) {
-            $cart[$productId]['quantity'] += 1;
+        $key = $variantId . '-' . md5(json_encode($attributes));
+
+        if (isset($cart[$key])) {
+            $cart[$key]['quantity'] += $quantity;
         } else {
-            $cart[$productId] = [
-                'id' => $product->id,
-                'name' => $product->name,
-                'price' => $product->base_price,
-                'quantity' => 1,
-                'image_url' => $product->image
+            $cart[$key] = [
+                'variant_id' => $variantId,
+                'name' => $variant->name,
+                'price' => $variant->price,
+                'quantity' => $quantity,
+                'attributes' => $attributes,
+                'image' => $variant->main_image_url,
             ];
         }
 
         $session->write('Cart.items', $cart);
-
-        $this->Flash->success("{$product->name} added to your cart!");
+        $this->Flash->success("{$variant->name} added to your cart!");
 
         return $this->redirect($this->referer());
     }
 
-
     /**
-     * Remove a product to the cart
+     * Remove a product variant from the cart by cart key
      */
-    public function remove($productId)
+    public function remove($cartKey)
     {
         $this->request->allowMethod(['post', 'ajax']);
 
         $session = $this->request->getSession();
         $cart = $session->read('Cart.items') ?? [];
 
-        if (isset($cart[$productId])) {
-            $productName = $cart[$productId]['name'];
-            unset($cart[$productId]);
+        if (isset($cart[$cartKey])) {
+            $productName = $cart[$cartKey]['name'];
+            unset($cart[$cartKey]);
             $session->write('Cart.items', $cart);
             $this->Flash->success("{$productName} was removed from your cart.");
         } else {
-            $this->Flash->error("Product not found in cart.");
+            $this->Flash->error("Item not found in your cart.");
         }
 
         return $this->redirect($this->referer());
     }
 
-
-
+    /**
+     * Get cart item count
+     */
     public function count()
     {
         $this->request->allowMethod(['get']);
+
         $session = $this->request->getSession();
         $cart = $session->read('Cart.items') ?? [];
         $count = array_sum(array_column($cart, 'quantity'));
@@ -103,13 +134,11 @@ class CartController extends AppController
         ]);
     }
 
-
     /**
      * Checkout method to initiate Stripe payment
      */
     public function checkout()
     {
-        // Retrieve cart items from session
         $session = $this->request->getSession();
         $cartItems = $session->read('Cart.items') ?? [];
 
@@ -117,36 +146,43 @@ class CartController extends AppController
             throw new NotFoundException('Your cart is empty.');
         }
 
-        // Prepare line items for Stripe checkout
         $lineItems = [];
         foreach ($cartItems as $item) {
             $lineItems[] = [
                 'price_data' => [
                     'currency' => 'aud',
+                    'unit_amount' => (int)($item['price'] * 100),
                     'product_data' => [
                         'name' => $item['name'],
+                        'metadata' => [
+                            'variant_id' => (string) $item['variant_id'],
+                            'attributes' => json_encode($item['attributes']),
+                        ],
                     ],
-                    'unit_amount' => (int)($item['price'] * 100), // Convert price to cents
                 ],
                 'quantity' => $item['quantity'],
             ];
         }
 
-        // Get the base URL of the current site (domain)
+
         $baseUrl = 'https://' . $this->request->domain();
+
         try {
             $checkoutSession = $this->stripe->checkout->sessions->create([
                 'payment_method_types' => ['card'],
+                'phone_number_collection' => ['enabled' => true],
+                'billing_address_collection' => 'required',
+                'shipping_address_collection' => ['allowed_countries' => ['AU']],
                 'line_items' => $lineItems,
                 'mode' => 'payment',
-                'success_url' => $baseUrl . '/orders/success?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => $baseUrl . '/order/cancel?session_id={CHECKOUT_SESSION_ID}',
+                'success_url' => 'https://28dd-49-199-153-27.ngrok-free.app' . '/orders/success?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => $baseUrl . '/products/',
             ]);
 
             return $this->redirect($checkoutSession->url);
         } catch (Exception $e) {
             $this->Flash->error('Error creating checkout session: ' . $e->getMessage());
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect($this->referer());
         }
     }
 }
