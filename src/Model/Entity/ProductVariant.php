@@ -12,7 +12,6 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $product_id
  * @property string $name
- * @property string $variant_value
  * @property string $price
  * @property int $stock_quantity
  * @property string $sku
@@ -20,6 +19,7 @@ use Cake\ORM\Entity;
  *
  * @property Product $product
  * @property ProductVariantImage[] $product_variant_images
+ * @property string $main_image_url
  * @property array $image_urls
  */
 class ProductVariant extends Entity
@@ -36,7 +36,6 @@ class ProductVariant extends Entity
     protected array $_accessible = [
         'product_id' => true,
         'name' => true,
-        'variant_value' => true,
         'price' => true,
         'stock_quantity' => true,
         'sku' => true,
@@ -50,12 +49,31 @@ class ProductVariant extends Entity
      *
      * @var array<string>
      */
-    protected array $_virtual = ['image_urls'];
 
+    protected array $_virtual = ['main_image_url', 'image_urls'];
+
+    /**
+     * Get the main image URL from product variant images where is_main is true.
+     *
+     * @return string
+     */
+    protected function _getMainImageUrl(): string
+    {
+        if (!empty($this->product_variant_images)) {
+            foreach ($this->product_variant_images as $img) {
+                if ($img->is_main) {
+                    return $img->image_url;
+                }
+            }
+        }
+
+        // Fallback if no main image is set
+        return "https://picsum.photos/500/500";
+    }
 
 
     /**
-     * Get all product image URLs as an array.
+     * Get all product variant image URLs as an array.
      *
      * @return string[]
      */

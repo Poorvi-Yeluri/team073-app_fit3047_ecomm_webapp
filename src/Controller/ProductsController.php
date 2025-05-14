@@ -74,6 +74,7 @@ class ProductsController extends AppController
         $this->set(compact('product', 'selectedVariant'));
     }
 
+
     /**
      * Add method
      *

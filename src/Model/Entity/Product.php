@@ -14,9 +14,7 @@ use Cake\ORM\Entity;
  * @property string|null $description
  * @property string $category
  * @property string $base_price
- * @property int $stock_quantity
  * @property DateTime $created_at
- * @property string $image_url
  * @property string $slug
  *
  * @property ProductVariant[] $product_variants
@@ -40,10 +38,8 @@ class Product extends Entity
         'description' => true,
         'category' => true,
         'base_price' => true,
-        'stock_quantity' => true,
         'created_at' => true,
         'product_variants' => true,
-        'image_url' => true,
         'slug' => true,
     ];
 
@@ -70,7 +66,7 @@ class Product extends Entity
         }
 
         // Fallback if no main image is set
-        return $this->image_url;
+        return "https://picsum.photos/500/500";
     }
 
     /**
@@ -86,6 +82,6 @@ class Product extends Entity
                 ->toList();
         }
 
-        return [$this->image_url];
+        return [];
     }
 }

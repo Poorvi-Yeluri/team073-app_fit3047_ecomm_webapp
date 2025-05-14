@@ -12,8 +12,8 @@ use Cake\ORM\Entity;
  * @property int $product_variant_id
  * @property int $attribute_value_id
  *
- * @property \App\Model\Entity\ProductVariant $product_variant
- * @property \App\Model\Entity\AttributeValue $attribute_value
+ * @property ProductVariant $product_variant
+ * @property AttributeValue $attribute_value
  */
 class ProductVariantAttribute extends Entity
 {

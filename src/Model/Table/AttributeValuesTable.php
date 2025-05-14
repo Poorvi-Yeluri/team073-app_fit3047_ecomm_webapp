@@ -49,9 +49,6 @@ class AttributeValuesTable extends Table
             'foreignKey' => 'attribute_id',
             'joinType' => 'INNER',
         ]);
-        $this->hasMany('ProductAttributes', [
-            'foreignKey' => 'attribute_value_id',
-        ]);
         $this->hasMany('ProductVariantAttributes', [
             'foreignKey' => 'attribute_value_id',
         ]);

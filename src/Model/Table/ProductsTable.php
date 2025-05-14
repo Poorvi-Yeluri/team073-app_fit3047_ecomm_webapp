@@ -6,30 +6,35 @@ namespace App\Model\Table;
 use App\Model\Entity\Product;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
+use Cake\Datasource\ResultSetInterface;
 use Cake\Event\EventInterface;
+use Cake\ORM\Association\HasMany;
+use Cake\ORM\Query;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Text;
 use Cake\Validation\Validator;
+use Closure;
+use Psr\SimpleCache\CacheInterface;
 
 /**
  * Products Model
  *
- * @property \App\Model\Table\ProductVariantsTable&\Cake\ORM\Association\HasMany $ProductVariants
+ * @property ProductVariantsTable&HasMany $ProductVariants
  * @method Product newEmptyEntity()
  * @method Product newEntity(array $data, array $options = [])
  * @method array<Product> newEntities(array $data, array $options = [])
- * @method Product get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method Product get(mixed $primaryKey, array|string $finder = 'all', CacheInterface|string|null $cache = null, Closure|string|null $cacheKey = null, mixed ...$args)
  * @method Product findOrCreate($search, ?callable $callback = null, array $options = [])
- * @method Product patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method Product patchEntity(EntityInterface $entity, array $data, array $options = [])
  * @method array<Product> patchEntities(iterable $entities, array $data, array $options = [])
- * @method Product|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
- * @method Product saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
- * @method iterable<Product>|\Cake\Datasource\ResultSetInterface<Product>|false saveMany(iterable $entities, array $options = [])
- * @method iterable<Product>|\Cake\Datasource\ResultSetInterface<Product> saveManyOrFail(iterable $entities, array $options = [])
- * @method iterable<Product>|\Cake\Datasource\ResultSetInterface<Product>|false deleteMany(iterable $entities, array $options = [])
- * @method iterable<Product>|\Cake\Datasource\ResultSetInterface<Product> deleteManyOrFail(iterable $entities, array $options = [])
+ * @method Product|false save(EntityInterface $entity, array $options = [])
+ * @method Product saveOrFail(EntityInterface $entity, array $options = [])
+ * @method iterable<Product>|ResultSetInterface<Product>|false saveMany(iterable $entities, array $options = [])
+ * @method iterable<Product>|ResultSetInterface<Product> saveManyOrFail(iterable $entities, array $options = [])
+ * @method iterable<Product>|ResultSetInterface<Product>|false deleteMany(iterable $entities, array $options = [])
+ * @method iterable<Product>|ResultSetInterface<Product> deleteManyOrFail(iterable $entities, array $options = [])
  */
 class ProductsTable extends Table
 {
@@ -66,19 +71,13 @@ class ProductsTable extends Table
             'foreignKey' => 'product_id',
             'targetForeignKey' => 'attribute_id',
         ]);
-
-        $this->belongsToMany('AttributeValues', [
-            'through' => 'ProductAttributes',
-            'foreignKey' => 'product_id',
-            'targetForeignKey' => 'attribute_value_id',
-        ]);
     }
 
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * @param Validator $validator Validator instance.
+     * @return Validator
      */
     public function validationDefault(Validator $validator): Validator
     {
@@ -103,11 +102,6 @@ class ProductsTable extends Table
             ->requirePresence('base_price', 'create')
             ->notEmptyString('base_price');
 
-        $validator
-            ->integer('stock_quantity')
-            ->requirePresence('stock_quantity', 'create')
-            ->lessThanOrEqual('stock_quantity', 9999, 'Stock cannot exceed 9999.')
-            ->notEmptyString('stock_quantity');
 
         $validator
             ->dateTime('created_at')
@@ -117,9 +111,9 @@ class ProductsTable extends Table
     }
 
     /**
-     * @param \Cake\Event\EventInterface $event
-     * @param \Cake\Datasource\EntityInterface $entity
-     * @param \ArrayObject $options
+     * @param EventInterface $event
+     * @param EntityInterface $entity
+     * @param ArrayObject $options
      * @return void
      */
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
@@ -157,21 +151,9 @@ class ProductsTable extends Table
         }
 
         $attributeValuesTable = TableRegistry::getTableLocator()->get('AttributeValues');
-        $productAttributesTable = TableRegistry::getTableLocator()->get('ProductAttributes');
         $variantAttributesTable = TableRegistry::getTableLocator()->get('ProductVariantAttributes');
 
-        $filterOptions = [];
-
-        // Get attribute_value_ids from direct product attributes
-        $productAttributeValueIds = $productAttributesTable->find()
-            ->select(['attribute_value_id'])
-            ->where(['product_id IN' => $productIds])
-            ->distinct()
-            ->all()
-            ->extract('attribute_value_id')
-            ->toArray();
-
-        // Get attribute_value_ids from variant attributes linked to the same products
+        // Get attribute_value_ids from variant attributes linked to the products
         $variantAttributeValueIds = $variantAttributesTable->find()
             ->select(['ProductVariantAttributes.attribute_value_id'])
             ->distinct()
@@ -182,17 +164,17 @@ class ProductsTable extends Table
             ->extract('attribute_value_id')
             ->toArray();
 
-        $usedValueIds = array_unique(array_merge($productAttributeValueIds, $variantAttributeValueIds));
-
-        if (empty($usedValueIds)) {
+        if (empty($variantAttributeValueIds)) {
             return [];
         }
 
         // Fetch only the attribute values that are in use
         $usedAttributeValues = $attributeValuesTable->find()
-            ->where(['AttributeValues.id IN' => $usedValueIds])
-            ->contain(['Attributes']) // Make sure this association exists
+            ->where(['AttributeValues.id IN' => $variantAttributeValueIds])
+            ->contain(['Attributes']) // Make sure 'Attributes' association exists
             ->all();
+
+        $filterOptions = [];
 
         foreach ($usedAttributeValues as $value) {
             $attributeName = $value->attribute->name;
@@ -216,9 +198,9 @@ class ProductsTable extends Table
     /**
      * Fetches products based on the provided filter parameters.
      *
-     * @param \Cake\ORM\Query $query The base query object.
+     * @param Query $query The base query object.
      * @param array $filters An array of filter parameters (attributeName => [value1, value2, ...]).
-     * @return \Cake\ORM\Query The modified query object with filters applied.
+     * @return Query The modified query object with filters applied.
      */
     public function findFiltered(SelectQuery $query, array $filters): SelectQuery
     {
@@ -238,21 +220,18 @@ class ProductsTable extends Table
             }
         }
 
-        // Apply filters: Mtch ANY attribute group via product OR variant
+        // Apply filters: each group of selected values (OR across value IDs)
         foreach ($attributeValueGroups as $valueIds) {
             $query->where(function ($exp, $q) use ($valueIds) {
-                return $exp->or([
-                    'ProductAttributes.attribute_value_id IN' => $valueIds,
-                    'ProductVariantAttributes.attribute_value_id IN' => $valueIds,
-                ]);
+                return $exp->in('ProductVariantAttributes.attribute_value_id', $valueIds);
             });
         }
 
         return $query
-            ->leftJoinWith('ProductAttributes')
             ->leftJoinWith('ProductVariants.ProductVariantAttributes')
             ->distinct(['Products.id']);
     }
+
 
     /**
      * @param string $slug
@@ -269,6 +248,7 @@ class ProductsTable extends Table
             ])
             ->firstOrFail();
     }
+
 
     /**
      * Finds products and variants using a full-text search query.

@@ -6,6 +6,7 @@
  * @var array $selectedFilters
  * @var string|null $sort
  */
+
 ?>
 <div class="container">
     <h3 class="text-uppercase">
@@ -113,12 +114,25 @@
                         <?php endif; ?>
                     </div>
                     <div class="card-footer bg-transparent border-0">
-                        <a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', $product->slug]) ?>"
-                           class="btn w-100 rounded-1"
-                           style="color: var(--white);
+                        <div class="d-flex flex-column justify-content-between gap-2">
+                            <a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', $product->slug]) ?>"
+                               class="btn w-100 rounded-2"
+                               style="color: var(--white);
                        background-color: var(--accent-color)">
-                            View Details
-                        </a>
+                                View Details
+                            </a>
+                            <?= $this->Form->create(null, [
+                                'url' => ['controller' => 'Cart', 'action' => 'add', $product->id],
+                                'type' => 'post',
+                                'class' => 'add-to-cart-form',
+                                'data-product-id' => $product->id
+                            ]) ?>
+                            <?= $this->Form->button(__('Add to Cart'), [
+                                'class' => 'btn w-100 rounded-2 btn-dark'
+                            ]) ?>
+                            <?= $this->Form->end() ?>
+
+                        </div>
                     </div>
                 </div>
             </div>

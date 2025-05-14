@@ -10,6 +10,7 @@ use App\Model\Entity\ProductVariant;
 use App\View\AppView;
 
 $activeItem = $selectedVariant ?? $product;
+debug($activeItem);
 ?>
 
 <div class="container mt-3">
@@ -24,7 +25,7 @@ $activeItem = $selectedVariant ?? $product;
                      style="object-fit: cover; width: 100%; max-height: 400px;">
             </div>
 
-            <?php if (!empty($activeItem->image_urls)): ?>
+            <?php if (!empty($activeItem->images)): ?>
                 <div class="mt-3">
                     <div id="thumbnailRow" class="d-flex overflow-auto gap-2 px-1 pb-1 border-bottom"
                          style="scroll-behavior: smooth;">
@@ -55,7 +56,7 @@ $activeItem = $selectedVariant ?? $product;
                 <div class="d-flex flex-column my-3">
                     <label for="quantity" class="font-sans">Quantity</label>
                     <select name="quantity" class="w-25 p-2 border-gray" style="height: 35px;" id="quantity">
-                        <?php for ($i = 1; $i <= 10; $i++): ?>
+                        <?php for ($i = 1; $i <= h($activeItem->stock_quantity); $i++): ?>
                             <option value="<?= $i ?>"><?= $i ?></option>
                         <?php endfor; ?>
                     </select>

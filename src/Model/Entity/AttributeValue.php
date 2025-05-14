@@ -15,7 +15,6 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime $modified_at
  *
  * @property \App\Model\Entity\Attribute $attribute
- * @property \App\Model\Entity\ProductAttribute[] $product_attributes
  * @property \App\Model\Entity\ProductVariantAttribute[] $product_variant_attributes
  */
 class AttributeValue extends Entity
@@ -35,7 +34,6 @@ class AttributeValue extends Entity
         'created_at' => true,
         'modified_at' => true,
         'attribute' => true,
-        'product_attributes' => true,
         'product_variant_attributes' => true,
     ];
 }
