@@ -197,7 +197,7 @@ class ProductsTable extends Table
     }
 
     /**
-     * Fetches products based on the provided filter parameters.
+     * Fetches product variants based on the provided filter parameters.
      *
      * @param Query $query The base query object.
      * @param array $filters An array of filter parameters (attributeName => [value1, value2, ...]).
