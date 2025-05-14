@@ -148,22 +148,22 @@ VALUES (1, 'Gold Pendant Necklace', 'gold-pendant-necklace', 'Elegant 18K gold n
        (33, 'Gold Framed Vincent Artwork', 'gold-framed-artwork', 'Abstract Vincent Creo Artwork in a brushed gold frame. Designed to elevate luxury interiors.', 'home-decor', 220.00, 6,
         'https://images.unsplash.com/photo-1552832036-5ce6f9568f9f?q=80&w=4142&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', NOW()),
 
-
-
-
-
-
        (34, 'Personalized Leather Journal', 'personalized-leather-journal', 'A beautifully crafted leather journal, perfect for personal thoughts, sketches, or notes. Customizable with your initials.', 'gifts', 180.00, 12,
         'https://images.unsplash.com/photo-1720534195942-d55d1760df95?q=80&w=3841&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', NOW()),
-       (35, 'Handmade Scented Candles', 'handmade-scented-candles', 'A set of three handcrafted scented candles that bring a relaxing ambiance to any room. Choose from lavender, vanilla, and citrus scents.', 'gifts', 150.00, 18,
+
+        (35, 'Handmade Scented Candles', 'handmade-scented-candles', 'A set of three handcrafted scented candles that bring a relaxing ambiance to any room. Choose from lavender, vanilla, and citrus scents.', 'gifts', 150.00, 18,
         'https://images.unsplash.com/photo-1739912061342-280525e3c20f?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', NOW()),
-       (36, 'Crystal Wine Glass Set', 'crystal-wine-glass-set', 'An elegant set of 4 crystal wine glasses that are perfect for any occasion. Lead-free and dishwasher safe.', 'gifts', 250.00, 10,
+
+        (36, 'Crystal Wine Glass Set', 'crystal-wine-glass-set', 'An elegant set of 4 crystal wine glasses that are perfect for any occasion. Lead-free and dishwasher safe.', 'gifts', 250.00, 10,
         'https://images.unsplash.com/photo-1646587191447-11425def78f7?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', NOW()),
-       (37, 'Mini Indoor Plant Collection', 'mini-indoor-plant-collection', 'A delightful collection of mini indoor plants, including succulents and air plants. A perfect gift for plant lovers.', 'gifts', 120.00, 20,
+
+        (37, 'Mini Indoor Plant Collection', 'mini-indoor-plant-collection', 'A delightful collection of mini indoor plants, including succulents and air plants. A perfect gift for plant lovers.', 'gifts', 120.00, 20,
         'https://images.unsplash.com/photo-1523575708161-ad0fc2a9b951?q=80&w=3828&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', NOW()),
-       (38, 'Gold-Plated Heart Necklace', 'gold-plated-heart-necklace', 'A delicate gold-plated necklace with a heart-shaped pendant, perfect for a romantic gift or special occasion.', 'jewellery', 320.00, 25,
+
+        (38, 'Gold-Plated Heart Necklace', 'gold-plated-heart-necklace', 'A delicate gold-plated necklace with a heart-shaped pendant, perfect for a romantic gift or special occasion.', 'jewellery', 320.00, 25,
         'https://images.unsplash.com/photo-1639738491156-3bed044f1678?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', NOW()),
-       (39, 'Silver Hoop Earrings', 'silver-hoop-earrings', 'Classic silver hoop earrings that add a touch of elegance to any outfit. Perfect for daily wear or evening events.', 'jewellery', 150.00, 40,
+
+        (39, 'Silver Hoop Earrings', 'silver-hoop-earrings', 'Classic silver hoop earrings that add a touch of elegance to any outfit. Perfect for daily wear or evening events.', 'jewellery', 150.00, 40,
         'https://images.unsplash.com/photo-1654700194977-a1f7cc4d7884?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', NOW()),
 
 
@@ -231,27 +231,31 @@ VALUES (1, 1),
 
 
 -- Seed product_variants
-INSERT INTO product_variants (id, product_id, price, stock_quantity, sku, created_at)
-VALUES (1, 1, 150.00, 5, 'NECK-GOLD-SM', NOW()),
-       (2, 1, 155.00, 5, 'NECK-GOLD-MD', NOW()),
-       (3, 2, 80.00, 10, 'EAR-SIL-SM', NOW()),
-       (4, 2, 85.00, 10, 'EAR-SIL-LG', NOW()),
-       (5, 3, 120.00, 2, 'WALL-WOOD', NOW()),
-       (6, 4, 60.00, 5, 'VASE-CER-BLK', NOW()),
-       (7, 5, 40.00, 30, 'GIFT-FEST', NOW()),
-       (8, 6, 100.00, 2, 'CLR-GOLD-RING', NOW()),
-       (9, 7, 500.00, 5, 'NECK-PLAT-RED', NOW()),
-       (10, 7, 510.00, 5, 'NECK-PLAT-GREEN', NOW()),
-       (11, 8, 40.00, 12, 'BOWL-GREEN', NOW()),
-       (12, 9, 25.00, 15, 'PILLOW-YELLOW', NOW()),
-       (13, 10, 350.00, 8, 'TABLE-WOOD-LG', NOW()),
-       (14, 11, 60.00, 30, 'BASKET-FESTIVE', NOW());
+INSERT INTO product_variants (id, name, product_id, price, stock_quantity, sku, created_at)
+VALUES
+    (1, 'Gold Pendant Necklace - Small', 1, 150.00, 5, 'NECK-GOLD-SM', NOW()),
+    (2, 'Gold Pendant Necklace - Medium', 1, 155.00, 5, 'NECK-GOLD-MD', NOW()),
+    (3, 'Silver Hoop Earrings - Small', 2, 80.00, 10, 'EAR-SIL-SM', NOW()),
+    (4, 'Silver Hoop Earrings - Large', 2, 85.00, 10, 'EAR-SIL-LG', NOW()),
+    (5, 'Wooden Wall Art - Standard', 3, 120.00, 2, 'WALL-WOOD', NOW()),
+    (6, 'Ceramic Vase - Black', 4, 60.00, 5, 'VASE-CER-BLK', NOW()),
+    (7, 'Festive Gift Box - Standard', 5, 40.00, 30, 'GIFT-FEST', NOW()),
+    (8, 'Clearance: Gold Ring', 6, 100.00, 2, 'CLR-GOLD-RING', NOW()),
+    (9, 'Platinum Necklace - Red Accent', 7, 500.00, 5, 'NECK-PLAT-RED', NOW()),
+    (10, 'Platinum Necklace - Green Accent', 7, 510.00, 5, 'NECK-PLAT-GREEN', NOW()),
+    (11, 'Green Ceramic Bowl', 8, 40.00, 12, 'BOWL-GREEN', NOW()),
+    (12, 'Yellow Decorative Pillow', 9, 25.00, 15, 'PILLOW-YELLOW', NOW()),
+    (13, 'Large Wooden Dining Table', 10, 350.00, 8, 'TABLE-WOOD-LG', NOW()),
+    (14, 'Festive Gift Basket', 11, 60.00, 30, 'BASKET-FESTIVE', NOW());
 
 -- Seed product_variant_attributes
 INSERT INTO product_variant_attributes (product_variant_id, attribute_value_id)
 VALUES (1, 1),
        (1, 5),
        (1, 9),
+       (1, 10),
+       (1, 11),
+       (1, 15),
        (2, 1),
        (2, 5),
        (2, 10),

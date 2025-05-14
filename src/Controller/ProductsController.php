@@ -58,8 +58,16 @@ class ProductsController extends AppController
      */
     public function view(?string $slug = null)
     {
+        $variantSku = $this->getRequest()->getQuery('variant');
         $product = $this->Products->findBySlug($slug);
-        $this->set(compact('product'));
+
+        $selectedVariant = null;
+        if ($variantSku) {
+            $selectedVariant = collection($product->product_variants)
+                ->firstMatch(['sku' => $variantSku]);
+        }
+
+        $this->set(compact('product', 'selectedVariant'));
     }
 
     /**
