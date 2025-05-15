@@ -182,8 +182,8 @@ class CartController extends AppController
                 'shipping_address_collection' => ['allowed_countries' => ['AU']],
                 'line_items' => $lineItems,
                 'mode' => 'payment',
-                'success_url' => 'https://28dd-49-199-153-27.ngrok-free.app' . '/orders/success?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => $baseUrl . '/products/',
+                'success_url' => $baseUrl . '/orders/success?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url'  => $baseUrl . '/products/',
             ]);
 
             return $this->redirect($checkoutSession->url);
