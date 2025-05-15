@@ -32,9 +32,18 @@
     <!-- Contact Info -->
     <div class="col-md-3">
         <h5>Contact Us</h5>
-        <h6 class="font-sans weight-regular">support@gleamandgrace.com</h6>
-        <h6 class="font-sans weight-regular">+61 812 123 4567</h6>
+        <h6 class="font-sans weight-regular">
+            <a href="mailto:support@gleamandgrace.com" class="text-decoration-none text-body">
+                support@gleamandgrace.com
+            </a>
+        </h6>
+        <h6 class="font-sans weight-regular">
+            <a href="tel:+618121234567" class="text-decoration-none text-body">
+                +61 812 123 4567
+            </a>
+        </h6>
     </div>
+
 </div>
 
 <!-- Mobile Footer (sm and down) -->
