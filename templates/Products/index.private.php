@@ -14,9 +14,9 @@ $category = $category ?? (string)$this->request->getQuery('category', '');
                 <h4 class="mb-0 font-serif" id="pageTitle">
                     <?= $category ? ucwords(str_replace('-', ' ', $category)) : __('Products') ?>
                 </h4>
-<!--                --><?php //= $this->Html->link(__('Add Product'), ['action' => 'add'], [
-//                    'class' => 'btn btn-outline-success rounded-3'
-//                ]) ?>
+                <?= $this->Html->link(__('Add Product'), ['action' => 'add'], [
+                    'class' => 'btn btn-outline-success rounded-3'
+                ]) ?>
             </div>
             <hr class="mb-1 mt-1" />
 
