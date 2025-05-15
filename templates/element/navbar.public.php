@@ -2,7 +2,7 @@
 // Get cart data from session
 $session = $this->request->getSession();
 $cartItems = $session->read('Cart.items') ?? [];
-$cartCount = array_sum(array_column($cartItems, 'quantity'));  // Calculate the total items in the cart
+$cartCount = array_sum(array_column($cartItems, 'quantity'));
 ?>
 
 <!-- Top banner -->
@@ -57,7 +57,7 @@ $cartCount = array_sum(array_column($cartItems, 'quantity'));  // Calculate the 
         </a>
 
         <!-- Right Icons -->
-        <div class="d-none d-md-flex align-items-center gap-3">
+        <div class="d-flex d-md-flex align-items-center gap-3 mt-1 ">
             <div class="position-relative d-inline-block">
                 <span class="material-symbols-outlined"
                       style="cursor: pointer;"
@@ -69,13 +69,15 @@ $cartCount = array_sum(array_column($cartItems, 'quantity'));  // Calculate the 
                     <?= count($session->read('Cart.items') ?? []) ?>
                 </span>
             </div>
-            <span class="material-symbols-outlined"
-                  id="popoverButton"
-                  data-bs-toggle="popover"
-                  data-bs-placement="bottom"
-                  style="cursor: pointer;">
+            <div class="position-relative d-inline-block">
+                  <span class="material-symbols-outlined"
+                        id="popoverButton"
+                        data-bs-toggle="popover"
+                        data-bs-placement="bottom"
+                        style="cursor: pointer;">
                 person
             </span>
+            </div>
         </div>
     </div>
 </div>

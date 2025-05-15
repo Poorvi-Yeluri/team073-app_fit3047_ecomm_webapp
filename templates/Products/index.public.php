@@ -27,7 +27,7 @@
 
             <!-- Sort By Dropdown -->
             <div class="d-flex align-items-center gap-2">
-                <small>Sort By:</small>
+                <small class="d-none d-md-flex">Sort By:</small>
                 <?= $this->Form->create(null, [
                     'type' => 'get',
                     'valueSources' => ['query'],
