@@ -263,9 +263,10 @@ class ProductsController extends AppController
             // Search only for product variants
             $searchResult = $this->Products->ProductVariants->find()
                 ->contain([
-                    'Products', // If you want to include product details as well
-                    'ProductVariantImages', // If you want variant images
-                    'ProductVariantAttributes.AttributeValues.Attributes', // If filtering by attributes
+                    'Products',
+                    'ProductVariantAttributes.AttributeValues.Attributes',
+                    'ProductVariantImages',
+
                 ])
                 ->where(function ($exp, $q) use ($queryTerm) {
                     return $exp->like('ProductVariants.name', '%' . $queryTerm . '%');
@@ -276,7 +277,7 @@ class ProductsController extends AppController
             if ($searchResult->count() > 0) {
                 // Apply additional filters
                 $variantIds = collection($searchResult)->extract('id')->toList();
-                $query = $this->prepareVariantQueryWithVariants($variantIds, $queryParams);
+                $query = $this->prepareVariantQuery($variantIds, $queryParams);
 
                 // Ensure pagination is set for this query
                 $variants = $this->paginate($query);  // Make sure pagination is applied here
@@ -308,9 +309,6 @@ class ProductsController extends AppController
             'sort'
         ));
     }
-
-
-
 
     public function prepareVariantQuery(array $variantIds = [], array $queryParams = []): Query
     {
@@ -346,123 +344,5 @@ class ProductsController extends AppController
         return $query;
     }
 
-    private function prepareVariantQueryWithVariants(array $variantIds, array $queryParams = []): Query
-    {
-        $category = $queryParams['category'] ?? null;
-        $sort = $queryParams['sort'] ?? 'relevance';
-
-        $query = $this->Products->ProductVariants->find()
-            ->contain([
-                'Products.ProductImages',
-                'ProductVariantAttributes.AttributeValues.Attributes',
-            ])
-            ->where(['ProductVariants.id IN' => $variantIds]);
-
-        // Apply category filter if available
-        if (!empty($category)) {
-            $query->matching('Products', function ($q) use ($category) {
-                return $q->where(['Products.category' => $category]);
-            });
-        }
-
-        // Apply attribute filters
-        $selectedFilters = array_filter(
-            $queryParams,
-            function ($value, $key) {
-                return $key !== 'category' && $key !== 'sort' && is_array($value);
-            },
-            ARRAY_FILTER_USE_BOTH
-        );
-
-        $attributeValuesTable = TableRegistry::getTableLocator()->get('AttributeValues');
-        foreach ($selectedFilters as $attribute => $values) {
-            $valueIds = $attributeValuesTable->getValueIdsForFilter($attribute, $values);
-            if (!empty($valueIds)) {
-                $query->matching('ProductVariantAttributes', function ($q) use ($valueIds) {
-                    return $q->where(['ProductVariantAttributes.attribute_value_id IN' => $valueIds]);
-                });
-            }
-        }
-
-        // Apply sorting
-        switch ($sort) {
-            case 'price-asc':
-                $query->orderBy(['ProductVariants.price' => 'ASC']);
-                break;
-            case 'price-desc':
-                $query->orderBy(['ProductVariants.price' => 'DESC']);
-                break;
-            case 'latest':
-                $query->orderBy(['ProductVariants.created_at' => 'DESC']);
-                break;
-            default:
-                // Optional: Add custom relevance logic
-                break;
-        }
-
-        return $query->distinct(['ProductVariants.id']);
-    }
-
-
-
-
-
-    /**
-     * @param array $productIds
-     * @param array $queryParams
-     * @return \Cake\ORM\Query
-     */
-    private function prepareProductQuery(array $productIds = [], array $queryParams = []): Query
-    {
-        $category = $queryParams['category'] ?? null;
-        $sort = $queryParams['sort'] ?? 'relevance';
-
-        $query = $this->Products->find()
-            ->contain([
-                'ProductVariants.ProductVariantAttributes.AttributeValues',
-                'ProductImages',
-            ]);
-
-        // Apply the filter to restrict the query to search results if product IDs are passed
-        if (!empty($productIds)) {
-            $query->where(['Products.id IN' => $productIds]);
-        }
-
-        // Apply category filter if available
-        if (!empty($category)) {
-            $query->where(['category' => $category]);
-        }
-
-        // Apply additional filters from query params
-        $selectedFilters = array_filter($queryParams, function ($value, $key) {
-            return $key !== 'category' && $key !== 'sort' && $key !== 'q' && is_array($value) && !empty($value);
-        }, ARRAY_FILTER_USE_BOTH);
-
-        // Applying custom filters if any
-        $query = $this->Products->findFiltered($query, $selectedFilters);
-
-        // Apply sorting
-        switch ($sort) {
-            case 'price-asc':
-                $query->orderBy(['base_price' => 'ASC']);
-                break;
-            case 'price-desc':
-                $query->orderBy(['base_price' => 'DESC']);
-                break;
-            case 'latest':
-                $query->orderBy(['Products.created_at' => 'DESC']);
-                break;
-            case 'name-asc':
-                $query->orderBy(['name' => 'ASC']);
-                break;
-            case 'name-desc':
-                $query->orderBy(['name' => 'DESC']);
-                break;
-            default:
-                break;
-        }
-
-        return $query;
-    }
 
 }

@@ -33,8 +33,16 @@
                     'valueSources' => ['query'],
                     'url' => ['controller' => 'Products', 'action' => 'search', 'category' => $this->request->getQuery('category')]
                 ]) ?>
+                <?= $this->Form->hidden('q', ['value' => $this->request->getQuery('q')]) ?>
+                <?php foreach ($selectedFilters as $attribute => $values): ?>
+                    <?php foreach ($values as $value): ?>
+                        <?= $this->Form->hidden($attribute . '[]', ['value' => $value]) ?>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
 
+                <!-- Automatically retain category in the form -->
                 <?= $this->Form->hidden('category', ['value' => $this->request->getQuery('category')]) ?>
+
                 <?= $this->Form->select('sort', [
                     'relevance' => 'Relevance',
                     'price-asc' => 'Price: Low - High',
@@ -170,11 +178,12 @@
     <div
         class="position-sticky bottom-0 bg-white p-3 border-top d-flex flex-column justify-content-center align-items-center font-sans"
         style="z-index: 1030;">
-        <a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'search', 'q' => $this->request->getQuery('q'), 'category' => $this->request->getQuery('category')]) ?>"
+        <a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'search', 'q' => $this->request->getQuery('q'), 'category' => $this->request->getQuery('category') ]) ?>"
            id="clearAllFilters"
            class="text-decoration-underline text-secondary small mb-2">
             <?= __('Clear All') ?>
         </a>
+
         <?= $this->Form->button(__('Apply Filters'), [
             'class' => 'btn btn-dark d-block d-md-inline-block w-100 w-md-auto rounded-0',
             'form' => null, // Ensures it still works outside form
@@ -188,7 +197,8 @@
         const clearBtn = document.getElementById("clearAllFilters");
         const filterForm = document.querySelector('.offcanvas-body form');
 
-        clearBtn?.addEventListener("click", function () {
+        clearBtn?.addEventListener("click", function (e) {
+            e.preventDefault();
             const checkboxes = filterForm.querySelectorAll('input[type="checkbox"]');
             checkboxes.forEach(cb => cb.checked = false);
             // Optionally submit the form to clear filters
