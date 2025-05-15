@@ -214,20 +214,19 @@ VALUES (1, 'https://images.unsplash.com/photo-1602752250055-5ebb552fc3ae?q=80&w=
        (43,'https://images.unsplash.com/photo-1647505173643-93ed97eed1be?q=80&w=4138&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',1,current_timestamp,current_timestamp);
 
 INSERT INTO product_variant_images (variant_id, image_url, is_main, created_at, modified_at)
-VALUES (1, 'https://picsum.photos/id/237/800/600', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (1, 'https://picsum.photos/id/238/800/600', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (1, 'https://picsum.photos/id/239/800/600', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (2, 'https://picsum.photos/id/240/800/600', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (3, 'https://picsum.photos/id/241/800/600', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (4, 'https://picsum.photos/id/242/800/600', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (5, 'https://picsum.photos/id/243/800/600', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (6, 'https://picsum.photos/id/244/800/600', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (7, 'https://picsum.photos/id/245/800/600', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (8, 'https://picsum.photos/id/246/800/600', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (9, 'https://picsum.photos/id/247/800/600', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (10, 'https://picsum.photos/id/248/800/600', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (11, 'https://picsum.photos/id/249/800/600', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (12, 'https://picsum.photos/id/250/800/600', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+VALUES (1, 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?q=80&w=4137&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (2, 'https://images.unsplash.com/photo-1721808084849-c2a9e3691ce0?q=80&w=3500&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (3, 'https://images.unsplash.com/photo-1611583027838-515a1087afdb?q=80&w=3502&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (4, 'https://images.unsplash.com/photo-1707222609386-218e77b400ca?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (5, 'https://images.unsplash.com/photo-1644328986176-0d2d6af69314?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (6, 'https://images.unsplash.com/photo-1720351505368-b76f8d25752f?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (7, 'https://images.unsplash.com/photo-1531452454767-de8511addfdf?q=80&w=4367&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (8, 'https://images.unsplash.com/photo-1738053473109-0536f918f4c3?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (9, 'https://images.unsplash.com/photo-1530234827832-13cbf19d109f?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (10, 'https://images.unsplash.com/photo-1587499726408-c65533ed62c4?q=80&w=4146&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (11, 'https://images.unsplash.com/photo-1652419675274-d120bb8e8c71?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (12, 'https://images.unsplash.com/photo-1669465006376-7b5f1b777921?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 
 
 -- Seed contact_messages
