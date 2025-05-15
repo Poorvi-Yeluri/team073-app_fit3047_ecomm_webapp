@@ -1,9 +1,6 @@
-<?php if ($this->Identity->isLoggedIn()) : ?>
-    <script>
-        window.location.href = "<?= $this->Url->build(['controller' => 'contact-messages', 'action' => 'index']) ?>";
-    </script>
-<?php else : ?>
-    <section class="w-100 d-none d-md-flex justify-content-center align-items-center position-relative" id="hero-section">
+<?php if (!$this->Identity->isLoggedIn()) : ?>
+
+<section class="w-100 d-none d-md-flex justify-content-center align-items-center position-relative" id="hero-section">
         <img src="/img/hero-section.jpg" alt="hero image" class="object-fit-cover w-100"
              style="height: 500px; object-position: center;">
         <div class="position-absolute top-50 start-50 translate-middle text-center text-light px-3">
@@ -84,5 +81,5 @@
             </p>
         </div>
     </section>
+<?php endif ?>
 
-<?php endif; ?>
