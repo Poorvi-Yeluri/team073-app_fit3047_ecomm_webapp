@@ -44,7 +44,7 @@ class CartController extends AppController
         $data = $this->request->getData();
 
         $variant = $this->fetchTable("ProductVariants")->get($variantId, [
-            'contain' => ['Products', 'ProductVariantAttributes.AttributeValues.Attributes']
+            'contain' => ['Products', 'ProductVariantImages', 'ProductVariantAttributes.AttributeValues.Attributes']
         ]);
 
         $quantityToAdd = (int)($data['quantity'] ?? 1);
