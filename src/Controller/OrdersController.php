@@ -176,6 +176,7 @@ class OrdersController extends AppController
             if ($this->Orders->save($order)) {
                 // Process each line item
                 $this->processOrderItems($order->id, $session->line_items->data);
+                $this->getRequest()->getSession()->delete('Cart');
                 $this->Flash->success('Your order has been placed successfully!');
                 return $this->redirect(['controller' => 'Orders', 'action' => 'view', $order->id]);
             } else {
