@@ -172,7 +172,7 @@ class CartController extends AppController
         }
 
 
-        $baseUrl = 'https://' . $this->request->domain();
+        $baseUrl = 'https://' . $this->request->getUri()->getHost();
 
         try {
             $checkoutSession = $this->stripe->checkout->sessions->create([
