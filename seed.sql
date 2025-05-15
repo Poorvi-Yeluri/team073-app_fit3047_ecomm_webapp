@@ -217,15 +217,15 @@ INSERT INTO product_variant_images (variant_id, image_url, is_main, created_at, 
 VALUES (1, 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?q=80&w=4137&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        (2, 'https://images.unsplash.com/photo-1721808084849-c2a9e3691ce0?q=80&w=3500&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        (3, 'https://images.unsplash.com/photo-1611583027838-515a1087afdb?q=80&w=3502&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (4, 'https://images.unsplash.com/photo-1707222609386-218e77b400ca?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (5, 'https://images.unsplash.com/photo-1644328986176-0d2d6af69314?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (6, 'https://images.unsplash.com/photo-1720351505368-b76f8d25752f?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (7, 'https://images.unsplash.com/photo-1531452454767-de8511addfdf?q=80&w=4367&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (8, 'https://images.unsplash.com/photo-1738053473109-0536f918f4c3?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (9, 'https://images.unsplash.com/photo-1530234827832-13cbf19d109f?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (10, 'https://images.unsplash.com/photo-1587499726408-c65533ed62c4?q=80&w=4146&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (11, 'https://images.unsplash.com/photo-1652419675274-d120bb8e8c71?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (12, 'https://images.unsplash.com/photo-1669465006376-7b5f1b777921?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+       (4, 'https://images.unsplash.com/photo-1707222609386-218e77b400ca?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (5, 'https://images.unsplash.com/photo-1644328986176-0d2d6af69314?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (6, 'https://images.unsplash.com/photo-1720351505368-b76f8d25752f?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (7, 'https://images.unsplash.com/photo-1531452454767-de8511addfdf?q=80&w=4367&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (8, 'https://images.unsplash.com/photo-1738053473109-0536f918f4c3?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (9, 'https://images.unsplash.com/photo-1530234827832-13cbf19d109f?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (10, 'https://images.unsplash.com/photo-1587499726408-c65533ed62c4?q=80&w=4146&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (11, 'https://images.unsplash.com/photo-1652419675274-d120bb8e8c71?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (12, 'https://images.unsplash.com/photo-1669465006376-7b5f1b777921?q=80&w=4140&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 
