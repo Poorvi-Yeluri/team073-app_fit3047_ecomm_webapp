@@ -36,6 +36,17 @@
 
                 <!-- Automatically retain category in the form -->
                 <?= $this->Form->hidden('category', ['value' => $this->request->getQuery('category')]) ?>
+                <?php
+                foreach ($selectedFilters as $filterName => $filterValues) {
+                    if (is_array($filterValues)) {
+                        foreach ($filterValues as $value) {
+                            echo $this->Form->hidden($filterName . '[]', ['value' => $value]);
+                        }
+                    } else {
+                        echo $this->Form->hidden($filterName, ['value' => $filterValues]);
+                    }
+                }
+                ?>
 
                 <!-- Dropdown for sorting -->
                 <?= $this->Form->select('sort', [
@@ -185,11 +196,12 @@
     <div
         class="position-sticky bottom-0 bg-white p-3 border-top d-flex flex-column justify-content-center align-items-center font-sans"
         style="z-index: 1030;">
-        <a href="<?= $this->Url->build(['action' => 'index', 'category' => $this->request->getQuery('category')]) ?>"
+        <a href="<?= $this->Url->build(['action' => 'index', '?' => ['category' => $this->request->getQuery('category')]]) ?>"
            id="clearAllFilters"
            class="text-decoration-underline text-secondary small mb-2">
             <?= __('Clear All') ?>
         </a>
+
         <?= $this->Form->button(__('Apply Filters'), [
             'class' => 'btn btn-dark d-block d-md-inline-block w-100 w-md-auto rounded-0',
             'form' => null, // Ensures it still works outside form

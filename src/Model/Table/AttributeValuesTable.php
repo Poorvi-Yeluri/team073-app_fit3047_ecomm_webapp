@@ -100,17 +100,24 @@ class AttributeValuesTable extends Table
         return $rules;
     }
 
+    // In src/Model/Table/AttributeValuesTable.php
+
     public function getValueIdsForFilter(string $attributeName, array $selectedValues): array
     {
+        if (empty($selectedValues)) {
+            return [];
+        }
+
         $query = $this->find()
             ->select(['id'])
-            ->contain(['Attributes'])
-            ->where([
-                'Attributes.name' => $attributeName,
-                'AttributeValues.value IN' => $selectedValues,
-            ]);
+            ->matching('Attributes', function ($q) use ($attributeName) {
+                return $q->where(['Attributes.name' => $attributeName]);
+            })
+            ->where(['AttributeValues.value IN' => $selectedValues])
+            ->all();
 
-        return $query->all()->extract('id')->toList();
+        return $query->extract('id')->toList();
     }
+
 
 }

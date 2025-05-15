@@ -35,11 +35,13 @@ class ProductsController extends AppController
         }
 
         $queryParams = $this->request->getQuery();
-        $query = $this->prepareVariantQuery($queryParams);
+
+        // Pass empty variantIds and queryParams correctly
+        $query = $this->prepareVariantQuery([], $queryParams);
 
         $variants = $this->paginate($query);
 
-        // Extract variant IDs for filters (optional: you could also extract product_ids)
+        // Extract variant IDs for filters (optional)
         $variantIds = collection($variants)->extract('id')->toList();
         $filterOptions = $this->Products->getVariantFilters($variantIds);
 
@@ -308,57 +310,41 @@ class ProductsController extends AppController
     }
 
 
-    private function prepareVariantQuery(array $queryParams = []): Query
+
+
+    public function prepareVariantQuery(array $variantIds = [], array $queryParams = []): Query
     {
-        $category = $queryParams['category'] ?? null;
-        $sort = $queryParams['sort'] ?? 'relevance';
+        $sort = $queryParams['sort'] ?? null;
 
         $query = $this->Products->ProductVariants->find()
-            ->contain([
-                'Products.ProductImages',
-                'ProductVariantAttributes.AttributeValues.Attributes',
-            ])
-            ->matching('Products', function ($q) use ($category) {
-                if (!empty($category)) {
-                    return $q->where(['Products.category' => $category]);
-                }
-                return $q;
-            });
+            ->contain(['ProductVariantAttributes.AttributeValues.Attributes']);
 
-        // Apply attribute filters
+        if (!empty($variantIds)) {
+            $query->where(['ProductVariants.id IN' => $variantIds]);
+        }
+
+        // Filter by category string column in products
+        if (!empty($queryParams['category'])) {
+            $category = $queryParams['category'];
+
+            // Use matching to filter ProductVariants by product.category string
+            $query->matching('Products', function ($q) use ($category) {
+                return $q->where(['Products.category' => $category]);
+            });
+        }
+
         $selectedFilters = array_filter($queryParams, function ($value, $key) {
-            return $key !== 'category' && $key !== 'sort' && is_array($value);
+            return $key !== 'sort' && $key !== 'category' && is_array($value) && !empty($value);
         }, ARRAY_FILTER_USE_BOTH);
 
-        $attributeValuesTable = TableRegistry::getTableLocator()->get('AttributeValues');
-        foreach ($selectedFilters as $attribute => $values) {
-            $valueIds = $attributeValuesTable->getValueIdsForFilter($attribute, $values);
-            if (!empty($valueIds)) {
-                $query->matching('ProductVariantAttributes', function ($q) use ($valueIds) {
-                    return $q->where(['ProductVariantAttributes.attribute_value_id IN' => $valueIds]);
-                });
-            }
+        $query = $this->Products->findFilteredVariants($query, $selectedFilters);
+
+        if ($sort) {
+            $query = $this->Products->applyVariantSorting($query, $sort);
         }
 
-        // Sort
-        switch ($sort) {
-            case 'price-asc':
-                $query->orderBy(['ProductVariants.price' => 'ASC']);
-                break;
-            case 'price-desc':
-                $query->orderBy(['ProductVariants.price' => 'DESC']);
-                break;
-            case 'latest':
-                $query->orderBy(['ProductVariants.created_at' => 'DESC']);
-                break;
-            default:
-                // Optional: Add custom relevance logic
-                break;
-        }
-
-        return $query->distinct(['ProductVariants.id']);
+        return $query;
     }
-
 
     private function prepareVariantQueryWithVariants(array $variantIds, array $queryParams = []): Query
     {
@@ -380,9 +366,13 @@ class ProductsController extends AppController
         }
 
         // Apply attribute filters
-        $selectedFilters = array_filter($queryParams, function ($value, $key) {
-            return $key !== 'category' && $key !== 'sort' && is_array($value);
-        }, ARRAY_FILTER_USE_BOTH);
+        $selectedFilters = array_filter(
+            $queryParams,
+            function ($value, $key) {
+                return $key !== 'category' && $key !== 'sort' && is_array($value);
+            },
+            ARRAY_FILTER_USE_BOTH
+        );
 
         $attributeValuesTable = TableRegistry::getTableLocator()->get('AttributeValues');
         foreach ($selectedFilters as $attribute => $values) {

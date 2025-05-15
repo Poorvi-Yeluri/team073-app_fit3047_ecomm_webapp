@@ -280,9 +280,6 @@ class ProductsTable extends Table
         return $filterOptions;
     }
 
-
-
-
     /**
      * @param string $slug
      * @return ProductVariant
@@ -299,8 +296,6 @@ class ProductsTable extends Table
             ->firstOrFail();
     }
 
-
-
     /**
      * @param string $slug
      * @return Product
@@ -316,9 +311,6 @@ class ProductsTable extends Table
             ])
             ->firstOrFail();
     }
-
-
-
 
     /**
      * Finds products and variants using a full-text search query.
@@ -469,4 +461,124 @@ class ProductsTable extends Table
             'usedFallback' => $usedFallback,
         ];
     }
+
+    public function variantFilters(array $variantIds): array
+    {
+        if (empty($variantIds)) {
+            return [];
+        }
+
+        $attributeValuesTable = TableRegistry::getTableLocator()->get('AttributeValues');
+        $productVariantAttributesTable = TableRegistry::getTableLocator()->get('ProductVariantAttributes');
+
+        $filterOptions = [];
+
+        // Get attribute_value_ids used by the variants
+        $variantAttributeValueIds = $productVariantAttributesTable->find()
+            ->select(['attribute_value_id'])
+            ->where(['product_variant_id IN' => $variantIds])
+            ->distinct()
+            ->all()
+            ->extract('attribute_value_id')
+            ->toArray();
+
+        if (empty($variantAttributeValueIds)) {
+            return [];
+        }
+
+        // Fetch attribute values with their attributes (attribute name)
+        $usedAttributeValues = $attributeValuesTable->find()
+            ->where(['AttributeValues.id IN' => $variantAttributeValueIds])
+            ->contain(['Attributes'])
+            ->all();
+
+        foreach ($usedAttributeValues as $value) {
+            $attributeName = $value->attribute->name;
+            if (!isset($filterOptions[$attributeName])) {
+                $filterOptions[$attributeName] = [];
+            }
+
+            if (!in_array($value->value, $filterOptions[$attributeName])) {
+                $filterOptions[$attributeName][] = $value->value;
+            }
+        }
+
+        // Sort values alphabetically for each attribute
+        foreach ($filterOptions as &$values) {
+            sort($values);
+        }
+
+        return $filterOptions;
+    }
+
+    public function findFilteredVariants(SelectQuery $query, array $filters): SelectQuery
+    {
+        $attributeValuesTable = TableRegistry::getTableLocator()->get('AttributeValues');
+
+        $filterGroups = [];
+
+        foreach ($filters as $attributeName => $selectedValues) {
+            if (!is_array($selectedValues) || empty($selectedValues)) {
+                continue;
+            }
+
+            $ids = $attributeValuesTable->getValueIdsForFilter($attributeName, $selectedValues);
+            if (!empty($ids)) {
+                $filterGroups[] = $ids;
+            }
+        }
+
+        // Join once for eager loading and any potential filter-less scenarios
+        $query->leftJoinWith('ProductVariantAttributes');
+
+        // Apply filter groups using helper for cleaner logic
+        foreach ($filterGroups as $index => $valueIds) {
+            $this->applyVariantAttributeFilter($query, $valueIds, $index);
+        }
+
+        return $query->distinct(['ProductVariants.id']);
+    }
+
+    private function applyVariantAttributeFilter(SelectQuery $query, array $valueIds, int $index): void
+    {
+        $alias = 'pv_filter_' . $index;
+
+        $query->innerJoin(
+            [$alias => 'product_variant_attributes'],
+            [
+                "{$alias}.product_variant_id = ProductVariants.id",
+                "{$alias}.attribute_value_id IN" => $valueIds,
+            ]
+        );
+    }
+
+
+
+
+    public function applyVariantSorting(Query $query, string $sort): Query
+    {
+        switch ($sort) {
+            case 'price-asc':
+                $query->orderBy(['ProductVariants.price' => 'ASC']);
+                break;
+            case 'price-desc':
+                $query->orderBy(['ProductVariants.price' => 'DESC']);
+                break;
+            case 'latest':
+                $query->orderBy(['ProductVariants.created_at' => 'DESC']);
+                break;
+            case 'name-asc':
+                $query->orderBy(['ProductVariants.name' => 'ASC']);
+                break;
+            case 'name-desc':
+                $query->orderBy(['ProductVariants.name' => 'DESC']);
+                break;
+            default:
+                // no order or default ordering
+                break;
+        }
+
+        return $query;
+    }
+
 }
