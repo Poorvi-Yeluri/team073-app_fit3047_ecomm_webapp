@@ -89,16 +89,16 @@
                                style="color: var(--white); background-color: var(--accent-color)">
                                 View Details
                             </a>
-                            <?= $this->Form->create(null, [
-                                'url' => ['controller' => 'Cart', 'action' => 'add', $variant->id],
-                                'type' => 'post',
-                                'class' => 'add-to-cart-form',
-                                'data-product-id' => $variant->id
-                            ]) ?>
-                            <?= $this->Form->button(__('Add to Cart'), [
-                                'class' => 'btn w-100 rounded-2 btn-dark'
-                            ]) ?>
-                            <?= $this->Form->end() ?>
+<!--                            --><?php //= $this->Form->create(null, [
+//                                'url' => ['controller' => 'Cart', 'action' => 'add', $variant->id],
+//                                'type' => 'post',
+//                                'class' => 'add-to-cart-form',
+//                                'data-product-id' => $variant->id
+//                            ]) ?>
+<!--                            --><?php //= $this->Form->button(__('Add to Cart'), [
+//                                'class' => 'btn w-100 rounded-2 btn-dark'
+//                            ]) ?>
+<!--                            --><?php //= $this->Form->end() ?>
                         </div>
                     </div>
                 </div>
