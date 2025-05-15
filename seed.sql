@@ -98,23 +98,23 @@ VALUES
 INSERT INTO product_variants (id, product_id, name, slug, price, stock_quantity, sku, created_at)
 VALUES
 -- Jewellery: only Color (Size is now a shared product-level attribute)
-(1, 1, 'Gold Necklace - Red', 'gold-necklace-red', 120.00, 25, 'NECK-GOLD-RED', NOW()),
-(2, 1, 'Gold Necklace - Blue', 'gold-necklace-blue', 120.00, 25, 'NECK-GOLD-BLUE', NOW()),
-(3, 1, 'Gold Necklace - Black', 'gold-necklace-black', 120.00, 25, 'NECK-GOLD-BLACK', NOW()),
+(1, 1, 'Gold Necklace - Red', 'gold-necklace-red', 190.00, 25, 'NECK-GOLD-RED', NOW()),
+(2, 1, 'Gold Necklace - Blue', 'gold-necklace-blue', 120.35, 25, 'NECK-GOLD-BLUE', NOW()),
+(3, 1, 'Gold Necklace - Black', 'gold-necklace-black', 128.00, 25, 'NECK-GOLD-BLACK', NOW()),
 (4, 1, 'Gold Necklace - White', 'gold-necklace-white', 120.00, 25, 'NECK-GOLD-WHITE', NOW()),
 
 -- Home-decor
 (5, 2, 'Ceramic Vase - Red', 'ceramic-vase-red', 45.00, 12, 'VASE-CERAMIC-RED', NOW()),
-(6, 2, 'Ceramic Vase - Blue', 'ceramic-vase-blue', 45.00, 12, 'VASE-CERAMIC-BLUE', NOW()),
-(7, 5, 'Wood Vase - Red', 'wood-vase-red', 45.00, 13, 'VASE-WOOD-RED', NOW()),
+(6, 2, 'Ceramic Vase - Blue', 'ceramic-vase-blue', 40.00, 12, 'VASE-CERAMIC-BLUE', NOW()),
+(7, 5, 'Wood Vase - Red', 'wood-vase-red', 41.00, 13, 'VASE-WOOD-RED', NOW()),
 (8, 5, 'Wood Vase - Blue', 'wood-vase-blue', 45.00, 13, 'VASE-WOOD-BLUE', NOW()),
 
 -- Gifts
-(9, 3, 'Gift Mug - Blue / Medium', 'gift-mug-blue-medium', 15.00, 35, 'MUG-BLUE-MEDIUM', NOW()),
+(9, 3, 'Gift Mug - Blue / Medium', 'gift-mug-blue-medium', 5.00, 35, 'MUG-BLUE-MEDIUM', NOW()),
 (10, 3, 'Gift Mug - Green / Large', 'gift-mug-green-large', 15.00, 35, 'MUG-GREEN-LARGE', NOW()),
 
 -- Clearance
-(11, 4, 'Candle Set - White / Small', 'candle-set-white-small', 10.00, 15, 'CANDLE-WHITE-SMALL', NOW()),
+(11, 4, 'Candle Set - White / Small', 'candle-set-white-small', 19.00, 15, 'CANDLE-WHITE-SMALL', NOW()),
 (12, 4, 'Candle Set - Yellow / Medium', 'candle-set-yellow-medium', 10.00, 15, 'CANDLE-YELLOW-MEDIUM', NOW());
 
 
