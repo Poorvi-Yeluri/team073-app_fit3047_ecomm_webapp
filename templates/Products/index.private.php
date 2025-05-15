@@ -1,49 +1,73 @@
-<?php $category = $category ?? $this->request->getQuery('category'); ?>
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var iterable<\App\Model\Entity\ProductVariant> $variants
+ */
+$category = $category ?? (string)$this->request->getQuery('category', '');
+?>
+
 <div class="container py-4 font-sans">
     <div class="row">
-        <!-- Category List -->
-        <div class="col-md-3 mb-4">
-            <div class="list-group">
-                <div class="list-group-item fw-bold d-flex justify-content-between align-items-center">
-                    <?= __('Categories') ?>
-                    <button id="toggleCategories" class="btn btn-sm btn-outline-secondary">
-                        <?= __('Hide') ?>
-                    </button>
-                </div>
-                <div id="categoryList">
-                    <?= $this->Html->link(__('All Products'), ['action' => 'index'], [
-                        'class' => 'list-group-item list-group-item-action ' . (!$category ? 'active' : '')
-                    ]) ?>
-                    <?php foreach (['jewellery', 'home-decor', 'gifts', 'clearance'] as $cat): ?>
-                        <?= $this->Html->link(__(ucwords(str_replace('-', ' ', $cat))), ['action' => 'index', '?' => ['category' => $cat]], [
-                            'class' => 'list-group-item list-group-item-action ' . ($category === $cat ? 'active' : '')
-                        ]) ?>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
-
         <!-- Product Table -->
-        <div class="col-md-9">
-            <!-- Title and Add Button -->
+        <div class="col-md-12">
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
                 <h4 class="mb-0 font-serif" id="pageTitle">
                     <?= $category ? ucwords(str_replace('-', ' ', $category)) : __('Products') ?>
                 </h4>
-                <?= $this->Html->link(__('Add Product'), ['action' => 'add'], [
-                    'class' => 'btn btn-outline-success rounded-3'
-                ]) ?>
+<!--                --><?php //= $this->Html->link(__('Add Product'), ['action' => 'add'], [
+//                    'class' => 'btn btn-outline-success rounded-3'
+//                ]) ?>
+            </div>
+            <hr class="mb-1 mt-1" />
+
+            <div class="row g-3 align-items-center">
+                <!-- Category Filter -->
+                <div class="col-12 col-md-auto">
+                    <label for="variantCategory" class="text-small text-accent"><?= __('Category') ?></label>
+                    <select id="variantCategory" class="form-select form-select-sm w-100">
+                        <option value=""><?= __('Select Category') ?></option>
+                        <option value="Home Decor"><?= __('Home Decor') ?></option>
+                        <option value="Jewellery"><?= __('Jewellery') ?></option>
+                        <option value="Gifts"><?= __('Gifts') ?></option>
+                        <option value="Clearance"><?= __('Clearance') ?></option>
+                    </select>
+                </div>
+
+                <!-- Stock Level Filter -->
+                <div class="col-12 col-md-auto">
+                    <label for="variantStock" class="text-small text-accent"><?= __('Stock Level') ?></label>
+                    <select id="variantStock" class="form-select form-select-sm w-100">
+                        <option value=""><?= __('Select Stock Level') ?></option>
+                        <option value="Low"><?= __('Low') ?></option>
+                        <option value="Medium"><?= __('Medium') ?></option>
+                        <option value="High"><?= __('High') ?></option>
+                    </select>
+                </div>
+
+                <!-- Price Range -->
+                <div class="col-12 col-md-auto">
+                    <label for="priceRangeMin" class="text-small text-accent"><?= __('Price Range') ?></label>
+                    <div class="d-flex gap-2">
+                        <input type="number" id="priceRangeMin" class="form-control form-control-sm border rounded" placeholder="Min" min="0" style="width: 110px;">
+                        <span class="d-flex align-items-center">-</span>
+                        <input type="number" id="priceRangeMax" class="form-control form-control-sm border rounded" placeholder="Max" min="0" style="width: 110px;">
+                    </div>
+                </div>
+
+                <!-- Sort Dropdown -->
+                <div class="col-12 col-md-auto">
+                    <label for="stockOrder" class="text-small text-accent"><?= __('Sort by Stock') ?></label>
+                    <select id="stockOrder" class="form-select form-select-sm w-100">
+                        <option value=""><?= __('Default') ?></option>
+                        <option value="stock-low-high"><?= __('Low to High') ?></option>
+                        <option value="stock-high-low"><?= __('High to Low') ?></option>
+                    </select>
+                </div>
             </div>
 
-            <!-- Sort Dropdown -->
-            <div class="d-flex justify-content-start mb-4 align-items-center gap-2 flex-wrap">
-                <label for="stockOrder" class="form-label mb-0"><?= __('Sort by Stock') ?>:</label>
-                <select id="stockOrder" class="form-select form-select-sm w-auto">
-                    <option value=""><?= __('Default') ?></option>
-                    <option value="stock-low-high"><?= __('Low to High') ?></option>
-                    <option value="stock-high-low"><?= __('High to Low') ?></option>
-                </select>
-            </div>
+            <hr class="mb-1 mt-3" />
+
+
 
             <!-- DataTable -->
             <div class="table-responsive">
@@ -54,54 +78,56 @@
                         <th><?= __('Category') ?></th>
                         <th><?= __('Price') ?></th>
                         <th><?= __('Stock') ?></th>
-                        <th class="text-center"><?= __('Actions') ?></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($products as $product): ?>
+                    <?php if (count($variants) === 0): ?>
+                        <tr>
+                            <td colspan="4" class="text-center text-muted"><?= __('No products found.') ?></td>
+                        </tr>
+                    <?php endif; ?>
+
+                    <?php foreach ($variants as $variant): ?>
                         <tr>
                             <td>
                                 <div class="d-flex flex-column flex-sm-row align-items-center gap-2">
-                                    <?php if ($product->image_url): ?>
-                                        <img src="<?= h($product->image_url) ?>"
-                                             alt="<?= h($product->name) ?>"
-                                             class="product-image rounded-1"
-                                             style="width:70px;height:70px;object-fit:cover;">
+                                    <?php if ($variant->image_url): ?>
+                                        <img src="<?= h($variant->image_url) ?>" alt="<?= h($variant->name) ?>" class="product-thumb rounded-1">
                                     <?php endif; ?>
-                                    <span><?= h($product->name) ?></span>
+                                    <span><?= h($variant->name) ?></span>
                                 </div>
                             </td>
-                            <td class="text-capitalize"><?= str_replace('-', ' ', h($product->category)) ?></td>
-                            <td>$<?= number_format((float)$product->base_price, 2) ?></td>
-                            <td class="text-center" data-order="<?= $product->stock_quantity ?>">
+                            <td class="text-capitalize"><?= str_replace('-', ' ', h($variant->variant_category)) ?></td>
+                            <td>$<?= number_format((float)($variant->price ?? 0), 2) ?></td>
+                            <td class="text-center" data-order="<?= $variant->stock_quantity ?>">
                                 <?php
-                                $s = $product->stock_quantity;
-                                if ($s < 5) {
-                                    $badge = 'custom-stock-badge low-stock';
+                                $s = $variant->stock_quantity;
+                                if ($s < 10) {
+                                    $badge = 'rounded-pill text-bg-danger';
                                     $label = 'Low';
-                                } elseif ($s < 10) {
-                                    $badge = 'custom-stock-badge medium-stock';
+                                } elseif ($s < 20) {
+                                    $badge = 'rounded-pill text-bg-warning';
                                     $label = 'Medium';
                                 } else {
-                                    $badge = 'custom-stock-badge high-stock';
+                                    $badge = 'rounded-pill text-bg-success';
                                     $label = 'High';
                                 }
                                 ?>
                                 <span class="badge <?= $badge ?>"><?= $label ?> (<?= $s ?>)</span>
                                 <span class="d-none"><?= $s ?></span>
                             </td>
-                            <td class="text-center">
-                                <div class="d-flex flex-wrap justify-content-center gap-2">
-                                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $product->id], [
-                                        'class' => 'btn btn-sm btn-secondary rounded-3'
-                                    ]) ?>
-                                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $product->id], [
-                                        'method' => 'delete',
-                                        'confirm' => __('Are you sure you want to delete {0}?', $product->name),
-                                        'class' => 'btn btn-sm btn-danger rounded-3'
-                                    ]) ?>
-                                </div>
-                            </td>
+<!--                            <td class="text-center">-->
+<!--                                <div class="d-flex flex-wrap justify-content-center gap-2">-->
+<!--                                    --><?php //= $this->Html->link(__('Edit'), ['action' => 'edit', $variant->slug], [
+//                                        'class' => 'btn btn-sm btn-secondary rounded-3'
+//                                    ]) ?>
+<!--                                    --><?php //= $this->Form->postLink(__('Delete'), ['action' => 'delete', $variant->slug], [
+//                                        'method' => 'delete',
+//                                        'confirm' => __('Are you sure you want to delete {0}?', $variant->name),
+//                                        'class' => 'btn btn-sm btn-danger rounded-3'
+//                                    ]) ?>
+<!--                                </div>-->
+<!--                            </td>-->
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -111,10 +137,10 @@
     </div>
 </div>
 
+
 <!-- Scripts -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Initialize the DataTable for product listing with responsive options
         const table = $('#productsTable').DataTable({
             responsive: true,
             paging: true,
@@ -122,65 +148,106 @@
             ordering: true,
             autoWidth: false,
             scrollX: true,
+            language: {
+                loadingRecords: "Loading...",
+                zeroRecords: "No matching products found"
+            },
             columnDefs: [
-                { responsivePriority: 1, targets: 0 }, // Product name is most important
-                { responsivePriority: 2, targets: 4 }, // Actions are second most important
-                { responsivePriority: 3, targets: 3 }, // Stock is third most important
-                { responsivePriority: 4, targets: 2 }  // Price is fourth most important
+                { responsivePriority: 1, targets: 0 }, // Product
+                { responsivePriority: 2, targets: 3 }, // Stock
+                { responsivePriority: 3, targets: 2 }, // Price
+                { responsivePriority: 4, targets: 1 }  // Category
             ]
+
         });
 
-        // Stock sorting functionality
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            const min = parseFloat(document.getElementById('priceRangeMin').value) || 0;
+            const max = parseFloat(document.getElementById('priceRangeMax').value) || Infinity;
+            const priceText = data[2] || "0"; // Assuming column 2 is price
+            const price = parseFloat(priceText.replace(/[^\d.]/g, ''));
+
+            return price >= min && price <= max;
+        });
+
+        const priceMinInput = document.getElementById('priceRangeMin');
+        const priceMaxInput = document.getElementById('priceRangeMax');
+
+        priceMinInput.addEventListener('input', () => table.draw());
+        priceMaxInput.addEventListener('input', () => table.draw());
+
+
+        const categoryFilter = document.getElementById('variantCategory');
+        categoryFilter.addEventListener('change', function () {
+            const selectedCategory = this.value.trim().toLowerCase();
+
+            if (selectedCategory === '') {
+                // Clear filter to show all
+                table.columns(1).search('').draw();
+            } else {
+                // Apply exact match search
+                table.columns(1).search('^' + selectedCategory + '$', true, false).draw();
+            }
+        });
+
+        const stockFilter = document.getElementById('variantStock');
+        stockFilter.addEventListener('change', function () {
+            const selectedStock = this.value.trim().toLowerCase();
+
+            if (selectedStock === '') {
+                // Clear stock filter to show all
+                table.columns(3).search('').draw();
+            } else {
+                // Apply exact match search
+                table.columns(3).search(selectedStock, true, false).draw();
+            }
+        });
+
+
+
+
         const stockOrderSelect = document.getElementById('stockOrder');
         const savedSort = localStorage.getItem('stockSort');
 
-        // Apply saved sort order when page loads
         if (savedSort === 'stock-low-high') {
-            table.order([3, 'asc']).draw();  // Sort by stock from low to high
+            table.order([3, 'asc']).draw();
             stockOrderSelect.value = 'stock-low-high';
         } else if (savedSort === 'stock-high-low') {
-            table.order([3, 'desc']).draw();  // Sort by stock from high to low
+            table.order([3, 'desc']).draw();
             stockOrderSelect.value = 'stock-high-low';
         }
 
-        // Handle stock sorting change
         stockOrderSelect.addEventListener('change', function () {
             const selected = this.value;
             if (selected === 'stock-low-high') {
-                table.order([3, 'asc']).draw();  // Sort by stock from low to high
+                table.order([3, 'asc']).draw();
             } else if (selected === 'stock-high-low') {
-                table.order([3, 'desc']).draw();  // Sort by stock from high to low
+                table.order([3, 'desc']).draw();
             } else {
-                table.order([]).draw();  // Reset to default sorting
+                table.order([]).draw();
             }
-            // Store the selected sort order in localStorage
             localStorage.setItem('stockSort', selected);
         });
 
-        // For hiding/showing categories
         const toggleBtn = document.getElementById('toggleCategories');
         const categoryList = document.getElementById('categoryList');
+
         toggleBtn.addEventListener('click', function () {
-            const isHidden = categoryList.style.display === 'none';
-            categoryList.style.display = isHidden ? 'block' : 'none';
-            this.textContent = isHidden ? 'Hide' : 'Show';
+            categoryList.classList.toggle('d-none');
+            this.textContent = categoryList.classList.contains('d-none') ? 'Show' : 'Hide';
         });
 
-        // Automatically hide categories on small screens initially
         function adjustCategoryVisibility() {
             if (window.innerWidth < 768) {
-                categoryList.style.display = 'none';
+                categoryList.classList.add('d-none');
                 toggleBtn.textContent = 'Show';
             } else {
-                categoryList.style.display = 'block';
+                categoryList.classList.remove('d-none');
                 toggleBtn.textContent = 'Hide';
             }
         }
 
-        // Run on page load
         adjustCategoryVisibility();
-
-        // Run when window is resized
         window.addEventListener('resize', adjustCategoryVisibility);
     });
 </script>

@@ -317,7 +317,7 @@ class ProductsController extends AppController
         $sort = $queryParams['sort'] ?? null;
 
         $query = $this->Products->ProductVariants->find()
-            ->contain(['ProductVariantAttributes.AttributeValues.Attributes']);
+            ->contain(['Products', 'ProductVariantAttributes.AttributeValues.Attributes']);
 
         if (!empty($variantIds)) {
             $query->where(['ProductVariants.id IN' => $variantIds]);

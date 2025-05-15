@@ -22,6 +22,7 @@ use Cake\ORM\Entity;
  * @property ProductVariantImage[] $product_variant_images
  * @property string $main_image_url
  * @property array $image_urls
+ * @property string $variant_category
  */
 class ProductVariant extends Entity
 {
@@ -52,7 +53,7 @@ class ProductVariant extends Entity
      * @var array<string>
      */
 
-    protected array $_virtual = ['main_image_url', 'image_urls'];
+    protected array $_virtual = ['main_image_url', 'image_urls', 'variant_category'];
 
     /**
      * Get the main image URL from product variant images where is_main is true.
@@ -89,4 +90,15 @@ class ProductVariant extends Entity
 
         return [];
     }
+
+    /**
+     * Get the product's category as the variant category.
+     *
+     * @return string
+     */
+    protected function _getVariantCategory(): string
+    {
+        return $this->product->category ?? '';
+    }
+
 }
