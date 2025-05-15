@@ -200,23 +200,23 @@ $cartCount = array_sum(array_column($cartItems, 'quantity'));
     });
 
     // Dynamic Text and Background Color Changes
-    const texts = [
-        "Spring Sale is Here!",
-        "Don't Miss Our Easter Offers!",
-        "Limited Time Offers – Shop Now!",
-        "Hurry! Special Discounts Ahead!"
+    const textContent = document.getElementById("textContent");
+
+    const promotions = [
+        { text: "Explore Our Elegant Jewellery", category: "jewellery" },
+        { text: "Refresh Your Space with Home Decor", category: "home-decor" },
+        { text: "Perfect Gifts for Every Occasion", category: "gifts" },
+        { text: "Clearance Sale – Don't Miss Out!", category: "clearance" }
     ];
 
     function changeContentAndStyle() {
-        const textEl = document.getElementById("textContent");
-
-        // Pick random text and background color
-        const randomText = texts[Math.floor(Math.random() * texts.length)];
-
-        // Update text and background
-        textEl.textContent = randomText;
+        const randomPromo = promotions[Math.floor(Math.random() * promotions.length)];
+        textContent.textContent = randomPromo.text;
+        textContent.href = `/products?category=${encodeURIComponent(randomPromo.category)}`;
     }
 
-    // Start interval after DOM is ready
-    setInterval(changeContentAndStyle, 3000);
+    // Initial call + interval
+    changeContentAndStyle();
+    setInterval(changeContentAndStyle, 4000);
+
 </script>

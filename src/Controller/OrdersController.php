@@ -196,8 +196,12 @@ class OrdersController extends AppController
     private function processOrderItems($orderId, $lineItems)
     {
         $orderItemsTable = $this->getTableLocator()->get('OrderItems');
+        $variantsTable = $this->getTableLocator()->get('ProductVariants');
 
         foreach ($lineItems as $item) {
+            $variantId = $item->price->product->metadata->variant_id;
+            $quantity = $item->quantity;
+
             $orderItem = $orderItemsTable->newEmptyEntity();
             $orderItem->order_id = $orderId;
             $orderItem->variant_id = $item->price->product->metadata->variant_id;
@@ -209,6 +213,11 @@ class OrdersController extends AppController
             $orderItem->discount_amount = $item->amount_discount / 100; // Store discount amount
 
             $orderItemsTable->save($orderItem);
+
+            $variant = $variantsTable->get($variantId);
+            $variant->stock_quantity = max(0, $variant->stock_quantity - $quantity);
+
+            $variantsTable->save($variant);
         }
     }
 
