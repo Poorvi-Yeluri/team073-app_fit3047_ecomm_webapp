@@ -91,7 +91,7 @@
                             <a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', $variant->slug]) ?>"
                                class="btn w-100 rounded-2"
                                style="color: var(--white);
-                       background-color: var(--accent-color)">
+                                background-color: var(--accent-color)">
                                 View Details
                             </a>
                             <?= $this->Form->create(null, [

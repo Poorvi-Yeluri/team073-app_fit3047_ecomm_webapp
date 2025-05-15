@@ -62,16 +62,15 @@ class ProductVariant extends Entity
      */
     protected function _getMainImageUrl(): string
     {
+        $url = "";
         if (!empty($this->product_variant_images)) {
             foreach ($this->product_variant_images as $img) {
                 if ($img->is_main) {
-                    return $img->image_url;
+                   $url =  $img->image_url;
                 }
             }
         }
-
-        // Fallback if no main image is set
-        return "https://picsum.photos/500/500";
+        return $url;
     }
 
 
