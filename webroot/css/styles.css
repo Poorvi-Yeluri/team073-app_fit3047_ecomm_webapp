@@ -414,6 +414,6 @@ select::placeholder {
     color: inherit;
 }
 
-button.accordion-button:focus{
+button.accordion-button:focus {
     box-shadow: inherit;
 }
