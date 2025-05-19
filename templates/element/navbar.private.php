@@ -26,7 +26,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="usersDropdown">
                     <li><a class="dropdown-item text-center" href="/users/">All Users</a></li>
-                    <li><a class="dropdown-item text-center" href="/users/add">Add User</a></li>
+<!--                    <li><a class="dropdown-item text-center" href="/users/add">Add User</a></li>-->
                 </ul>
             </div>
 
@@ -37,7 +37,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="usersDropdown">
                     <li><a class="dropdown-item text-center" href="/products/">All Products</a></li>
-                    <li><a class="dropdown-item text-center" href="/products/add/">Add Product</a></li>
+<!--                    <li><a class="dropdown-item text-center" href="/products/add/">Add Product</a></li>-->
                 </ul>
             </div>
         </div>

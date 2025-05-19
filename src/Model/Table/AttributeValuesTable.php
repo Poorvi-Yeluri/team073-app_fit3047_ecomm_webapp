@@ -49,9 +49,6 @@ class AttributeValuesTable extends Table
             'foreignKey' => 'attribute_id',
             'joinType' => 'INNER',
         ]);
-        $this->hasMany('ProductAttributes', [
-            'foreignKey' => 'attribute_value_id',
-        ]);
         $this->hasMany('ProductVariantAttributes', [
             'foreignKey' => 'attribute_value_id',
         ]);
@@ -103,17 +100,24 @@ class AttributeValuesTable extends Table
         return $rules;
     }
 
-    public function getValueIdsForFilter(string $attributeName, array $values): array
+    // In src/Model/Table/AttributeValuesTable.php
+
+    public function getValueIdsForFilter(string $attributeName, array $selectedValues): array
     {
-        return $this->find()
-            ->select('AttributeValues.id')
-            ->contain(['Attributes'])
-            ->where([
-                'Attributes.name' => $attributeName,
-                'AttributeValues.value IN' => $values
-            ])
-            ->all()
-            ->extract('id')
-            ->toList();
+        if (empty($selectedValues)) {
+            return [];
+        }
+
+        $query = $this->find()
+            ->select(['id'])
+            ->matching('Attributes', function ($q) use ($attributeName) {
+                return $q->where(['Attributes.name' => $attributeName]);
+            })
+            ->where(['AttributeValues.value IN' => $selectedValues])
+            ->all();
+
+        return $query->extract('id')->toList();
     }
+
+
 }

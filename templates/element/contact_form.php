@@ -18,15 +18,16 @@
                 <div class="d-flex justify-content-between align-items-center font-serif mb-3">
                     <legend><?= __('Email Us') ?></legend>
                     <?php if (isset($isModal) && $isModal) : ?>
-                        <span class="material-symbols-outlined mb-3 close-modal" role="button" data-bs-dismiss="modal">close</span>                    <?php endif; ?>
+                        <span class="material-symbols-outlined mb-3 close-modal" role="button" data-bs-dismiss="modal">close</span>
+                    <?php endif; ?>
                 </div>
                 <!-- Name Field -->
-                <div class="mb-3">
+                <div class="mb-3 form-group required">
                     <?= $this->Form->control('customer_name', [
                         'id' => 'customer_name',
                         'class' => 'form-control rounded-0 shadow-none border-dark',
                         'placeholder' => 'E.g. Jane Smith',
-                        'label' => ['text' => 'Name', 'class' => 'mb-2'],
+                        'label' => ['text' => 'Name', 'class' => 'mb-2 control-label'],
                         'required' => true,
                         'aria-describedby' => 'customer_name_error',
                     ]); ?>
@@ -34,13 +35,13 @@
                 </div>
 
                 <!-- Email Field -->
-                <div class="mb-3">
+                <div class="mb-3 form-group required">
                     <?= $this->Form->control('customer_email', [
                         'id' => 'customer_email',
                         'type' => 'email',
                         'class' => 'form-control rounded-0 shadow-none border-dark',
                         'placeholder' => 'E.g. janesmith@gmail.com',
-                        'label' => ['text' => 'Email', 'class' => 'mb-2'],
+                        'label' => ['text' => 'Email', 'class' => 'mb-2 control-label'],
                         'required' => true,
                         'aria-describedby' => 'customer_email_error',
                     ]); ?>
@@ -48,14 +49,14 @@
                 </div>
 
                 <!-- Phone Field -->
-                <div class="mb-3">
+                <div class="mb-3 form-group required">
                     <?= $this->Form->control('customer_phone', [
                         'id' => 'customer_phone',
                         'type' => 'tel',
                         'class' => 'form-control rounded-0 shadow-none border-dark',
                         'placeholder' => 'E.g. 0450012347',
                         'maxlength' => 15,
-                        'label' => ['text' => 'Phone', 'class' => 'mb-2'],
+                        'label' => ['text' => 'Phone', 'class' => 'mb-2 control-label'],
                         'required' => true,
                         'aria-describedby' => 'customer_phone_error',
                     ]); ?>
@@ -64,7 +65,7 @@
                 </div>
 
                 <!-- Message Type -->
-                <div class="mb-3">
+                <div class="mb-3 form-group required">
                     <?= $this->Form->control('message_type', [
                         'id' => 'message_type',
                         'type' => 'select',
@@ -76,7 +77,7 @@
                             'Complaint' => 'Complaint',
                         ],
                         'class' => 'form-select rounded-0 shadow-none border-dark',
-                        'label' => ['text' => 'Enquiry Type', 'class' => 'mb-2'],
+                        'label' => ['text' => 'Enquiry Type', 'class' => 'mb-2 control-label'],
                         'required' => true,
                         'aria-describedby' => 'message_type_error',
                     ]); ?>
@@ -84,12 +85,12 @@
                 </div>
 
                 <!-- Description -->
-                <div class="mb-3">
+                <div class="mb-3 form-group required">
                     <?= $this->Form->control('description', [
                         'id' => 'description',
                         'class' => 'form-control rounded-0 shadow-none border-dark',
                         'placeholder' => 'Describe your message',
-                        'label' => ['text' => 'Description', 'class' => 'mb-2'],
+                        'label' => ['text' => 'Description', 'class' => 'mb-2 control-label'],
                         'required' => true,
                         'maxlength' => 500,
                         'aria-describedby' => 'description_error',

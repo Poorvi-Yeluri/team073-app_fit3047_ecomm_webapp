@@ -11,26 +11,31 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $order_id
  * @property int $variant_id
+ * @property string|null $item_description
+ * @property int|null $product_id
+ * @property float|null $tax_amount
+ * @property float|null $amount_subtotal
+ * @property float|null $amount_total
+ * @property float|null $discount_amount
+ * @property int|null $product_variant_id
  * @property int $quantity
- * @property string $price
+ * @property float $price
  *
- * @property \App\Model\Entity\Order $order
- * @property \App\Model\Entity\Variant $variant
+ * @property Order $order
+ * @property Variant $variant
  */
 class OrderItem extends Entity
 {
-    /**
-     * Fields that can be mass assigned using newEntity() or patchEntity().
-     *
-     * Note that when '*' is set to true, this allows all unspecified fields to
-     * be mass assigned. For security purposes, it is advised to set '*' to false
-     * (or remove it), and explicitly make individual fields accessible as needed.
-     *
-     * @var array<string, bool>
-     */
     protected array $_accessible = [
         'order_id' => true,
         'variant_id' => true,
+        'item_description' => true,
+        'product_id' => true,
+        'tax_amount' => true,
+        'amount_subtotal' => true,
+        'amount_total' => true,
+        'discount_amount' => true,
+        'product_variant_id' => true,
         'quantity' => true,
         'price' => true,
         'order' => true,

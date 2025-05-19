@@ -1,3 +1,10 @@
+<?php
+// Get cart data from session
+$session = $this->request->getSession();
+$cartItems = $session->read('Cart.items') ?? [];
+$cartCount = array_sum(array_column($cartItems, 'quantity'));
+?>
+
 <!-- Top banner -->
 <div class="container-fluid py-2" style="background-color: var(--accent-color)">
     <div class="d-flex w-100 justify-content-center align-items-center">
@@ -26,7 +33,8 @@
             </button>
 
             <!-- Desktop Search -->
-            <form method="get" action="/products/search" class="d-none d-md-flex align-items-center position-relative" id="search-wrapper">
+            <form method="get" action="/products/search" class="d-none d-md-flex align-items-center position-relative"
+                  id="search-wrapper">
                 <span class="material-symbols-outlined me-2" id="search-bar-icon" style="cursor: pointer;">search</span>
                 <input type="search"
                        name="q"
@@ -38,7 +46,8 @@
         </div>
 
         <!-- Center: Logo (md, lg) -->
-        <a class="logo-brand d-none d-md-block position-absolute start-50 translate-middle-x" href="/" style="z-index: 1;">
+        <a class="logo-brand d-none d-md-block position-absolute start-50 translate-middle-x" href="/"
+           style="z-index: 1;">
             GLEAM <i class="text-small">AND</i> GRACE
         </a>
 
@@ -48,15 +57,27 @@
         </a>
 
         <!-- Right Icons -->
-        <div class="d-none d-md-flex align-items-center gap-3">
-            <!-- <span class="material-symbols-outlined" style="cursor: pointer;">shopping_cart</span> -->
-            <span class="material-symbols-outlined"
-                  id="popoverButton"
-                  data-bs-toggle="popover"
-                  data-bs-placement="bottom"
-                  style="cursor: pointer;">
+        <div class="d-flex d-md-flex align-items-center gap-3 mt-1 ">
+            <div class="position-relative d-inline-block">
+                <span class="material-symbols-outlined"
+                      style="cursor: pointer;"
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#cartOffcanvas">
+                    shopping_cart
+                </span>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    <?= count($session->read('Cart.items') ?? []) ?>
+                </span>
+            </div>
+            <div class="position-relative d-inline-block">
+                  <span class="material-symbols-outlined"
+                        id="popoverButton"
+                        data-bs-toggle="popover"
+                        data-bs-placement="bottom"
+                        style="cursor: pointer;">
                 person
             </span>
+            </div>
         </div>
     </div>
 </div>
@@ -64,10 +85,15 @@
 <!-- Bottom Nav (Desktop only) -->
 <div class="container-fluid d-none d-md-flex border-bottom py-3 px-3 px-md-5">
     <div class="d-flex flex-wrap gap-5 justify-content-center w-100">
-        <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'home-decor']]) ?>">Home Decor</a>
-        <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'jewellery']]) ?>">Jewellery</a>
-        <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'gifts']]) ?>">Gifts</a>
-        <a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'clearance']]) ?>">Clearance</a>
+        <a class="nav-link px-2 text-uppercase"
+           href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'home-decor']]) ?>">Home
+            Decor</a>
+        <a class="nav-link px-2 text-uppercase"
+           href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'jewellery']]) ?>">Jewellery</a>
+        <a class="nav-link px-2 text-uppercase"
+           href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'gifts']]) ?>">Gifts</a>
+        <a class="nav-link px-2 text-uppercase"
+           href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'clearance']]) ?>">Clearance</a>
     </div>
 </div>
 
@@ -86,17 +112,29 @@
     </div>
     <div class="offcanvas-body">
         <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'home-decor']]) ?>">Home Decor</a></li>
-            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'jewellery']]) ?>">Jewellery</a></li>
-            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'gifts']]) ?>">Gifts</a></li>
-            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'clearance']]) ?>">Clearance</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase"
+                                    href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'home-decor']]) ?>">Home
+                    Decor</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase"
+                                    href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'jewellery']]) ?>">Jewellery</a>
+            </li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase"
+                                    href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'gifts']]) ?>">Gifts</a>
+            </li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase"
+                                    href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', '?' => ['category' => 'clearance']]) ?>">Clearance</a>
+            </li>
         </ul>
-        <hr />
+        <hr/>
         <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Auth', 'action' => 'login', '?' => ['category' => 'home-decor']]) ?>">Login</a></li>
-            <li class="nav-item"><a class="nav-link px-2 text-uppercase" href="<?= $this->Url->build(['controller' => 'Auth', 'action' => 'register', '?' => ['category' => 'jewellery']]) ?>">Register</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase"
+                                    href="<?= $this->Url->build(['controller' => 'Auth', 'action' => 'login', '?' => ['category' => 'home-decor']]) ?>">Login</a>
+            </li>
+            <li class="nav-item"><a class="nav-link px-2 text-uppercase"
+                                    href="<?= $this->Url->build(['controller' => 'Auth', 'action' => 'register', '?' => ['category' => 'jewellery']]) ?>">Register</a>
+            </li>
         </ul>
-        <hr />
+        <hr/>
 
     </div>
 </div>
@@ -113,6 +151,9 @@
         >
     </form>
 </div>
+
+<!-- Include Cart Element -->
+<?= $this->element('cart') ?>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -159,23 +200,23 @@
     });
 
     // Dynamic Text and Background Color Changes
-    const texts = [
-        "Spring Sale is Here!",
-        "Don't Miss Our Easter Offers!",
-        "Limited Time Offers – Shop Now!",
-        "Hurry! Special Discounts Ahead!"
+    const textContent = document.getElementById("textContent");
+
+    const promotions = [
+        { text: "Explore Our Elegant Jewellery", category: "jewellery" },
+        { text: "Refresh Your Space with Home Decor", category: "home-decor" },
+        { text: "Perfect Gifts for Every Occasion", category: "gifts" },
+        { text: "Clearance Sale – Don't Miss Out!", category: "clearance" }
     ];
 
     function changeContentAndStyle() {
-        const textEl = document.getElementById("textContent");
-
-        // Pick random text and background color
-        const randomText = texts[Math.floor(Math.random() * texts.length)];
-
-        // Update text and background
-        textEl.textContent = randomText;
+        const randomPromo = promotions[Math.floor(Math.random() * promotions.length)];
+        textContent.textContent = randomPromo.text;
+        textContent.href = `/products?category=${encodeURIComponent(randomPromo.category)}`;
     }
 
-    // Start interval after DOM is ready
-        setInterval(changeContentAndStyle, 3000);
+    // Initial call + interval
+    changeContentAndStyle();
+    setInterval(changeContentAndStyle, 4000);
+
 </script>

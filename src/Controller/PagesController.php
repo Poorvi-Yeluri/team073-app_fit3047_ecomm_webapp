@@ -49,10 +49,16 @@ class PagesController extends AppController
         if (!$path) {
             return $this->redirect('/');
         }
+
+        if ($this->Authentication->getIdentity() && $path === ['home']) {
+            return $this->redirect(['controller' => 'ContactMessages', 'action' => 'index']);
+        }
+
         if (in_array('..', $path, true) || in_array('.', $path, true)) {
             throw new ForbiddenException();
         }
         $page = $subpage = null;
+
 
         if (!empty($path[0])) {
             $page = $path[0];

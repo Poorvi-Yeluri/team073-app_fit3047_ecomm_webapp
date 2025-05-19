@@ -2,6 +2,8 @@
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?= $this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken')); ?>
+
     <!-- Default title is 'Gleam & Grace' if no title is set in the view -->
     <title>
         <?= $this->fetch('title') ?? 'Gleam & Grace' ?>

@@ -10,10 +10,10 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $product_id
- * @property int $attribute_value_id
+ * @property int $attribute_id
  *
- * @property \App\Model\Entity\Product $product
- * @property \App\Model\Entity\AttributeValue $attribute_value
+ * @property Product $product
+ * @property Attribute $attribute
  */
 class ProductAttribute extends Entity
 {
@@ -28,8 +28,7 @@ class ProductAttribute extends Entity
      */
     protected array $_accessible = [
         'product_id' => true,
-        'attribute_value_id' => true,
+        'attribute_id' => true,
         'product' => true,
-        'attribute_value' => true,
     ];
 }

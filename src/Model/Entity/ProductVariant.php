@@ -12,15 +12,17 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $product_id
  * @property string $name
- * @property string $variant_value
  * @property string $price
+ * @property string $slug
  * @property int $stock_quantity
  * @property string $sku
  * @property DateTime $created_at
  *
  * @property Product $product
  * @property ProductVariantImage[] $product_variant_images
+ * @property string $main_image_url
  * @property array $image_urls
+ * @property string $variant_category
  */
 class ProductVariant extends Entity
 {
@@ -36,7 +38,7 @@ class ProductVariant extends Entity
     protected array $_accessible = [
         'product_id' => true,
         'name' => true,
-        'variant_value' => true,
+        'slug' => true,
         'price' => true,
         'stock_quantity' => true,
         'sku' => true,
@@ -50,12 +52,30 @@ class ProductVariant extends Entity
      *
      * @var array<string>
      */
-    protected array $_virtual = ['image_urls'];
 
+    protected array $_virtual = ['main_image_url', 'image_urls', 'variant_category'];
+
+    /**
+     * Get the main image URL from product variant images where is_main is true.
+     *
+     * @return string
+     */
+    protected function _getMainImageUrl(): string
+    {
+        $url = "";
+        if (!empty($this->product_variant_images)) {
+            foreach ($this->product_variant_images as $img) {
+                if ($img->is_main) {
+                   $url =  $img->image_url;
+                }
+            }
+        }
+        return $url;
+    }
 
 
     /**
-     * Get all product image URLs as an array.
+     * Get all product variant image URLs as an array.
      *
      * @return string[]
      */
@@ -69,4 +89,15 @@ class ProductVariant extends Entity
 
         return [];
     }
+
+    /**
+     * Get the product's category as the variant category.
+     *
+     * @return string
+     */
+    protected function _getVariantCategory(): string
+    {
+        return $this->product->category ?? '';
+    }
+
 }

@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\CartItemsController;
+use App\Controller\CartController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\CartItemsController Test Case
+ * App\Controller\CartController Test Case
  *
- * @uses \App\Controller\CartItemsController
+ * @uses \App\Controller\CartController
  */
 class CartItemsControllerTest extends TestCase
 {
@@ -31,7 +31,7 @@ class CartItemsControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\CartItemsController::index()
+     * @uses \App\Controller\CartController::index()
      */
     public function testIndex(): void
     {
@@ -42,7 +42,7 @@ class CartItemsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\CartItemsController::view()
+     * @uses \App\Controller\CartController::view()
      */
     public function testView(): void
     {
@@ -53,7 +53,7 @@ class CartItemsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\CartItemsController::add()
+     * @uses \App\Controller\CartController::add()
      */
     public function testAdd(): void
     {
@@ -64,7 +64,7 @@ class CartItemsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\CartItemsController::edit()
+     * @uses \App\Controller\CartController::edit()
      */
     public function testEdit(): void
     {
@@ -75,7 +75,7 @@ class CartItemsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\CartItemsController::delete()
+     * @uses \App\Controller\CartController::delete()
      */
     public function testDelete(): void
     {

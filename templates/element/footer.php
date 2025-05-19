@@ -24,3 +24,5 @@
 
 <?= $this->Html->script('form-validation') ?>
 <?= $this->Html->script('datatable-init') ?>
+<?= $this->Html->script('add-to-cart') ?>
+

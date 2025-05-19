@@ -257,59 +257,13 @@ select.form-select:focus {
     box-shadow: none;
 }
 
-/*button {*/
-/*    font-family: var(--font-serif);*/
-/*    text-transform: uppercase;*/
-/*    letter-spacing: 0.05em;*/
-/*    font-size: var(--font-small);*/
-/*    font-weight: var(--font-weight-regular);*/
-/*    padding: var(--space-3) var(--space-4) 0;*/
-/*    border: 1px solid;*/
-/*    border-radius: var(--radius);*/
-/*    background: transparent;*/
-/*    transition: var(--transition-fast);*/
-/*    cursor: pointer;*/
-/*    max-width: 100%;*/
-/*}*/
-/*button.small {*/
-/*    font-size: var(--font-small);*/
-/*    padding: var(--space-1) var(--space-2);*/
-/*    width: auto;*/
-/*}*/
-
-/*button.medium {*/
-/*    font-size: var(--font-body);*/
-/*    padding: var(--space-2) var(--space-3);*/
-/*    width: auto;*/
-/*}*/
-
-/*button.large {*/
-/*    font-size: var(--font-h3);*/
-/*    padding: var(--space-3) var(--space-4);*/
-/*    width: auto;*/
-/*}*/
-
-/*button.black {*/
-/*    background-color: var(--black);*/
-/*    color: var(--white);*/
-/*    border-color: var(--black);*/
-/*}*/
-
-/*button.black:hover {*/
-/*    background-color: transparent;*/
-/*    color: var(--black);*/
-/*}*/
-
-/*button.white {*/
-/*    background-color: var(--white);*/
-/*    color: var(--black);*/
-/*    border-color: var(--white);*/
-/*}*/
-
-/*button.white:hover {*/
-/*    background-color: var(--black);*/
-/*    color: var(--white);*/
-/*}*/
+/* Used for adding a required red asterisk
+http://blog.adeel.io/2015/10/18/adding-an-asterisk-to-required-fields-in-bootstrap/
+*/
+.form-group.required .control-label:after {
+    content:"*";
+    color:red;
+}
 
 
 .thumb-image.active {
@@ -454,16 +408,4 @@ select::placeholder {
 .high-stock {
     background-color: #5cb85c;
 }
-
-
-
-.accordion-button:not(.collapsed) {
-    background-color: transparent !important;
-    color: inherit;
-}
-
-button.accordion-button:focus{
-    box-shadow: inherit;
-}
-
 

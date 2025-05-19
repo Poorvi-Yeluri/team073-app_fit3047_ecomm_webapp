@@ -1,9 +1,6 @@
-<?php if ($this->Identity->isLoggedIn()) : ?>
-    <script>
-        window.location.href = "<?= $this->Url->build(['controller' => 'contact-messages', 'action' => 'index']) ?>";
-    </script>
-<?php else : ?>
-    <section class="w-100 d-none d-md-flex justify-content-center align-items-center position-relative" id="hero-section">
+<?php if (!$this->Identity->isLoggedIn()) : ?>
+
+<section class="w-100 d-none d-md-flex justify-content-center align-items-center position-relative" id="hero-section">
         <img src="/img/hero-section.jpg" alt="hero image" class="object-fit-cover w-100"
              style="height: 500px; object-position: center;">
         <div class="position-absolute top-50 start-50 translate-middle text-center text-light px-3">
@@ -22,80 +19,6 @@
         </div>
     </section>
 
-    <section class="w-100 py-md-5" id="new-arrivals-section">
-        <div class="container">
-            <!-- Title Section -->
-            <div class="col mb-4 text-center">
-                <p class="fs-2 mb-2 fw-normal font-serif">New Arrivals</p>
-                <p class="fs-6 font-sans">Explore our newest arrivals — thoughtfully curated pieces to inspire and delight.</p>
-            </div>
-
-            <!-- Carousel Section -->
-            <div id="categories-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-                <!-- Indicators -->
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#categories-carousel" data-bs-slide-to="0" class="active"
-                            aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#categories-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#categories-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                    <button type="button" data-bs-target="#categories-carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
-                </div>
-
-                <!-- Slides -->
-                <div class="carousel-inner">
-                    <!-- Slide 1 -->
-                    <div class="carousel-item active">
-                        <img src="/img/landing-page/categories-section/cozy_house.jpeg" class="d-block w-100 img-fluid"
-                             alt="Jewellery" style="object-fit: cover; height: 500px;">
-                        <div class="carousel-caption d-block d-md-block bg-dark bg-opacity-50 rounded p-3">
-                            <h5 class="font-sans text-white" style="letter-spacing: 2px;">Jewellery</h5>
-                            <p class="fs-6 font-sans text-white" style="letter-spacing: 1px;">Exquisite craftsmanship in every piece.</p>
-                        </div>
-                    </div>
-
-                    <!-- Slide 2 -->
-                    <div class="carousel-item">
-                        <img src="/img/landing-page/categories-section/gold_ring.jpeg" class="d-block w-100 img-fluid"
-                             alt="Gifts" style="object-fit: cover; height: 500px;">
-                        <div class="carousel-caption d-block d-md-block bg-dark bg-opacity-50 rounded p-3">
-                            <h5 class="font-sans text-white" style="letter-spacing: 2px;">Gifts</h5>
-                            <p class="fs-6 font-sans text-white" style="letter-spacing: 1px;">Timeless treasures for loved ones.</p>
-                        </div>
-                    </div>
-
-                    <!-- Slide 3 -->
-                    <div class="carousel-item">
-                        <img src="/img/landing-page/categories-section/emerald_ring.png" class="d-block w-100 img-fluid"
-                             alt="Emerald Ring" style="object-fit: cover; height: 500px;">
-                        <div class="carousel-caption d-block d-md-block bg-dark bg-opacity-50 rounded p-3">
-                            <h5 class="font-sans text-white" style="letter-spacing: 2px;">Emerald Ring</h5>
-                            <p class="fs-6 font-sans text-white" style="letter-spacing: 1px;">Bold elegance in every detail.</p>
-                        </div>
-                    </div>
-
-                    <!-- Slide 4 -->
-                    <div class="carousel-item">
-                        <img src="/img/landing-page/categories-section/nice_chair.jpeg" class="d-block w-100 img-fluid"
-                             alt="Furniture" style="object-fit: cover; height: 500px;">
-                        <div class="carousel-caption d-block d-md-block bg-dark bg-opacity-50 rounded p-3">
-                            <h5 class="font-sans text-white" style="letter-spacing: 2px;">Furniture</h5>
-                            <p class="fs-6 font-sans text-white" style="letter-spacing: 1px;">Comfort meets modern design.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Controls -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#categories-carousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#categories-carousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-        </div>
-    </section>
 
 
     <section class="w-100 py-5" id="categories-section">
@@ -158,5 +81,5 @@
             </p>
         </div>
     </section>
+<?php endif ?>
 
-<?php endif; ?>

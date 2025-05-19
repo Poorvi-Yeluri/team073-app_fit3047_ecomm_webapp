@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $variant_id
+ * @property bool $is_main
  * @property string $image_url
  * @property \Cake\I18n\DateTime $created_at
  * @property \Cake\I18n\DateTime|null $modified_at
@@ -27,6 +28,7 @@ class ProductVariantImage extends Entity
      */
     protected array $_accessible = [
         'variant_id' => true,
+        'is_main' => true,
         'image_url' => true,
         'created_at' => true,
         'modified_at' => true,
