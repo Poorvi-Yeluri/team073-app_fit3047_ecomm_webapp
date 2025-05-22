@@ -53,18 +53,59 @@ class ProductVariantsController extends AppController
     public function add()
     {
         $productVariant = $this->ProductVariants->newEmptyEntity();
+
         if ($this->request->is('post')) {
-            $productVariant = $this->ProductVariants->patchEntity($productVariant, $this->request->getData());
+            $productVariant = $this->ProductVariants->patchEntity(
+                $productVariant,
+                $this->request->getData(),
+                [
+                    'associated' => ['AttributeValues', 'ProductVariantImages']
+                ]
+            );
+            $uploadedFiles = $this->request->getUploadedFiles();
+
+            if (!empty($uploadedFiles['product_variant_images'])) {
+                foreach ($uploadedFiles['product_variant_images'] as $uploadedFile) {
+                    $fileName = time() . '_' . $uploadedFile->getClientFilename();
+                    $filePath = WWW_ROOT . 'img/uploads/' . $fileName;
+                    $uploadedFile->moveTo($filePath);
+
+                    $productVariant->product_variant_images[] = $this->ProductVariants->ProductVariantImages->newEntity([
+                        'image_url' => 'img/uploads/' . $fileName,
+                    ]);
+
+                }
+            }
+
+
+
+
+
             if ($this->ProductVariants->save($productVariant)) {
                 $this->Flash->success(__('The product variant has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
+
             $this->Flash->error(__('The product variant could not be saved. Please, try again.'));
         }
-        $products = $this->ProductVariants->Products->find('list', limit: 200)->all();
-        $this->set(compact('productVariant', 'products'));
+
+        $products = $this->ProductVariants->Products->find('list')->all();
+
+        // Fetch attribute values with their attribute names
+        $attributeValuesQuery = $this->ProductVariants->AttributeValues->find()
+            ->contain(['Attributes'])
+            ->all();
+
+        // Group attribute values by attribute name
+        $groupedAttributeValues = [];
+        foreach ($attributeValuesQuery as $attrValue) {
+            $groupedAttributeValues[$attrValue->attribute->name][$attrValue->id] = $attrValue->value;
+        }
+
+        $this->set(compact('productVariant', 'products', 'groupedAttributeValues'));
+
     }
+
 
     /**
      * Edit method
