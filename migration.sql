@@ -1,4 +1,4 @@
-/*M!999999\- enable the sandbox mode */ 
+/*M!999999\- enable the sandbox mode */
 -- MariaDB dump 10.19-11.7.2-MariaDB, for osx10.20 (arm64)
 --
 -- Host: localhost    Database: fit3047_app
@@ -234,6 +234,7 @@ DROP TABLE IF EXISTS `product_variants`;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product_variants` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
   `product_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
