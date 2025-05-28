@@ -137,8 +137,11 @@
                             <td><?= h($variant->created_at) ?></td>
                             <td>
                                 <div class="d-flex flex-wrap gap-2 justify-content-center">
-                                    <?= $this->Html->link(__('View'), ['action' => 'view', $variant->id], [
-                                        'class' => 'btn btn-sm btn-primary rounded-3'
+<!--                                    --><?php //= $this->Html->link(__('View'), ['action' => 'view', $variant->id], [
+//                                        'class' => 'btn btn-sm btn-primary rounded-3'
+//                                    ]) ?>
+                                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $variant->id], [
+                                        'class' => 'btn btn-sm btn-secondary rounded-3'
                                     ]) ?>
                                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $variant->id], [
                                         'method' => 'post',

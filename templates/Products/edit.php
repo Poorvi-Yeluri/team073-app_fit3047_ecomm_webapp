@@ -23,16 +23,14 @@ $this->Breadcrumbs->add('Edit Product');
                 <!-- Title centered next to the button -->
                 <h4 class="ms-4"><?= __('Edit Product: ') . h($product->name) ?></h4>
             </div>
-
+            <?= $this->Form->create($product, [
+                'type' => 'file',
+                'class' => 'needs-validation',
+                'novalidate' => true
+            ]) ?>
             <div class="card p-4 shadow-sm rounded-3">
                 <div class="row">
                     <div class="col-12">
-                        <?= $this->Form->create($product, [
-                            'type' => 'file',
-                            'class' => 'needs-validation',
-                            'novalidate' => true
-                        ]) ?>
-
                         <fieldset>
                             <!-- Product Name -->
                             <div class="mb-3">

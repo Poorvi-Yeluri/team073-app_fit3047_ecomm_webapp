@@ -84,12 +84,12 @@ $category = $category ?? (string)$this->request->getQuery('category', '');
                             <td><?= h($product->description)?></td>
                             <td class="text-center">
                                 <div class="d-flex flex-wrap justify-content-center gap-2">
-                                    <?= $this->Html->link(__('View'), ['action' => 'view', $product->slug], [
-                                        'class' => 'btn btn-sm btn-primary rounded-3'
-                                    ]) ?>
-<!--                                    --><?php //= $this->Html->link(__('Edit'), ['action' => 'edit', $product->id], [
-//                                        'class' => 'btn btn-sm btn-secondary rounded-3'
+<!--                                    --><?php //= $this->Html->link(__('View'), ['action' => 'view', $product->slug], [
+//                                        'class' => 'btn btn-sm btn-primary rounded-3'
 //                                    ]) ?>
+                                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $product->id], [
+                                        'class' => 'btn btn-sm btn-secondary rounded-3'
+                                    ]) ?>
                                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $product->id], [
                                         'method' => 'delete',
                                         'confirm' => __('Are you sure you want to delete {0}?', $product->name),
