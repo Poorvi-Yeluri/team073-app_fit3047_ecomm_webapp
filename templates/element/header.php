@@ -10,7 +10,7 @@
     </title>
 
     <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css(['styles', 'button']) ?>
+    <?= $this->Html->css(['cake', 'styles', 'button']) ?>
     <?= $this->fetch('script') ?>
 
 

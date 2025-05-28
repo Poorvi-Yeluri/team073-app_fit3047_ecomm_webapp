@@ -3,4 +3,5 @@
 return [
     'Migrations' => [],
     'Recaptcha' => [],
+    'ContentBlocks' => [],
 ];

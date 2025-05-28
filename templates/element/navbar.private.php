@@ -40,6 +40,17 @@
 <!--                    <li><a class="dropdown-item text-center" href="/products/add/">Add Product</a></li>-->
                 </ul>
             </div>
+
+            <div>
+                <?= $this->Html->link(
+                    'Content Blocks',
+                    ['plugin' => 'ContentBlocks', 'controller' => 'ContentBlocks', 'action' => 'index'],
+                    ['class' => 'nav-link']
+                ) ?>
+            </div>
+
+
+
         </div>
 
         <!-- Right: Logout Button -->
@@ -101,6 +112,12 @@
                     <li><a class="dropdown-item text-center" href="/users/add">Add User</a></li>
                 </ul>
             </li>
+
+            <!-- Content Blocks Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link" href="/content-blocks/content-blocks">Content Blocks</a>
+            </li>
+
             <li class="nav-item my-3">
                 <div class="d-block d-md-none">
                     <?= $this->Form->create(null, ['url' => '/auth/logout', 'method' => 'post']) ?>
