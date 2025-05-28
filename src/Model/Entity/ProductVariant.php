@@ -44,6 +44,8 @@ class ProductVariant extends Entity
         'sku' => true,
         'created_at' => true,
         'product' => true,
+        'variant_attribute_values' => true,
+
     ];
 
 
@@ -60,18 +62,28 @@ class ProductVariant extends Entity
      *
      * @return string
      */
+
     protected function _getMainImageUrl(): string
     {
-        $url = "";
         if (!empty($this->product_variant_images)) {
             foreach ($this->product_variant_images as $img) {
                 if ($img->is_main) {
-                   $url =  $img->image_url;
+                    $path = $img->image_url;
+
+                    // Ensure it becomes /img/product-variants/...
+                    if (!preg_match('/^https?:\/\//', $path) && !str_starts_with($path, '/img/')) {
+                        $path = '/img/' . ltrim($path, '/');
+                    }
+
+                    return $path;
                 }
             }
         }
-        return $url;
+
+        return '';
     }
+
+
 
 
     /**
@@ -83,12 +95,21 @@ class ProductVariant extends Entity
     {
         if (!empty($this->product_variant_images)) {
             return collection($this->product_variant_images)
-                ->map(fn($img) => $img->image_url)
+                ->map(function ($img) {
+                    $path = $img->image_url;
+
+                    if (!preg_match('/^https?:\/\//', $path) && !str_starts_with($path, '/img/')) {
+                        $path = '/img/' . ltrim($path, '/');
+                    }
+
+                    return $path;
+                })
                 ->toList();
         }
 
         return [];
     }
+
 
     /**
      * Get the product's category as the variant category.

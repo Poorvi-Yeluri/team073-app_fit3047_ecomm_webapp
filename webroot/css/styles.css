@@ -422,7 +422,7 @@ button.accordion-button:focus {
 
 /* Main container */
  .contentBlocks.index.content {
-     padding-inline: 5rem;
+     padding-inline: 1.5rem;
  }
 
 /* Quick links */
@@ -579,4 +579,71 @@ button.accordion-button:focus {
 
 .content-blocks--form-actions a:hover {
     color: #fff;
+}
+
+
+.select2 .select2-container .selection {
+    border-radius: 0;
+}
+
+/* Responsive adjustments for tablets and smaller */
+@media (max-width: 768px) {
+    /* Reduce horizontal padding */
+    .contentBlocks.index.content {
+        padding-inline: 1rem;
+    }
+
+    /* Stack block items vertically */
+    .content-blocks--list-group-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* Adjust form container padding */
+    .contentBlocks.form.content {
+        padding: 1rem;
+        max-width: 100%;
+    }
+
+    /* Make buttons and links take full width and stack vertically */
+    .content-blocks--form-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .content-blocks--form-actions .btn,
+    .content-blocks--form-actions a {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Further scale down for mobile phones */
+@media (max-width: 480px) {
+    /* Smaller font sizes */
+    .content-blocks--list-subheading {
+        font-size: 1rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .content-blocks--form-heading {
+        font-size: 1.5rem;
+    }
+
+    .content-blocks--form-description {
+        font-size: 0.875rem;
+    }
+
+    /* Input padding smaller */
+    .contentBlocks.form.content input[type="text"],
+    .contentBlocks.form.content input[type="email"],
+    .contentBlocks.form.content textarea {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    /* Reduce margin-bottom on quick links */
+    .contentBlocks.index .content > div {
+        margin-bottom: 0.75rem;
+    }
 }

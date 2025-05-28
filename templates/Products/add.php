@@ -76,7 +76,7 @@
                                     'type' => 'number',
                                     'class' => 'form-control rounded-0 shadow-none border-dark',
                                     'required' => true,
-                                    'min' => 0,
+                                    'min' => 1,
                                     'step' => '0.01',
                                     'placeholder' => 'Enter base price',
                                     'id' => 'base_price',
@@ -106,7 +106,7 @@
 
                             <!-- Product Images (Multiple Uploads) -->
                             <div class="mb-3">
-                                <?= $this->Form->control('product_images._ids', [
+                                <?= $this->Form->control('product_images[]', [
                                     'type' => 'file',
                                     'class' => 'form-control rounded-0 shadow-none border-dark',
                                     'multiple' => 'multiple',

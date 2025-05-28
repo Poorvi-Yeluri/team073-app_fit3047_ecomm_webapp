@@ -75,8 +75,9 @@ use Cake\Utility\Text;
                         </span>
                     </td>
                     <td data-order="<?= strtotime($m->created_at) ?>">
-                        <?= $this->Time->format($m->created_at, 'dd MMM yyyy, hh:mm a') ?>
+                        <?= $this->Time->format($m->created_at->setTimezone('Australia/Sydney'), 'dd/MM/yyyy hh:mm a') ?>
                     </td>
+
                     <td class="text-center">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $m->id], [
                             'class' => 'btn btn-sm btn-primary rounded-3'

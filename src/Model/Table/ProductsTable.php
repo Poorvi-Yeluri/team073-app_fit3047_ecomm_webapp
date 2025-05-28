@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\Product;
+use App\Model\Entity\ProductImage;
 use App\Model\Entity\ProductVariant;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
@@ -39,6 +40,7 @@ use Psr\SimpleCache\CacheInterface;
  */
 class ProductsTable extends Table
 {
+
     /**
      * Initialize method
      *
@@ -282,16 +284,14 @@ class ProductsTable extends Table
 
     /**
      * @param string $slug
-     * @return ProductVariant
+     * @return Product
      */
-    public function findBySlug(string $slug): ProductVariant
+    public function findBySlug(string $slug): Product
     {
-        return $this->ProductVariants->find()
-            ->where(['ProductVariants.slug' => $slug])
+        return $this->find()
+            ->where(['Products.slug' => $slug])
             ->contain([
-                'Products',
-                'ProductVariantImages',
-                'ProductVariantAttributes.AttributeValues.Attributes',
+                'ProductImages',
             ])
             ->firstOrFail();
     }

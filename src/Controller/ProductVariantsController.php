@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Log\Log;
+use Cake\Filesystem\Folder;
+use Exception;
+
 /**
  * ProductVariants Controller
  *
@@ -55,57 +59,85 @@ class ProductVariantsController extends AppController
         $productVariant = $this->ProductVariants->newEmptyEntity();
 
         if ($this->request->is('post')) {
+            $data = $this->request->getData();
+
+            // Remove images temporarily from data before patching
+            $imagesData = $data['product_variant_images'] ?? [];
+            unset($data['product_variant_images']);
+
             $productVariant = $this->ProductVariants->patchEntity(
                 $productVariant,
-                $this->request->getData(),
-                [
-                    'associated' => ['AttributeValues', 'ProductVariantImages']
-                ]
+                $data,
+                ['associated' => ['AttributeValues']]
             );
-            $uploadedFiles = $this->request->getUploadedFiles();
-
-            if (!empty($uploadedFiles['product_variant_images'])) {
-                foreach ($uploadedFiles['product_variant_images'] as $uploadedFile) {
-                    $fileName = time() . '_' . $uploadedFile->getClientFilename();
-                    $filePath = WWW_ROOT . 'img/uploads/' . $fileName;
-                    $uploadedFile->moveTo($filePath);
-
-                    $productVariant->product_variant_images[] = $this->ProductVariants->ProductVariantImages->newEntity([
-                        'image_url' => 'img/uploads/' . $fileName,
-                    ]);
-
-                }
-            }
-
-
-
 
 
             if ($this->ProductVariants->save($productVariant)) {
+                $variantId = $productVariant->id;
+
+                // Normalize uploaded files
+                $files = is_array($imagesData) ? $imagesData : [$imagesData];
+
+                foreach ($files as $index => $uploadedFile) {
+                    if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                        $originalName = $uploadedFile->getClientFilename();
+
+                        // Sanitize and create unique filename
+                        $safeName = preg_replace('/[^a-zA-Z0-9_\.-]/', '_', pathinfo($originalName, PATHINFO_FILENAME));
+                        $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+                        $fileName = uniqid($safeName . '_') . '.' . $extension;
+
+                        $uploadDir = WWW_ROOT . 'img' . DS . 'uploads' . DS;
+                        $uploadPath = $uploadDir . $fileName;
+
+                        if (!is_dir($uploadDir)) {
+                            mkdir($uploadDir, 0755, true);
+                        }
+
+                        try {
+                            $uploadedFile->moveTo($uploadPath);
+
+                            $imageEntity = $this->ProductVariants->ProductVariantImages->newEntity([
+                                'variant_id' => $variantId,
+                                'image_url' => $uploadPath,
+                                'is_main' => ($index === 0),
+                            ]);
+
+                            if ($this->ProductVariants->ProductVariantImages->save($imageEntity)) {
+                                $this->Flash->success(__('Image {0} uploaded and saved.', $originalName));
+                            } else {
+                                debug($imageEntity->getErrors());
+                                $this->Flash->error(__('Image {0} failed to save to database.', $originalName));
+                            }
+                        } catch (Exception $e) {
+                            $this->Flash->error(__('Failed to upload file: {0}', $originalName));
+                        }
+                    } else {
+                        $this->Flash->error(__('Error uploading file: {0}', $uploadedFile->getClientFilename()));
+                    }
+                }
+
                 $this->Flash->success(__('The product variant has been saved.'));
                 return $this->redirect(['action' => 'index']);
             }
 
             $this->Flash->error(__('The product variant could not be saved. Please, try again.'));
+            debug($productVariant->getErrors());
         }
 
         $products = $this->ProductVariants->Products->find('list')->all();
 
-        // Fetch attribute values with their attribute names
         $attributeValuesQuery = $this->ProductVariants->AttributeValues->find()
             ->contain(['Attributes'])
             ->all();
 
-        // Group attribute values by attribute name
         $groupedAttributeValues = [];
         foreach ($attributeValuesQuery as $attrValue) {
             $groupedAttributeValues[$attrValue->attribute->name][$attrValue->id] = $attrValue->value;
         }
 
         $this->set(compact('productVariant', 'products', 'groupedAttributeValues'));
-
     }
-
 
     /**
      * Edit method

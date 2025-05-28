@@ -3,14 +3,21 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Table\ProductsTable;
+use Cake\Controller\Component;
+use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Http\Response;
 use Cake\ORM\Query;
+use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use Exception;
 use function Cake\Error\debug;
 
 /**
  * Products Controller
  *
- * @property \App\Model\Table\ProductsTable $Products
+ * @property ProductsTable $Products
+ * @property Component|Table|mixed|null $Authentication
  */
 class ProductsController extends AppController
 {
@@ -28,33 +35,40 @@ class ProductsController extends AppController
      */
     public function index(): void
     {
-        if ($this->Authentication->getIdentity()) {
-            $this->viewBuilder()->setTemplate('index.private');
-        } else {
-            $this->viewBuilder()->setTemplate('index.public');
-        }
-
         $queryParams = $this->request->getQuery();
 
-        // Pass empty variantIds and queryParams correctly
-        $query = $this->prepareVariantQuery([], $queryParams);
+        if ($this->Authentication->getIdentity()) {
+            $this->viewBuilder()->setTemplate('index.private');
+            $query = $this->Products->find()
+                ->contain(['ProductVariants', 'ProductImages']); // eager load related data as needed
 
-        $variants = $this->paginate($query);
+            $products = $this->paginate($query);
+            $category = $queryParams['category'] ?? null;
 
-        // Extract variant IDs for filters (optional)
-        $variantIds = collection($variants)->extract('id')->toList();
-        $filterOptions = $this->Products->getVariantFilters($variantIds);
+            $this->set(compact('products', 'category'));
+        } else {
+            $this->viewBuilder()->setTemplate('index.public');
+            // Pass empty variantIds and queryParams correctly
+            $query = $this->prepareVariantQuery([], $queryParams);
 
-        $selectedFilters = array_filter(
-            $queryParams,
-            fn($v, $k) => $k !== 'category' && $k !== 'sort' && is_array($v),
-            ARRAY_FILTER_USE_BOTH,
-        );
+            $variants = $this->paginate($query);
 
-        $category = $queryParams['category'] ?? null;
-        $sort = $queryParams['sort'] ?? 'relevance';
+            // Extract variant IDs for filters (optional)
+            $variantIds = collection($variants)->extract('id')->toList();
+            $filterOptions = $this->Products->getVariantFilters($variantIds);
 
-        $this->set(compact('variants', 'category', 'filterOptions', 'selectedFilters', 'sort'));
+            $selectedFilters = array_filter(
+                $queryParams,
+                fn($v, $k) => $k !== 'category' && $k !== 'sort' && is_array($v),
+                ARRAY_FILTER_USE_BOTH,
+            );
+
+            $category = $queryParams['category'] ?? null;
+            $sort = $queryParams['sort'] ?? 'relevance';
+
+            $this->set(compact('variants', 'category', 'filterOptions', 'selectedFilters', 'sort'));
+        }
+
     }
 
 
@@ -62,19 +76,26 @@ class ProductsController extends AppController
      * View method
      *
      * @param string|null $slug Product slug.
-     * @return \Cake\Http\Response|null|void Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @return Response|null|void Renders view
+     * @throws RecordNotFoundException When record not found.
      */
     public function view(?string $slug = null)
     {
-        $variant = $this->Products->findBySlug($slug);
-        $this->set(compact('variant', ));
+        if ($this->Authentication->getIdentity()) {
+            $this->viewBuilder()->setTemplate('view.private');
+            $product = $this->Products->findBySlug($slug);
+            $this->set(compact('product', ));
+        } else {
+            $this->viewBuilder()->setTemplate('view');
+            $variant = $this->Products->ProductVariants->findBySlug($slug);
+            $this->set(compact('variant', ));
+        }
     }
 
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return Response|null|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -87,11 +108,6 @@ class ProductsController extends AppController
             $imagesData = $data['product_images'] ?? [];
             unset($data['product_images']);
 
-            if (empty($data['image_url'])) {
-                $data['image_url'] = 'https://picsum.photos/200/300'; // You can change this to a default image path
-            }
-
-            // Save product first
             $product = $this->Products->patchEntity($product, $data);
 
             if ($this->Products->save($product)) {
@@ -140,17 +156,18 @@ class ProductsController extends AppController
      * Edit method
      *
      * @param string|null $id Product id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @return Response|null|void Redirects on successful edit, renders view otherwise.
+     * @throws RecordNotFoundException When record not found.
      */
     public function edit(?string $id = null)
     {
         $product = $this->Products->get($id, [
-            'contain' => ['ProductImages'], // Include images if you want to list or modify them
+            'contain' => ['ProductImages'],
         ]);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
+            debug($data);
 
             // Extract and remove image files from the main data
             $imagesData = $data['product_images'] ?? [];
@@ -206,8 +223,8 @@ class ProductsController extends AppController
      * Delete method
      *
      * @param string|null $id Product id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @return Response|null Redirects to index.
+     * @throws RecordNotFoundException When record not found.
      */
     public function delete(?string $id = null)
     {
@@ -232,7 +249,7 @@ class ProductsController extends AppController
                 $connection->rollback();
                 $this->Flash->error(__('The product could not be deleted. Please, try again.'));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $connection->rollback();
             $this->Flash->error(__('Error deleting product: ' . $e->getMessage()));
         }
@@ -249,7 +266,7 @@ class ProductsController extends AppController
      * it falls back to a LIKE search.
      *
      * @param string|null $queryTerm The search term provided in the query string parameter 'q'. Defaults to null.
-     * @return \Cake\Http\Response|null Renders the search results view.
+     * @return Response|null Renders the search results view.
      */
     public function search(): void
     {
@@ -342,6 +359,36 @@ class ProductsController extends AppController
         }
 
         return $query;
+    }
+
+    public function removeImage(?string $id = null): ?Response
+    {
+        $this->request->allowMethod(['post', 'delete']);
+
+        $connection = $this->Products->ProductImages->getConnection();
+        $connection->begin();
+
+        try {
+            $image = $this->Products->ProductImages->get($id);
+            $imagePath = WWW_ROOT . $image->image_url;
+
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+
+            if ($this->Products->ProductImages->delete($image)) {
+                $connection->commit();
+                $this->Flash->success(__('The image has been deleted.'));
+            } else {
+                $connection->rollback();
+                $this->Flash->error(__('The image could not be deleted. Please, try again.'));
+            }
+        } catch (Exception $e) {
+            $connection->rollback();
+            $this->Flash->error(__('Error deleting image: ' . $e->getMessage()));
+        }
+
+        return $this->redirect($this->referer());
     }
 
 

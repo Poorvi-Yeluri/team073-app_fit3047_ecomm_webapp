@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\ProductVariant> $variants
+ * @var iterable<\App\Model\Entity\Product> $products
  */
 $category = $category ?? (string)$this->request->getQuery('category', '');
 ?>
@@ -33,16 +33,6 @@ $category = $category ?? (string)$this->request->getQuery('category', '');
                     </select>
                 </div>
 
-                <!-- Stock Level Filter -->
-                <div class="col-12 col-md-auto">
-                    <label for="variantStock" class="text-small text-accent"><?= __('Stock Level') ?></label>
-                    <select id="variantStock" class="form-select form-select-sm w-100">
-                        <option value=""><?= __('Select Stock Level') ?></option>
-                        <option value="Low"><?= __('Low') ?></option>
-                        <option value="Medium"><?= __('Medium') ?></option>
-                        <option value="High"><?= __('High') ?></option>
-                    </select>
-                </div>
 
                 <!-- Price Range -->
                 <div class="col-12 col-md-auto">
@@ -54,15 +44,6 @@ $category = $category ?? (string)$this->request->getQuery('category', '');
                     </div>
                 </div>
 
-                <!-- Sort Dropdown -->
-                <div class="col-12 col-md-auto">
-                    <label for="stockOrder" class="text-small text-accent"><?= __('Sort by Stock') ?></label>
-                    <select id="stockOrder" class="form-select form-select-sm w-100">
-                        <option value=""><?= __('Default') ?></option>
-                        <option value="stock-low-high"><?= __('Low to High') ?></option>
-                        <option value="stock-high-low"><?= __('High to Low') ?></option>
-                    </select>
-                </div>
             </div>
 
             <hr class="mb-1 mt-3" />
@@ -77,57 +58,45 @@ $category = $category ?? (string)$this->request->getQuery('category', '');
                         <th><?= __('Product') ?></th>
                         <th><?= __('Category') ?></th>
                         <th><?= __('Price') ?></th>
-                        <th><?= __('Stock') ?></th>
+                        <th><?= __('Description') ?></th>
+                        <th><?= __('Actions') ?></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <?php if (count($variants) === 0): ?>
+                    <?php if (count($products) === 0): ?>
                         <tr>
                             <td colspan="4" class="text-center text-muted"><?= __('No products found.') ?></td>
                         </tr>
                     <?php endif; ?>
 
-                    <?php foreach ($variants as $variant): ?>
+                    <?php foreach ($products as $product): ?>
                         <tr>
                             <td>
                                 <div class="d-flex flex-column flex-sm-row align-items-center gap-2">
-                                    <?php if ($variant->image_url): ?>
-                                        <img src="<?= h($variant->image_url) ?>" alt="<?= h($variant->name) ?>" class="product-thumb rounded-1">
+                                    <?php if ($product->main_image_urls): ?>
+                                        <img src="<?= h($product->main_image_url) ?>" alt="<?= h($product->name) ?>" class="product-thumb rounded-1">
                                     <?php endif; ?>
-                                    <span><?= h($variant->name) ?></span>
+                                    <span><?= h($product->name) ?></span>
                                 </div>
                             </td>
-                            <td class="text-capitalize"><?= str_replace('-', ' ', h($variant->variant_category)) ?></td>
-                            <td>$<?= number_format((float)($variant->price ?? 0), 2) ?></td>
-                            <td class="text-center" data-order="<?= $variant->stock_quantity ?>">
-                                <?php
-                                $s = $variant->stock_quantity;
-                                if ($s < 10) {
-                                    $badge = 'rounded-pill text-bg-danger';
-                                    $label = 'Low';
-                                } elseif ($s < 20) {
-                                    $badge = 'rounded-pill text-bg-warning';
-                                    $label = 'Medium';
-                                } else {
-                                    $badge = 'rounded-pill text-bg-success';
-                                    $label = 'High';
-                                }
-                                ?>
-                                <span class="badge <?= $badge ?>"><?= $label ?> (<?= $s ?>)</span>
-                                <span class="d-none"><?= $s ?></span>
-                            </td>
-<!--                            <td class="text-center">-->
-<!--                                <div class="d-flex flex-wrap justify-content-center gap-2">-->
-<!--                                    --><?php //= $this->Html->link(__('Edit'), ['action' => 'edit', $variant->slug], [
+                            <td class="text-capitalize"><?= str_replace('-', ' ', h($product->category)) ?></td>
+                            <td>$<?= number_format((float)($product->base_price ?? 0), 2) ?></td>
+                            <td><?= h($product->description)?></td>
+                            <td class="text-center">
+                                <div class="d-flex flex-wrap justify-content-center gap-2">
+                                    <?= $this->Html->link(__('View'), ['action' => 'view', $product->slug], [
+                                        'class' => 'btn btn-sm btn-primary rounded-3'
+                                    ]) ?>
+<!--                                    --><?php //= $this->Html->link(__('Edit'), ['action' => 'edit', $product->id], [
 //                                        'class' => 'btn btn-sm btn-secondary rounded-3'
 //                                    ]) ?>
-<!--                                    --><?php //= $this->Form->postLink(__('Delete'), ['action' => 'delete', $variant->slug], [
-//                                        'method' => 'delete',
-//                                        'confirm' => __('Are you sure you want to delete {0}?', $variant->name),
-//                                        'class' => 'btn btn-sm btn-danger rounded-3'
-//                                    ]) ?>
-<!--                                </div>-->
-<!--                            </td>-->
+                                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $product->id], [
+                                        'method' => 'delete',
+                                        'confirm' => __('Are you sure you want to delete {0}?', $product->name),
+                                        'class' => 'btn btn-sm btn-danger rounded-3'
+                                    ]) ?>
+                                </div>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>

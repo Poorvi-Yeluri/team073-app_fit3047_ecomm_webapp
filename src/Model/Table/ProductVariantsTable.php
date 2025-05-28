@@ -3,9 +3,14 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\ProductVariant;
+use ArrayObject;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\EventInterface;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Text;
 use Cake\Validation\Validator;
 
 /**
@@ -62,7 +67,7 @@ class ProductVariantsTable extends Table
             'through' => 'ProductVariantAttributes',
             'foreignKey' => 'product_variant_id',
             'targetForeignKey' => 'attribute_value_id',
-            'propertyName' => 'variant_attribute_values', // Recommended: Use a specific property name
+            'propertyName' => 'variant_attribute_values',
         ]);
     }
 
@@ -76,19 +81,14 @@ class ProductVariantsTable extends Table
     {
         $validator
             ->integer('product_id')
-            ->notEmptyString('product_id');
+            ->requirePresence('product_id', 'create', 'Product ID is required')
+            ->notEmptyString('product_id', 'Product ID is required');
 
         $validator
-            ->scalar('variant_name')
-            ->maxLength('variant_name', 255)
-            ->requirePresence('variant_name', 'create')
-            ->notEmptyString('variant_name');
-
-        $validator
-            ->scalar('variant_value')
-            ->maxLength('variant_value', 255)
-            ->requirePresence('variant_value', 'create')
-            ->notEmptyString('variant_value');
+            ->scalar('name')
+            ->maxLength('name', 255)
+            ->requirePresence('name', 'create')
+            ->notEmptyString('name');
 
         $validator
             ->decimal('price')
@@ -127,5 +127,44 @@ class ProductVariantsTable extends Table
         $rules->add($rules->existsIn(['product_id'], 'Products'), ['errorField' => 'product_id']);
 
         return $rules;
+    }
+
+    /**
+     * @param EventInterface $event
+     * @param ProductVariant $entity
+     * @param ArrayObject $options
+     * @return void
+     */
+    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        if ($entity->isNew() && !$entity->slug) {
+            $slugBase = strtolower(Text::slug($entity->name));
+            if (empty($slugBase)) {
+                $slugBase = $entity->sku;
+            }
+
+            $slug = substr($slugBase, 0, 191);
+            $counter = 1;
+
+            $conditions = ['slug' => $slug];
+
+            while ($this->exists($conditions)) {
+                $slug = substr($slugBase . '-' . $counter++, 0, 191);
+                $conditions['slug'] = $slug;
+            }
+            $entity->slug = $slug;
+        }
+    }
+
+    public function findBySlug(string $slug): ProductVariant
+    {
+        return $this->find()
+            ->where(['ProductVariants.slug' => $slug])
+            ->contain([
+                'Products',
+                'ProductVariantImages',
+                'ProductVariantAttributes.AttributeValues.Attributes',
+            ])
+            ->firstOrFail();
     }
 }

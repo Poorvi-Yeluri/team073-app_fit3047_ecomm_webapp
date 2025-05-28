@@ -30,14 +30,16 @@
                 </ul>
             </div>
 
-            <!-- Users Dropdown -->
+            <!-- Products Dropdown -->
             <div class="dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" data-bs-toggle="dropdown">
                     Products
                 </a>
-                <ul class="dropdown-menu" aria-labelledby="usersDropdown">
+                <ul class="dropdown-menu" aria-labelledby="productsDropdown">
                     <li><a class="dropdown-item text-center" href="/products/">All Products</a></li>
-<!--                    <li><a class="dropdown-item text-center" href="/products/add/">Add Product</a></li>-->
+                    <li><a class="dropdown-item text-center" href="/product-variants/">All Product Variants</a></li>
+
+                    <!--                    <li><a class="dropdown-item text-center" href="/products/add/">Add Product</a></li>-->
                 </ul>
             </div>
 
@@ -99,6 +101,9 @@
                 <ul class="dropdown-menu" aria-labelledby="productsDropdownMobile">
                     <li><a class="dropdown-item text-center" href="/products/">View Products</a></li>
                     <li><a class="dropdown-item text-center" href="/products/add">Add Product</a></li>
+                    <li><a class="dropdown-item text-center" href="/product-variants/">View Product Variants</a></li>
+                    <li><a class="dropdown-item text-center" href="/product-variants/add">Add Product Variant</a></li>
+
                 </ul>
             </li>
 

@@ -20,7 +20,7 @@ use App\View\AppView;
     <div class="row">
         <!-- Left Card -->
         <div class="col-md-6 mb-4">
-            <div class="card p-4 shadow-sm rounded-3 h-100">
+            <div class="card p-4 shadow-sm rounded-3 h-100 shadow-none border-dark">
                 <fieldset>
                     <!-- Name -->
                     <div class="mb-3 form-group required">
@@ -81,6 +81,9 @@ use App\View\AppView;
                             'aria-describedby' => 'sku_error'
                         ]) ?>
                         <div id="sku_error" class="invalid-feedback">SKU for the product variant is required.</div>
+                        <small id="sku_help" class="form-text text-muted">
+                            Please create the SKU as per relevant attributes (e.g., sapphire-necklace-green).
+                        </small>
                     </div>
 
                     <!-- Base Product -->
@@ -104,10 +107,10 @@ use App\View\AppView;
 
         <!-- Right Card -->
         <div class="col-md-6 mb-4">
-            <div class="card p-4 shadow-sm rounded-3 h-100">
+            <div class="card p-4 shadow-sm rounded-3 w-100 h-100 shadow-none border-dark">
                 <fieldset>
                     <!-- Attribute Values -->
-                    <div class="mb-3 form-group required">
+                    <div class="mb-3 w-100 form-group required">
                         <?= $this->Form->control('variant_attribute_values._ids', [
                             'type' => 'select',
                             'multiple' => true,
@@ -127,7 +130,7 @@ use App\View\AppView;
 
                     <!-- Product Images -->
                     <div class="mb-3">
-                        <?= $this->Form->control('product_variant_images', [
+                        <?= $this->Form->control('product_variant_images[]', [
                             'type' => 'file',
                             'class' => 'form-control rounded-0 shadow-none border-dark',
                             'multiple' => 'multiple',
