@@ -21,7 +21,7 @@ $this->Breadcrumbs->add('Edit Product');
                     <?= $this->Html->link(__('Back to Products'), ['action' => 'index'], ['class' => 'btn btn-secondary btn-sm']) ?>
                 </div>
                 <!-- Title centered next to the button -->
-                <h4 class="ms-4"><?= __('Edit Product: ') . h($product->name) ?></h4>
+                <h4 class="ms-4"><?= h($product->name) ?></h4>
             </div>
             <?= $this->Form->create($product, [
                 'type' => 'file',
@@ -76,29 +76,33 @@ $this->Breadcrumbs->add('Edit Product');
                                     'maxlength' => 500,
                                     'aria-describedby' => 'description_error',
                                 ]); ?>
-                                <div id="description_error" class="invalid-feedback">Description is required and can't exceed 500 characters.</div>
+                                <div id="description_error" class="invalid-feedback">Description is required and can't
+                                    exceed 500 characters.
+                                </div>
                             </div>
 
                             <!-- Base Price -->
                             <div class="mb-3">
                                 <?= $this->Form->control('base_price', [
                                     'label' => ['text' => 'Base Price', 'escape' => false],
-                                    'type' => 'tel',
+                                    'type' => 'number',
                                     'class' => 'form-control rounded-0 shadow-none border-dark',
-                                    'required' => false,
+                                    'required' => true,
+                                    'min' => 1,
+                                    'step' => '0.01',
                                     'placeholder' => 'Enter base price',
                                     'id' => 'base_price',
-                                    'pattern' => '^\d+(\.\d{1,2})?$',
-                                    'inputmode' => 'decimal',
-                                    'oninput' => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(?!^.*\.)./g, '')",
                                     'aria-describedby' => 'base_price_error',
                                 ]) ?>
-                                <div id="base_price_error" class="invalid-feedback">Base price is required and must be a valid number (e.g., 10.99).</div>
+                                <div id="base_price_error" class="invalid-feedback">Base price is required and needs to
+                                    be above 0.00.
+                                </div>
                             </div>
+
 
                             <!-- Product Images (Optional on Edit) -->
                             <div class="mb-3">
-                                <?= $this->Form->control('product_images', [
+                                <?= $this->Form->control('product_images[]', [
                                     'type' => 'file',
                                     'class' => 'form-control rounded-0 shadow-none border-dark',
                                     'multiple' => 'multiple',
@@ -107,25 +111,42 @@ $this->Breadcrumbs->add('Edit Product');
                                     'id' => 'product_images',
                                     'aria-describedby' => 'product_images_help'
                                 ]) ?>
-                                <small id="product_images_help" class="form-text text-muted">You can upload new images. Existing ones will remain unless changed.</small>
+                                <small id="product_images_help" class="form-text text-muted">You can upload new images.
+                                    Existing ones will remain unless changed.</small>
                             </div>
 
                             <?php if (!empty($product->product_images)): ?>
                                 <div class="mb-3">
-                                    <label><?= __('Existing Images') ?></label>
+                                    <label class="form-label"><?= __('Existing Images') ?></label>
                                     <div class="row g-3">
                                         <?php foreach ($product->product_images as $image): ?>
-                                            <div class="col-6 col-sm-4 col-md-3">
-                                                <div class="d-flex flex-column gap-3">
-                                                    <img src="<?= $this->Url->build($image->image_url) ?>" alt="Product Image"
+                                            <div class="col-6 col-sm-4 col-md-3 position-relative">
+                                                <div class="d-flex flex-column gap-2">
+                                                    <!-- Image -->
+                                                    <img src="<?= $this->Url->build(
+                                                        preg_match('/^https?:\/\//', $image->image_url) || str_starts_with($image->image_url, '/img/')
+                                                            ? $image->image_url
+                                                            : '/img/' . ltrim($image->image_url, '/')
+                                                    ) ?>"
+                                                         alt="Product Image"
                                                          class="img-thumbnail w-100 object-fit-cover rounded"
-                                                         style="border: 1px solid #ddd;">
+                                                         style="height: 150px; object-fit: cover;">
+
+                                                    <!-- Badge for Main Image -->
+                                                    <?php if ($image->is_main): ?>
+                                                        <span
+                                                            class="position-absolute top-0 start-0 badge bg-success rounded-start rounded-bottom">
+                                                            <?= __('Main') ?>
+                                                        </span>
+                                                    <?php endif; ?>
+
+                                                    <!-- Delete Button -->
                                                     <?= $this->Form->postLink(
-                                                        __('Delete (ID: {0})', $image->id),
+                                                        __('Delete'),
                                                         ['controller' => 'Products', 'action' => 'removeImage', $image->id],
                                                         [
                                                             'escape' => false,
-                                                            'confirm' => __('Are you sure you want to delete image {0}?', $image->id),
+                                                            'confirm' => __('Are you sure you want to delete this image?'),
                                                             'class' => 'btn btn-danger btn-sm',
                                                             'title' => __('Delete Image'),
                                                         ]
@@ -136,9 +157,9 @@ $this->Breadcrumbs->add('Edit Product');
                                     </div>
                                 </div>
                             <?php endif; ?>
-                        </fieldset>
-                        <?= $this->Form->submit('Update',  ['class' => 'btn btn-dark w-100 mt-3']) ?>
-                        <?= $this->Form->end() ?>
+
+                            <?= $this->Form->submit('Update', ['class' => 'btn btn-dark w-100 mt-3']) ?>
+                            <?= $this->Form->end() ?>
                     </div>
                 </div>
             </div>

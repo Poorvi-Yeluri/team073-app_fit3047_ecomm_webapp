@@ -106,18 +106,23 @@ $this->Breadcrumbs->add('Edit Product Variant');
                     $imageUrls = $productVariant->image_urls;
                     ?>
 
-                    <label>
-                        <?= __('Current Images') ?>
-                    </label>
-                    <?php foreach ($productVariant->product_variant_images as $index => $image): ?>
-                        <div class="col-6 col-sm-4 col-md-3">
-                            <div class="d-flex flex-column gap-2">
-                                <!-- Use the URL from entity getter -->
-                                <img src="<?= $imageUrls[$index] ?>" alt="Variant Image"
-                                     class="img-thumbnail w-100 h-100 rounded"
-                                     style="border: 1px solid #ddd;">
+                    <label><?= __('Current Images') ?></label>
+                    <div class="row g-3">
+                        <?php foreach ($productVariant->product_variant_images as $index => $image): ?>
+                            <div class="col-6 col-sm-4 col-md-3 position-relative">
+                                <div class="d-flex flex-column gap-2">
+                                    <img src="<?= h($imageUrls[$index]) ?>" alt="Variant Image"
+                                         class="img-thumbnail w-100 object-fit-cover rounded"
+                                         style="height: 150px; object-fit: cover;">
 
-                                <?php if (!$image->is_main): ?>
+                                    <?php if ($image->is_main): ?>
+                                        <span
+                                            class="position-absolute top-0 start-0 badge bg-success rounded-start rounded-bottom">
+                                            <?= __('Main') ?>
+                                        </span>
+                                    <?php endif; ?>
+
+                                    <!-- Delete button -->
                                     <?= $this->Form->postLink(
                                         __('Delete (ID: {0})', $image->id),
                                         ['controller' => 'ProductVariants', 'action' => 'removeImage', $image->id],
@@ -127,20 +132,11 @@ $this->Breadcrumbs->add('Edit Product Variant');
                                             'title' => __('Delete Image'),
                                         ]
                                     ) ?>
-                                <?php else: ?>
-                                    <label for="changeMainImageInput<?= $image->id ?>" class="btn btn-warning btn-sm mb-0" style="cursor:pointer;">
-                                        <?= __('Change Main Image') ?>
-                                    </label>
-
-                                    <form id="changeMainImageForm<?= $image->id ?>"
-                                          action="<?= $this->Url->build(['controller' => 'ProductVariants', 'action' => 'changeMainImage', $image->id]) ?>"
-                                          method="post" enctype="multipart/form-data" class="change-main-image-form" style="display:none;">
-                                        <input type="file" name="new_main_image" id="changeMainImageInput<?= $image->id ?>" accept="image/*" class="change-main-image-input">
-                                    </form>
-                                <?php endif; ?>
+                                </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
+
                 </fieldset>
                 <?= $this->Form->submit('Update Variant', ['class' => 'btn btn-dark mt-3 w-100']) ?>
                 <?= $this->Form->end() ?>
@@ -169,7 +165,7 @@ $this->Breadcrumbs->add('Edit Product Variant');
                 headers: {
                     'X-CSRF-Token': '<?= $this->request->getAttribute('csrfToken') ?>' // CSRF token for CakePHP
                 },
-                beforeSend: function() {
+                beforeSend: function () {
                     // Optionally, disable inputs or show a spinner here
                     $(input).prop('disabled', true);
                 },

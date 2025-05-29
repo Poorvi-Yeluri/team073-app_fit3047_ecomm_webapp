@@ -57,17 +57,23 @@ class Product extends Entity
      */
     protected function _getMainImageUrl(): string
     {
-        $url = "";
         if (!empty($this->product_images)) {
             foreach ($this->product_images as $img) {
                 if ($img->is_main) {
-                    $url = $img->image_url;
+                    $path = $img->image_url;
+
+                    // Only prepend /img/ if it’s a relative path and not already prefixed
+                    if (!preg_match('/^https?:\/\//', $path) && !str_starts_with($path, '/img/')) {
+                        $path = '/img/' . ltrim($path, '/');
+                    }
+
+                    return $path;
                 }
             }
         }
 
         // Fallback if no main image is set
-        return $url;
+        return '';
     }
 
     /**
@@ -79,10 +85,19 @@ class Product extends Entity
     {
         if (!empty($this->product_images)) {
             return collection($this->product_images)
-                ->map(fn($img) => $img->image_url)
+                ->map(function ($img) {
+                    $path = $img->image_url;
+
+                    if (!preg_match('/^https?:\/\//', $path) && !str_starts_with($path, '/img/')) {
+                        $path = '/img/' . ltrim($path, '/');
+                    }
+
+                    return $path;
+                })
                 ->toList();
         }
 
         return [];
     }
+
 }

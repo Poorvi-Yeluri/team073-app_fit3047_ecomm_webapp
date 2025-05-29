@@ -45,7 +45,7 @@
 
             <div>
                 <?= $this->Html->link(
-                    'Content Blocks',
+                    'CMS',
                     ['plugin' => 'ContentBlocks', 'controller' => 'ContentBlocks', 'action' => 'index'],
                     ['class' => 'nav-link']
                 ) ?>
@@ -120,7 +120,7 @@
 
             <!-- Content Blocks Dropdown -->
             <li class="nav-item dropdown">
-                <a class="nav-link" href="/content-blocks/content-blocks">Content Blocks</a>
+                <a class="nav-link" href="/content-blocks/content-blocks">CMS</a>
             </li>
 
             <li class="nav-item my-3">

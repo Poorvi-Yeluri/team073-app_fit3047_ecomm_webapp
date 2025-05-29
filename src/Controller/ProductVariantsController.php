@@ -249,7 +249,6 @@ class ProductVariantsController extends AppController
         foreach ($productVariant->product_variant_images as $image) {
             $filePath = $image->image_url;
 
-            // Use native PHP functions to delete file
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
@@ -298,65 +297,32 @@ class ProductVariantsController extends AppController
         return $this->redirect($this->referer());
     }
 
-//    public function changeMainImage($imageId = null)
-//    {
-//        $this->request->allowMethod(['post']);
-//
-//        $image = $this->ProductVariants->ProductVariantImages->get($imageId);
-//        $variantId = $image->variant_id;
-//
-//        $uploadedFile = $this->request->getData('new_main_image');
-//
-//        if ($uploadedFile && $uploadedFile->getError() === UPLOAD_ERR_OK) {
-//            $originalName = $uploadedFile->getClientFilename();
-//
-//            // Sanitize and create unique filename
-//            $safeName = preg_replace('/[^a-zA-Z0-9_\.-]/', '_', pathinfo($originalName, PATHINFO_FILENAME));
-//            $extension = pathinfo($originalName, PATHINFO_EXTENSION);
-//            $fileName = uniqid($safeName . '_') . '.' . $extension;
-//
-//            $uploadDir = WWW_ROOT . 'img' . DS . 'product-variants' . DS;
-//            $uploadPath = $uploadDir . $fileName;
-//
-//            if (!is_dir($uploadDir)) {
-//                mkdir($uploadDir, 0755, true);
-//            }
-//
-//            // Delete old image file if exists
-//            $oldImagePath = WWW_ROOT . $image->image_url;
-//            if (file_exists($oldImagePath)) {
-//                unlink($oldImagePath);
-//            }
-//
-//            // Move new uploaded file
-//            $uploadedFile->moveTo($uploadPath);
-//
-//            // Update DB record
-//            $image->image_url = 'product-variants' . DS . $fileName;
-//
-//            if ($this->ProductVariants->ProductVariantImages->save($image)) {
-//                $this->Flash->success(__('Main image has been updated successfully.'));
-//            } else {
-//                $this->Flash->error(__('Failed to update main image record.'));
-//            }
-//        } else {
-//            $this->Flash->error(__('No image uploaded or upload error.'));
-//        }
-//
-//        return $this->redirect(['action' => 'edit', $variantId]);
-//    }
 
-    public function changeMainImage($imageId = null)
+    public function changeMainImage($variantId = null)
     {
         $this->request->allowMethod(['post']);
-
         $this->autoRender = false;
 
-        $image = $this->ProductVariants->ProductVariantImages->get($imageId);
-        $variantId = $image->variant_id;
+
+        // Find the current main image for this variant
+        $mainImage = $this->ProductVariants->ProductVariantImages->find()
+            ->where(['product_variant_id' => $variantId, 'is_main' => true])
+            ->first();
+
+
+        if (!$mainImage) {
+            $this->response = $this->response->withStatus(404)
+                ->withType('application/json')
+                ->withStringBody(json_encode([
+                    'status' => 'error',
+                    'message' => 'Main image not found for this variant.'
+                ]));
+            return $this->response;
+        }
 
         $uploadedFile = $this->request->getData('new_main_image');
-
+        debug($mainImage);
+debug($uploadedFile);
         if ($uploadedFile && $uploadedFile->getError() === UPLOAD_ERR_OK) {
             $originalName = $uploadedFile->getClientFilename();
 
@@ -365,43 +331,56 @@ class ProductVariantsController extends AppController
             $fileName = uniqid($safeName . '_') . '.' . $extension;
 
             $uploadDir = WWW_ROOT . 'img' . DS . 'product-variants' . DS;
-            $uploadPath = $uploadDir . $fileName;
-
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
+            $uploadPath = $uploadDir . $fileName;
 
-            $oldImagePath = WWW_ROOT . $image->image_url;
+            // Delete old image file if it exists
+            $oldImagePath = WWW_ROOT . 'img' . DS . $mainImage->image_url;
+            error_log($uploadPath);
             if (file_exists($oldImagePath)) {
                 unlink($oldImagePath);
             }
 
+
+            // Move uploaded file to destination
             $uploadedFile->moveTo($uploadPath);
 
-            $image->image_url = 'product-variants' . DS . $fileName;
+            // Update record with new image path
+            $mainImage->image_url = 'product-variants' . DS . $fileName;
 
-            if ($this->ProductVariants->ProductVariantImages->save($image)) {
-                // Return success response
-                $response = ['status' => 'success', 'message' => 'Main image updated successfully.'];
+            if ($this->ProductVariants->ProductVariantImages->save($mainImage)) {
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Main image updated successfully.',
+                    'newImageUrl' => $this->request->getAttribute('webroot') . 'img/' . $mainImage->image_url,
+                ];
 
-                // Optionally send the new image URL back to update UI without reload
-                $response['newImageUrl'] = $this->request->getAttribute('webroot') . $image->image_url;
-                $this->response = $this->response->withType('application/json')
+                $this->response = $this->response
+                    ->withType('application/json')
                     ->withStringBody(json_encode($response));
                 return $this->response;
             } else {
-                $this->response = $this->response->withStatus(500)
+                $this->response = $this->response
+                    ->withStatus(500)
                     ->withType('application/json')
-                    ->withStringBody(json_encode(['status' => 'error', 'message' => 'Failed to update main image record.']));
+                    ->withStringBody(json_encode([
+                        'status' => 'error',
+                        'message' => 'Failed to update main image record.'
+                    ]));
                 return $this->response;
             }
         }
 
-        $this->response = $this->response->withStatus(400)
+        $this->response = $this->response
+            ->withStatus(400)
             ->withType('application/json')
-            ->withStringBody(json_encode(['status' => 'error', 'message' => 'No image uploaded or upload error.']));
+            ->withStringBody(json_encode([
+                'status' => 'error',
+                'message' => 'No image uploaded or upload error.'
+            ]));
         return $this->response;
     }
-
 
 }

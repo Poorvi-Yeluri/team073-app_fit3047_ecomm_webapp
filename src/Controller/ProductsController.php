@@ -167,15 +167,15 @@ class ProductsController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
-            debug($data);
 
             // Extract and remove image files from the main data
             $imagesData = $data['product_images'] ?? [];
+            $imagesData = is_array($imagesData) ? $imagesData : [$imagesData]; // Normalize to array
             unset($data['product_images']);
 
             // If image_url is empty and no new images are uploaded, keep the current one
             if (empty($data['image_url']) && empty($imagesData)) {
-                $data['image_url'] = $product->image_url ?? 'https://picsum.photos/200/300';
+                $data['image_url'] = $product->image_url;
             }
 
             $product = $this->Products->patchEntity($product, $data);
