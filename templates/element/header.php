@@ -1,6 +1,11 @@
 <!-- src/Template/Element/header.php -->
 <head>
-    <link rel="manifest" href="/site.webmanifest?v=1">
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="<?= $this->Url->build('/site.webmanifest?v=1') ?>">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
