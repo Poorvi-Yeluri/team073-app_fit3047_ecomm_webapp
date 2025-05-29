@@ -162,6 +162,9 @@ use App\View\AppView;
     $(document).ready(function() {
         $('#variant_attribute_values').select2({
             placeholder: 'Select attribute values',
+            allow_clear: true,
+            width: '100%',
+
         });
     });
 </script>

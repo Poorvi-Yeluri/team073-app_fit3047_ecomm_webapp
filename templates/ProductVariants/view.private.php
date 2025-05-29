@@ -140,6 +140,7 @@ $this->Breadcrumbs->add('Edit Product Variant');
             $('.select2').select2({
                 placeholder: 'Select attributes',
                 allowClear: true,
+                width: '100%',
             });
         }
     });
