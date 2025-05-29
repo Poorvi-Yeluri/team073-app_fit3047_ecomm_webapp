@@ -79,7 +79,7 @@ $this->Breadcrumbs->add('Edit Product Variant');
                         'placeholder' => 'Enter stock quantity',
                     ]) ?>
 
-                    <div class=" mb-3">
+                    <div class="mb-3">
                         <!-- Variant Attribute Values -->
                         <?= $this->Form->control('variant_attribute_values._ids', [
                             'type' => 'select',
@@ -92,6 +92,7 @@ $this->Breadcrumbs->add('Edit Product Variant');
                         ]) ?>
                     </div>
 
+
                     <!-- Upload New Variant Images -->
                     <?= $this->Form->control('product_variant_images[]', [
                         'type' => 'file',
@@ -102,7 +103,6 @@ $this->Breadcrumbs->add('Edit Product Variant');
                     ]) ?>
 
                     <?php
-                    // Get all image URLs using the entity's virtual property
                     $imageUrls = $productVariant->image_urls;
                     ?>
 
@@ -194,6 +194,7 @@ $this->Breadcrumbs->add('Edit Product Variant');
             $('.select2').select2({
                 placeholder: 'Select attributes',
                 allowClear: true,
+                width: '100%',
             });
         }
     });
